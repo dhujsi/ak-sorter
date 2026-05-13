@@ -1,0 +1,14 @@
+# ArknightsGameResource submodule (huge, not needed)
+ak-sorter-assets/
+
+# Build artifacts
+build_summary.txt
+missing_files.txt
+_check.js
+
+# Claude Code settings
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tier Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f2f2f2;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+    }
+
+    .toolbar {
+      max-width: 1280px;
+      margin: 0 auto 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 7px 12px;
+      border: 1px solid #222;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: white;
+      padding: 12px;
+      display: inline-block;
+    }
+
+    .title {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .tier-board {
+      width: 1180px;
+      border-top: 1px solid #000;
+      border-left: 1px solid #000;
+      background: #000;
+    }
+
+    .tier-row {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      min-height: 76px;
+      border-bottom: 1px solid #000;
+    }
+
+    .tier-label {
+      border-right: 1px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      padding: 6px;
+      line-height: 1.2;
+      white-space: pre-line;
+    }
+
+    .tier-content {
+      background: #111;
+      min-height: 76px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      align-content: flex-start;
+      padding: 4px;
+      gap: 0;
+    }
+
+    .tier-content.drag-over {
+      outline: 2px dashed rgba(255, 255, 255, 0.7);
+      outline-offset: -4px;
+    }
+
+    .char {
+      width: 68px;
+      height: 68px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      cursor: grab;
+      background: transparent;
+      transition: opacity 0.08s ease, transform 0.08s ease;
+    }
+
+    .char:active {
+      cursor: grabbing;
+    }
+
+    .char.dragging {
+      opacity: 0.35;
+      transform: scale(0.96);
+    }
+
+    .char img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .portrait .tier-row {
+      min-height: 106px;
+    }
+
+    .portrait .tier-content {
+      min-height: 106px;
+    }
+
+    .portrait .char {
+      width: 74px;
+      height: 100px;
+    }
+
+    .footer {
+      height: 48px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .qr {
+      width: 42px;
+      height: 42px;
+      border: 1px solid #111;
+      background:
+        linear-gradient(90deg, #111 50%, transparent 50%) 0 0 / 7px 7px,
+        linear-gradient(#111 50%, transparent 50%) 0 0 / 7px 7px,
+        #fff;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 10px;
+      }
+
+      .wrap {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+      }
+
+      .tier-board {
+        width: 980px;
+      }
+
+      .tier-row {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .tier-label {
+        font-size: 12px;
+      }
+
+      .char {
+        width: 58px;
+        height: 58px;
+      }
+
+      .portrait .char {
+        width: 64px;
+        height: 88px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button onclick="toggleMode()">切换头像 / 半身</button>
+    <button onclick="resetDemo()">重置</button>
+    <button onclick="showExportHint()">导出 PNG</button>
+    <span class="hint">角色格子不显示名字；支持同档内重排和跨档插入。</span>
+  </div>
+
+  <div id="capture" class="wrap">
+    <h1 class="title">明日方舟喜好 Tier</h1>
+    <div id="tierBoard" class="tier-board"></div>
+
+    <div class="footer">
+      <div>非官方 fan-made project</div>
+      <div class="qr" title="正式版这里替换成当前页二维码"></div>
+    </div>
+  </div>
+
+  <script>
+    const tierConfig = [
+      { id: "tier-0", name: "论外", color: "#ff7f7f", count: 3 },
+      { id: "tier-1", name: "超大杯上", color: "#ffbf7f", count: 9 },
+      { id: "tier-2", name: "超大杯中", color: "#ffdf7f", count: 10 },
+      { id: "tier-3", name: "超大杯下", color: "#ffff7f", count: 11 },
+      { id: "tier-4", name: "大杯上", color: "#bfff7f", count: 9 },
+      { id: "tier-5", name: "大杯中", color: "#7fff7f", count: 8 },
+      { id: "tier-6", name: "大杯下", color: "#7fffff", count: 8 },
+      { id: "tier-7", name: "中杯上", color: "#7fbfff", count: 7 },
+      { id: "tier-8", name: "中杯中", color: "#bf7fff", count: 7 },
+      { id: "tier-9", name: "中杯下", color: "#ff7fff", count: 6 }
+    ];
+
+    /*
+      有本地图片后，把这里改成真实路径，例如：
+      const assetPaths = [
+        "assets/ak/avatar/char_002_amiya.webp",
+        "assets/ak/avatar/char_003_kalts.webp"
+      ];
+    */
+    const assetPaths = [];
+
+    let portraitMode = false;
+    let draggedId = null;
+    let dropTargetTierId = null;
+    let dropTargetIndex = null;
+
+    function mockImage(index) {
+      const hue = (index * 37) % 360;
+      const h = portraitMode ? 120 : 80;
+
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="${h}" viewBox="0 0 90 ${h}">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="hsl(${hue}, 80%, 78%)"/>
+              <stop offset="1" stop-color="hsl(${(hue + 55) % 360}, 70%, 46%)"/>
+            </linearGradient>
+          </defs>
+          <rect width="90" height="${h}" fill="transparent"/>
+          <path d="M20 ${h} C22 48, 68 48, 70 ${h} Z" fill="url(#g)" stroke="#222" stroke-width="2"/>
+          <circle cx="45" cy="28" r="20" fill="url(#g)" stroke="#222" stroke-width="2"/>
+          <path d="M28 23 C36 8, 54 8, 62 23" fill="none" stroke="#222" stroke-width="3"/>
+        </svg>
+      `;
+
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    function makeInitialData() {
+      let n = 0;
+
+      return tierConfig.map(tier => ({
+        ...tier,
+        items: Array.from({ length: tier.count }, () => {
+          const id = "char-" + n;
+          const src = assetPaths[n] || mockImage(n);
+          n++;
+          return { id, src };
+        })
+      }));
+    }
+
+    let tiers = makeInitialData();
+
+    function render() {
+      const board = document.getElementById("tierBoard");
+      board.classList.toggle("portrait", portraitMode);
+      board.innerHTML = "";
+
+      tiers.forEach(tier => {
+        const row = document.createElement("div");
+        row.className = "tier-row";
+
+        const label = document.createElement("div");
+        label.className = "tier-label";
+        label.style.background = tier.color;
+        label.textContent = tier.name;
+
+        const content = document.createElement("div");
+        content.className = "tier-content";
+        content.dataset.tierId = tier.id;
+
+        content.addEventListener("dragover", onDragOver);
+        content.addEventListener("dragleave", onDragLeave);
+        content.addEventListener("drop", onDrop);
+
+        tier.items.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "char";
+          card.draggable = true;
+          card.dataset.id = item.id;
+
+          card.addEventListener("dragstart", event => {
+            draggedId = item.id;
+            card.classList.add("dragging");
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData("text/plain", item.id);
+          });
+
+          card.addEventListener("dragend", () => {
+            card.classList.remove("dragging");
+            clearDropState();
+          });
+
+          const img = document.createElement("img");
+          img.src = item.src;
+          img.alt = "";
+          img.loading = "lazy";
+          img.onerror = () => {
+            const index = Number(item.id.replace("char-", "")) || 0;
+            img.src = mockImage(index);
+          };
+
+          card.appendChild(img);
+          content.appendChild(card);
+        });
+
+        row.appendChild(label);
+        row.appendChild(content);
+        board.appendChild(row);
+      });
+    }
+
+    function getInsertIndex(container, x, y) {
+      const cards = [...container.querySelectorAll(".char:not(.dragging)")];
+
+      if (cards.length === 0) {
+        return 0;
+      }
+
+      for (let i = 0; i < cards.length; i++) {
+        const rect = cards[i].getBoundingClientRect();
+
+        const isInSameRow = y >= rect.top && y <= rect.bottom;
+        const isBeforeMiddleX = x < rect.left + rect.width / 2;
+
+        if (isInSameRow && isBeforeMiddleX) {
+          return i;
+        }
+
+        const isBeforeThisRow = y < rect.top + rect.height / 2;
+
+        if (!isInSameRow && isBeforeThisRow) {
+          return i;
+        }
+      }
+
+      return cards.length;
+    }
+
+    function onDragOver(event) {
+      event.preventDefault();
+
+      const content = event.currentTarget;
+      content.classList.add("drag-over");
+
+      const draggingEl = document.querySelector(".char.dragging");
+      if (!draggingEl) return;
+
+      const index = getInsertIndex(content, event.clientX, event.clientY);
+      const cards = [...content.querySelectorAll(".char:not(.dragging)")];
+      const beforeEl = cards[index] || null;
+
+      content.insertBefore(draggingEl, beforeEl);
+
+      dropTargetTierId = content.dataset.tierId;
+      dropTargetIndex = index;
+    }
+
+    function onDragLeave(event) {
+      const content = event.currentTarget;
+      const related = event.relatedTarget;
+
+      if (related && content.contains(related)) {
+        return;
+      }
+
+      content.classList.remove("drag-over");
+    }
+
+    function onDrop(event) {
+      event.preventDefault();
+
+      const content = event.currentTarget;
+      content.classList.remove("drag-over");
+
+      if (!draggedId) return;
+
+      const targetTierId = dropTargetTierId || content.dataset.tierId;
+      const targetIndex = typeof dropTargetIndex === "number" ? dropTargetIndex : 0;
+
+      let moved = null;
+
+      tiers = tiers.map(tier => {
+        const items = tier.items.filter(item => {
+          if (item.id === draggedId) {
+            moved = item;
+            return false;
+          }
+          return true;
+        });
+
+        return { ...tier, items };
+      });
+
+      if (!moved) {
+        clearDropState();
+        render();
+        return;
+      }
+
+      tiers = tiers.map(tier => {
+        if (tier.id !== targetTierId) {
+          return tier;
+        }
+
+        const items = [...tier.items];
+        const safeIndex = Math.max(0, Math.min(targetIndex, items.length));
+        items.splice(safeIndex, 0, moved);
+
+        return { ...tier, items };
+      });
+
+      clearDropState();
+      render();
+    }
+
+    function clearDropState() {
+      draggedId = null;
+      dropTargetTierId = null;
+      dropTargetIndex = null;
+
+      document.querySelectorAll(".tier-content.drag-over").forEach(el => {
+        el.classList.remove("drag-over");
+      });
+    }
+
+    function toggleMode() {
+      portraitMode = !portraitMode;
+
+      tiers = tiers.map(tier => ({
+        ...tier,
+        items: tier.items.map(item => {
+          if (assetPaths.length > 0) {
+            return item;
+          }
+
+          const index = Number(item.id.replace("char-", "")) || 0;
+          return { ...item, src: mockImage(index) };
+        })
+      }));
+
+      render();
+    }
+
+    function resetDemo() {
+      portraitMode = false;
+      tiers = makeInitialData();
+      render();
+    }
+
+    function showExportHint() {
+      alert("正式项目里这里接 html-to-image 或 html2canvas，只导出 #capture 区域。");
+    }
+
+    render();
+  </script>
+</body>
+</html>

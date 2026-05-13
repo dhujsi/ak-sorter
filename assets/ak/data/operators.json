@@ -1,0 +1,3554 @@
+[
+  {
+    "id": "char_285_medic2",
+    "name": "Lancet-2",
+    "appellation": "Lancet-2",
+    "star": 1,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_286_cast3",
+    "name": "Castle-3",
+    "appellation": "Castle-3",
+    "star": 1,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_376_therex",
+    "name": "THRM-EX",
+    "appellation": "Thermal-EX",
+    "star": 1,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_4000_jnight",
+    "name": "正义骑士号",
+    "appellation": "\"Justice Knight\"",
+    "star": 1,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_4077_palico",
+    "name": "泰拉大陆调查团",
+    "appellation": "Terra Research Commission",
+    "star": 1,
+    "profession": "SNIPER",
+    "subProfession": "bombarder"
+  },
+  {
+    "id": "char_4091_ulika",
+    "name": "U-Official",
+    "appellation": "U-Official",
+    "star": 1,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_4093_frston",
+    "name": "Friston-3",
+    "appellation": "Friston-3",
+    "star": 1,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_4136_phonor",
+    "name": "PhonoR-0",
+    "appellation": "PhonoR-0",
+    "star": 1,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_4188_confes",
+    "name": "CONFESS-47",
+    "appellation": "CONFESS-47",
+    "star": 1,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_4227_gallus",
+    "name": "GALLUS²",
+    "appellation": "GALLUS²",
+    "star": 1,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_009_12fce",
+    "name": "12F",
+    "appellation": "12F",
+    "star": 2,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_500_noirc",
+    "name": "黑角",
+    "appellation": "Noir Corne",
+    "star": 2,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_501_durin",
+    "name": "杜林",
+    "appellation": "Durin",
+    "star": 2,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_502_nblade",
+    "name": "夜刀",
+    "appellation": "Yato",
+    "star": 2,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_503_rang",
+    "name": "巡林者",
+    "appellation": "Rangers",
+    "star": 2,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_120_hibisc",
+    "name": "芙蓉",
+    "appellation": "Hibiscus",
+    "star": 3,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_121_lava",
+    "name": "炎熔",
+    "appellation": "Lava",
+    "star": 3,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_122_beagle",
+    "name": "米格鲁",
+    "appellation": "Beagle",
+    "star": 3,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_123_fang",
+    "name": "芬",
+    "appellation": "Fang",
+    "star": 3,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_124_kroos",
+    "name": "克洛丝",
+    "appellation": "Kroos",
+    "star": 3,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_192_falco",
+    "name": "翎羽",
+    "appellation": "Plume",
+    "star": 3,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_208_melan",
+    "name": "玫兰莎",
+    "appellation": "Melantha",
+    "star": 3,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_209_ardign",
+    "name": "卡缇",
+    "appellation": "Cardigan",
+    "star": 3,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_210_stward",
+    "name": "史都华德",
+    "appellation": "Steward",
+    "star": 3,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_211_adnach",
+    "name": "安德切尔",
+    "appellation": "Adnachiel",
+    "star": 3,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_212_ansel",
+    "name": "安赛尔",
+    "appellation": "Ansel",
+    "star": 3,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_240_wyvern",
+    "name": "香草",
+    "appellation": "Vanilla",
+    "star": 3,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_278_orchid",
+    "name": "梓兰",
+    "appellation": "Orchid",
+    "star": 3,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_281_popka",
+    "name": "泡普卡",
+    "appellation": "Popukar",
+    "star": 3,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_282_catap",
+    "name": "空爆",
+    "appellation": "Catapult",
+    "star": 3,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_283_midn",
+    "name": "月见夜",
+    "appellation": "Midnight",
+    "star": 3,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_284_spot",
+    "name": "斑点",
+    "appellation": "Spot",
+    "star": 3,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_504_rguard",
+    "name": "预备干员-近战",
+    "appellation": "Reserve (Melee)",
+    "star": 3,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_505_rcast",
+    "name": "预备干员-术师",
+    "appellation": "Reserve (Caster)",
+    "star": 3,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_506_rmedic",
+    "name": "预备干员-后勤",
+    "appellation": "Reserve (Logistic)",
+    "star": 3,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_507_rsnipe",
+    "name": "预备干员-狙击",
+    "appellation": "Reserve (Sniper)",
+    "star": 3,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_514_rdfend",
+    "name": "预备干员-重装",
+    "appellation": "Reserve (Defender)",
+    "star": 3,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_109_fmout",
+    "name": "远山",
+    "appellation": "Gitano",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_110_deepcl",
+    "name": "深海色",
+    "appellation": "Deepcolor",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_117_myrrh",
+    "name": "末药",
+    "appellation": "Myrrh",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_118_yuki",
+    "name": "白雪",
+    "appellation": "ShiraYuki",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_126_shotst",
+    "name": "流星",
+    "appellation": "Meteor",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_127_estell",
+    "name": "艾丝黛尔",
+    "appellation": "Estelle",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_130_doberm",
+    "name": "杜宾",
+    "appellation": "Dobermann",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_133_mm",
+    "name": "梅",
+    "appellation": "May",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_137_brownb",
+    "name": "猎蜂",
+    "appellation": "Beehunter",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_141_nights",
+    "name": "夜烟",
+    "appellation": "Haze",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_149_scave",
+    "name": "清道夫",
+    "appellation": "Scavenger",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_150_snakek",
+    "name": "蛇屠箱",
+    "appellation": "Cuora",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_151_myrtle",
+    "name": "桃金娘",
+    "appellation": "Myrtle",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "bearer"
+  },
+  {
+    "id": "char_159_peacok",
+    "name": "断罪者",
+    "appellation": "Conviction",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_181_flower",
+    "name": "调香师",
+    "appellation": "Perfumer",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "ringhealer"
+  },
+  {
+    "id": "char_183_skgoat",
+    "name": "地灵",
+    "appellation": "Earthspirit",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_185_frncat",
+    "name": "慕斯",
+    "appellation": "Mousse",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_187_ccheal",
+    "name": "嘉维尔",
+    "appellation": "Gavial",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_190_clour",
+    "name": "红云",
+    "appellation": "Vermeil",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_193_frostl",
+    "name": "霜叶",
+    "appellation": "Frostleaf",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_196_sunbr",
+    "name": "古米",
+    "appellation": "Гум",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_198_blackd",
+    "name": "讯使",
+    "appellation": "Courier",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_199_yak",
+    "name": "角峰",
+    "appellation": "Matterhorn",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_235_jesica",
+    "name": "杰西卡",
+    "appellation": "Jessica",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_236_rope",
+    "name": "暗索",
+    "appellation": "Rope",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "hookmaster"
+  },
+  {
+    "id": "char_237_gravel",
+    "name": "砾",
+    "appellation": "Gravel",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_253_greyy",
+    "name": "格雷伊",
+    "appellation": "Greyy",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_258_podego",
+    "name": "波登可",
+    "appellation": "Podenco",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_260_durnar",
+    "name": "坚雷",
+    "appellation": "Dur-nar",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_271_spikes",
+    "name": "芳汀",
+    "appellation": "Arene",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_272_strong",
+    "name": "孑",
+    "appellation": "Jaye",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "merchant"
+  },
+  {
+    "id": "char_277_sqrrel",
+    "name": "阿消",
+    "appellation": "Shaw",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "pusher"
+  },
+  {
+    "id": "char_289_gyuki",
+    "name": "缠丸",
+    "appellation": "Matoimaru",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_290_vigna",
+    "name": "红豆",
+    "appellation": "Vigna",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_298_susuro",
+    "name": "苏苏洛",
+    "appellation": "Sussurro",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_301_cutter",
+    "name": "刻刀",
+    "appellation": "Cutter",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_302_glaze",
+    "name": "安比尔",
+    "appellation": "Ambriel",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_328_cammou",
+    "name": "卡达",
+    "appellation": "Click",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_337_utage",
+    "name": "宴",
+    "appellation": "Utage",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "musha"
+  },
+  {
+    "id": "char_347_jaksel",
+    "name": "杰克",
+    "appellation": "Jackie",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_355_ethan",
+    "name": "伊桑",
+    "appellation": "Ethan",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_366_acdrop",
+    "name": "酸糖",
+    "appellation": "Aciddrop",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
+  },
+  {
+    "id": "char_381_bubble",
+    "name": "泡泡",
+    "appellation": "Bubble",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_385_finlpp",
+    "name": "清流",
+    "appellation": "Purestream",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "healer"
+  },
+  {
+    "id": "char_4004_pudd",
+    "name": "布丁",
+    "appellation": "Pudding",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "chain"
+  },
+  {
+    "id": "char_4041_chnut",
+    "name": "褐果",
+    "appellation": "Chestnut",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "wandermedic"
+  },
+  {
+    "id": "char_4051_akkord",
+    "name": "协律",
+    "appellation": "Akkord",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "blastcaster"
+  },
+  {
+    "id": "char_4062_totter",
+    "name": "铅踝",
+    "appellation": "Totter",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_4063_quartz",
+    "name": "石英",
+    "appellation": "Quartz",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "crusher"
+  },
+  {
+    "id": "char_4067_lolxh",
+    "name": "罗小黑",
+    "appellation": "Luo Xiaohei",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_4100_caper",
+    "name": "跃跃",
+    "appellation": "Caper",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "loopshooter"
+  },
+  {
+    "id": "char_4107_vrdant",
+    "name": "维荻",
+    "appellation": "Verdant",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_4130_luton",
+    "name": "露托",
+    "appellation": "Lutonada",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "unyield"
+  },
+  {
+    "id": "char_4165_ctrail",
+    "name": "云迹",
+    "appellation": "Contrail",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "skywalker"
+  },
+  {
+    "id": "char_4208_wintim",
+    "name": "冬时",
+    "appellation": "Снегурочка",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_440_pinecn",
+    "name": "松果",
+    "appellation": "Pinecone",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "reaperrange"
+  },
+  {
+    "id": "char_445_wscoot",
+    "name": "骋风",
+    "appellation": "Windscoot",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "librator"
+  },
+  {
+    "id": "char_452_bstalk",
+    "name": "豆苗",
+    "appellation": "Beanstalk",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_469_indigo",
+    "name": "深靛",
+    "appellation": "Indigo",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_484_robrta",
+    "name": "罗比菈塔",
+    "appellation": "Roberta",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_491_humus",
+    "name": "休谟斯",
+    "appellation": "Humus",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "reaper"
+  },
+  {
+    "id": "char_600_cpione",
+    "name": "预备干员-先锋",
+    "appellation": "Reserve Operator - Vanguard",
+    "star": 4,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_601_cguard",
+    "name": "预备干员-近卫",
+    "appellation": "Reserve Operator - Guard",
+    "star": 4,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_602_cdfend",
+    "name": "预备干员-重装",
+    "appellation": "Reserve Operator - Defender",
+    "star": 4,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_603_csnipe",
+    "name": "预备干员-狙击",
+    "appellation": "Reserve Operator - Sniper",
+    "star": 4,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_604_ccast",
+    "name": "预备干员-术师",
+    "appellation": "Reserve Operator - Caster",
+    "star": 4,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_605_cmedic",
+    "name": "预备干员-医疗",
+    "appellation": "Reserve Operator - Medic",
+    "star": 4,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_606_csuppo",
+    "name": "预备干员-辅助",
+    "appellation": "Reserve Operator - Supporter",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_607_cspec",
+    "name": "预备干员-特种",
+    "appellation": "Reserve Operator - Specialist",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_616_pithst",
+    "name": "盟约·辅助干员",
+    "appellation": "Alliance/Supportive Opertator",
+    "star": 4,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_002_amiya",
+    "name": "阿米娅",
+    "appellation": "Amiya",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_1011_lava2",
+    "name": "炎狱炎熔",
+    "appellation": "Lava the Purgatory",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_101_sora",
+    "name": "空",
+    "appellation": "Sora",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_1021_kroos2",
+    "name": "寒芒克洛丝",
+    "appellation": "Kroos the Keen Glint",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_1022_flwr2",
+    "name": "撷英调香师",
+    "appellation": "Perfumer the Distilled",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_1024_hbisc2",
+    "name": "濯尘芙蓉",
+    "appellation": "Hibiscus the Purifier",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "incantationmedic"
+  },
+  {
+    "id": "char_1027_greyy2",
+    "name": "承曦格雷伊",
+    "appellation": "Greyy the Lightningbearer",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "bombarder"
+  },
+  {
+    "id": "char_102_texas",
+    "name": "德克萨斯",
+    "appellation": "Texas",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_1030_noirc2",
+    "name": "火龙S黑角",
+    "appellation": "Rathalos S Noir Corne",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "musha"
+  },
+  {
+    "id": "char_1036_fang2",
+    "name": "历阵锐枪芬",
+    "appellation": "Fang the Fire-sharpened",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_106_franka",
+    "name": "芙兰卡",
+    "appellation": "Franka",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_107_liskam",
+    "name": "雷蛇",
+    "appellation": "Liskarm",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_108_silent",
+    "name": "赫默",
+    "appellation": "Silence",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_115_headbr",
+    "name": "凛冬",
+    "appellation": "Зима",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_128_plosis",
+    "name": "白面鸮",
+    "appellation": "Ptilopsis",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "ringhealer"
+  },
+  {
+    "id": "char_129_bluep",
+    "name": "蓝毒",
+    "appellation": "Blue Poison",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_131_flameb",
+    "name": "炎客",
+    "appellation": "Flamebringer",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_135_halo",
+    "name": "星源",
+    "appellation": "Astgenne",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "chain"
+  },
+  {
+    "id": "char_140_whitew",
+    "name": "拉普兰德",
+    "appellation": "Lappland",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_143_ghost",
+    "name": "幽灵鲨",
+    "appellation": "Specter",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_144_red",
+    "name": "红",
+    "appellation": "Projekt Red",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_145_prove",
+    "name": "普罗旺斯",
+    "appellation": "Provence",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
+  },
+  {
+    "id": "char_148_nearl",
+    "name": "临光",
+    "appellation": "Nearl",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_154_morgan",
+    "name": "摩根",
+    "appellation": "Morgan",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_155_tiger",
+    "name": "因陀罗",
+    "appellation": "Indra",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_157_dagda",
+    "name": "达格达",
+    "appellation": "Dagda",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_158_milu",
+    "name": "守林人",
+    "appellation": "Firewatch",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_163_hpsts",
+    "name": "火神",
+    "appellation": "Vulcan",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "unyield"
+  },
+  {
+    "id": "char_164_nightm",
+    "name": "夜魔",
+    "appellation": "Nightmare",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_166_skfire",
+    "name": "天火",
+    "appellation": "Skyfire",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_171_bldsk",
+    "name": "华法琳",
+    "appellation": "Warfarin",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_173_slchan",
+    "name": "崖心",
+    "appellation": "Cliffheart",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "hookmaster"
+  },
+  {
+    "id": "char_174_slbell",
+    "name": "初雪",
+    "appellation": "Pramanix",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "underminer"
+  },
+  {
+    "id": "char_194_leto",
+    "name": "烈夏",
+    "appellation": "Лето",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_195_glassb",
+    "name": "真理",
+    "appellation": "Истина",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_201_moeshd",
+    "name": "可颂",
+    "appellation": "Croissant",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_204_platnm",
+    "name": "白金",
+    "appellation": "Platinum",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_214_kafka",
+    "name": "卡夫卡",
+    "appellation": "Kafka",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_215_mantic",
+    "name": "狮蝎",
+    "appellation": "Manticore",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_218_cuttle",
+    "name": "安哲拉",
+    "appellation": "Andreana",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_219_meteo",
+    "name": "陨星",
+    "appellation": "Meteorite",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_220_grani",
+    "name": "格拉尼",
+    "appellation": "Grani",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_226_hmau",
+    "name": "吽",
+    "appellation": "Hung",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_230_savage",
+    "name": "暴行",
+    "appellation": "Savage",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_241_panda",
+    "name": "食铁兽",
+    "appellation": "FEater",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "pusher"
+  },
+  {
+    "id": "char_242_otter",
+    "name": "梅尔",
+    "appellation": "Mayer",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_243_waaifu",
+    "name": "槐琥",
+    "appellation": "Waai Fu",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_252_bibeak",
+    "name": "柏喙",
+    "appellation": "Bibeak",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_254_vodfox",
+    "name": "巫恋",
+    "appellation": "Shamare",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "underminer"
+  },
+  {
+    "id": "char_261_sddrag",
+    "name": "苇草",
+    "appellation": "Reed",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_265_sophia",
+    "name": "鞭刃",
+    "appellation": "Whislash",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_274_astesi",
+    "name": "星极",
+    "appellation": "Astesia",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_275_breeze",
+    "name": "微风",
+    "appellation": "Breeze",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "ringhealer"
+  },
+  {
+    "id": "char_279_excu",
+    "name": "送葬人",
+    "appellation": "Executor",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "reaperrange"
+  },
+  {
+    "id": "char_294_ayer",
+    "name": "断崖",
+    "appellation": "Ayerscarpe",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_297_hamoni",
+    "name": "和弦",
+    "appellation": "Harmonie",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_304_zebra",
+    "name": "暴雨",
+    "appellation": "Heavyrain",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_306_leizi",
+    "name": "惊蛰",
+    "appellation": "Leizi",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "chain"
+  },
+  {
+    "id": "char_308_swire",
+    "name": "诗怀雅",
+    "appellation": "Swire",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_325_bison",
+    "name": "拜松",
+    "appellation": "Bison",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_326_glacus",
+    "name": "格劳克斯",
+    "appellation": "Glaucus",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_333_sidero",
+    "name": "铸铁",
+    "appellation": "Sideroca",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_336_folivo",
+    "name": "稀音",
+    "appellation": "Scene",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_338_iris",
+    "name": "爱丽丝",
+    "appellation": "Iris",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_341_sntlla",
+    "name": "寒檀",
+    "appellation": "Santalla",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_343_tknogi",
+    "name": "月禾",
+    "appellation": "Tsukinogi",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_344_beewax",
+    "name": "蜜蜡",
+    "appellation": "Beeswax",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "phalanx"
+  },
+  {
+    "id": "char_345_folnic",
+    "name": "亚叶",
+    "appellation": "Folinic",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_346_aosta",
+    "name": "奥斯塔",
+    "appellation": "Aosta",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "reaperrange"
+  },
+  {
+    "id": "char_348_ceylon",
+    "name": "锡兰",
+    "appellation": "Ceylon",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "healer"
+  },
+  {
+    "id": "char_349_chiave",
+    "name": "贾维",
+    "appellation": "Chiave",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_356_broca",
+    "name": "布洛卡",
+    "appellation": "Broca",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_363_toddi",
+    "name": "熔泉",
+    "appellation": "Toddifons",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_365_aprl",
+    "name": "四月",
+    "appellation": "April",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_367_swllow",
+    "name": "灰喉",
+    "appellation": "GreyThroat",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_369_bena",
+    "name": "贝娜",
+    "appellation": "Bena",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_373_lionhd",
+    "name": "莱恩哈特",
+    "appellation": "Leonhardt",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_378_asbest",
+    "name": "石棉",
+    "appellation": "Asbestos",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_379_sesa",
+    "name": "慑砂",
+    "appellation": "Sesa",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_383_snsant",
+    "name": "雪雉",
+    "appellation": "Snowsant",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "hookmaster"
+  },
+  {
+    "id": "char_388_mint",
+    "name": "薄绿",
+    "appellation": "Mint",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "phalanx"
+  },
+  {
+    "id": "char_394_hadiya",
+    "name": "哈蒂娅",
+    "appellation": "Hadiya",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "mercenary"
+  },
+  {
+    "id": "char_4006_melnte",
+    "name": "玫拉",
+    "appellation": "Melanite",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
+  },
+  {
+    "id": "char_4013_kjera",
+    "name": "耶拉",
+    "appellation": "Kjera",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_4014_lunacu",
+    "name": "子月",
+    "appellation": "Lunacub",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_4015_spuria",
+    "name": "空构",
+    "appellation": "Spuria",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "geek"
+  },
+  {
+    "id": "char_4016_kazema",
+    "name": "风丸",
+    "appellation": "Kazemaru",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_4017_puzzle",
+    "name": "谜图",
+    "appellation": "Puzzle",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_4019_ncdeer",
+    "name": "九色鹿",
+    "appellation": "Nine-Colored Deer",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_401_elysm",
+    "name": "极境",
+    "appellation": "Elysium",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "bearer"
+  },
+  {
+    "id": "char_4023_rfalcn",
+    "name": "红隼",
+    "appellation": "Kestrel",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_4025_aprot2",
+    "name": "暮落",
+    "appellation": "Shalem",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_402_tuye",
+    "name": "图耶",
+    "appellation": "Tuye",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_4031_liesel",
+    "name": "复奏",
+    "appellation": "Ripresa",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_4032_provs",
+    "name": "但书",
+    "appellation": "Proviso",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_4036_forcer",
+    "name": "见行者",
+    "appellation": "Enforcer",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "pusher"
+  },
+  {
+    "id": "char_4040_rockr",
+    "name": "洛洛",
+    "appellation": "Rockrock",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_4043_erato",
+    "name": "埃拉托",
+    "appellation": "Erato",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_4045_heidi",
+    "name": "海蒂",
+    "appellation": "Heidi",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_4047_pianst",
+    "name": "车尔尼",
+    "appellation": "Czerny",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_4052_surfer",
+    "name": "寻澜",
+    "appellation": "Surfer",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_4054_malist",
+    "name": "至简",
+    "appellation": "Minimalist",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_405_absin",
+    "name": "苦艾",
+    "appellation": "Absinthe",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_4066_highmo",
+    "name": "海沫",
+    "appellation": "Highmore",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "reaper"
+  },
+  {
+    "id": "char_4071_peper",
+    "name": "明椒",
+    "appellation": "Paprika",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "chainhealer"
+  },
+  {
+    "id": "char_4078_bdhkgt",
+    "name": "截云",
+    "appellation": "Jieyun",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_4079_haini",
+    "name": "海霓",
+    "appellation": "Lucilla",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "underminer"
+  },
+  {
+    "id": "char_4081_warmy",
+    "name": "温米",
+    "appellation": "Warmy",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_4083_chimes",
+    "name": "铎铃",
+    "appellation": "Wind Chimes",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "crusher"
+  },
+  {
+    "id": "char_4102_threye",
+    "name": "凛视",
+    "appellation": "Valarqvin",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_4104_coldst",
+    "name": "冰酿",
+    "appellation": "Coldshot",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "hunter"
+  },
+  {
+    "id": "char_4105_almond",
+    "name": "杏仁",
+    "appellation": "Almond",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "hookmaster"
+  },
+  {
+    "id": "char_4106_bryota",
+    "name": "苍苔",
+    "appellation": "Bryophyta",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_4109_baslin",
+    "name": "深律",
+    "appellation": "Bassline",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_4110_delphn",
+    "name": "戴菲恩",
+    "appellation": "Delphine",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_4114_harold",
+    "name": "哈洛德",
+    "appellation": "Harold",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "wandermedic"
+  },
+  {
+    "id": "char_4119_wanqin",
+    "name": "万顷",
+    "appellation": "Wanqing",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "bearer"
+  },
+  {
+    "id": "char_411_tomimi",
+    "name": "特米米",
+    "appellation": "Tomimi",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_4122_grabds",
+    "name": "小满",
+    "appellation": "Grain Buds",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_4124_iana",
+    "name": "双月",
+    "appellation": "Iana",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_4125_rdoc",
+    "name": "医生",
+    "appellation": "Doc",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_4126_fuze",
+    "name": "导火索",
+    "appellation": "Fuze",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_4131_odda",
+    "name": "奥达",
+    "appellation": "Odda",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "hammer"
+  },
+  {
+    "id": "char_4137_udflow",
+    "name": "深巡",
+    "appellation": "Underflow",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_4139_papyrs",
+    "name": "莎草",
+    "appellation": "Papyrus",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "chainhealer"
+  },
+  {
+    "id": "char_4140_lasher",
+    "name": "衡沙",
+    "appellation": "Sand Reckoner",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_4142_laios",
+    "name": "莱欧斯",
+    "appellation": "Laios",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_4143_sensi",
+    "name": "森西",
+    "appellation": "Senshi",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_4144_chilc",
+    "name": "齐尔查克",
+    "appellation": "Chilchuck",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_4147_mitm",
+    "name": "渡桥",
+    "appellation": "Mitm",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_4148_philae",
+    "name": "菲莱",
+    "appellation": "Philae",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "primprotector"
+  },
+  {
+    "id": "char_4151_tinman",
+    "name": "锡人",
+    "appellation": "Tin Man",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "alchemist"
+  },
+  {
+    "id": "char_4155_talr",
+    "name": "裁度",
+    "appellation": "Figurino",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "merchant"
+  },
+  {
+    "id": "char_415_flint",
+    "name": "燧石",
+    "appellation": "Flint",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_4162_cathy",
+    "name": "凯瑟琳",
+    "appellation": "Catherine",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_4163_rosesa",
+    "name": "瑰盐",
+    "appellation": "Rose Salt",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "ringhealer"
+  },
+  {
+    "id": "char_4164_tecno",
+    "name": "特克诺",
+    "appellation": "Tecno",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "soulcaster"
+  },
+  {
+    "id": "char_4166_varkis",
+    "name": "摆渡人",
+    "appellation": "Varkáris",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_4171_wulfen",
+    "name": "钼铅",
+    "appellation": "Wulfenite",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_4172_xingzh",
+    "name": "行箸",
+    "appellation": "Xingzhu",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_4173_nowell",
+    "name": "诺威尔",
+    "appellation": "Nowell",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "healer"
+  },
+  {
+    "id": "char_4177_brigid",
+    "name": "水灯心",
+    "appellation": "Brigid",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "loopshooter"
+  },
+  {
+    "id": "char_4178_alanna",
+    "name": "阿兰娜",
+    "appellation": "Alanna",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_4183_mortis",
+    "name": "若叶睦",
+    "appellation": "Wakaba Mutsumi",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_4184_dolris",
+    "name": "三角初华",
+    "appellation": "Misumi Uika",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_4185_amoris",
+    "name": "祐天寺若麦",
+    "appellation": "Yūtenji Nyamu",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "hammer"
+  },
+  {
+    "id": "char_4186_tmoris",
+    "name": "八幡海铃",
+    "appellation": "Yahata Umiri",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_4187_graceb",
+    "name": "聆音",
+    "appellation": "Gracebearer",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "primguard"
+  },
+  {
+    "id": "char_4191_tippi",
+    "name": "蒂比",
+    "appellation": "Tippi",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "skywalker"
+  },
+  {
+    "id": "char_4196_reckpr",
+    "name": "录武官",
+    "appellation": "Record Keeper",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_4198_christ",
+    "name": "Miss.Christine",
+    "appellation": "Miss.Christine",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_4199_makiri",
+    "name": "松桐",
+    "appellation": "Matsukiri",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "counsellor"
+  },
+  {
+    "id": "char_4203_kichi",
+    "name": "吉星",
+    "appellation": "Kichisei",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "reaperrange"
+  },
+  {
+    "id": "char_4207_branch",
+    "name": "折桠",
+    "appellation": "Веточки",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "unyield"
+  },
+  {
+    "id": "char_4211_snhunt",
+    "name": "雪猎",
+    "appellation": "Snow Hunter",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "hunter"
+  },
+  {
+    "id": "char_4213_skybx",
+    "name": "天空盒",
+    "appellation": "Skybox",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "skybreaker"
+  },
+  {
+    "id": "char_4214_cairn",
+    "name": "响石",
+    "appellation": "Cairn",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "primprotector"
+  },
+  {
+    "id": "char_421_crow",
+    "name": "羽毛笔",
+    "appellation": "La Pluma",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "reaper"
+  },
+  {
+    "id": "char_4221_ju",
+    "name": "矩",
+    "appellation": "Ju",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_4222_taraxa",
+    "name": "风絮",
+    "appellation": "Taraxacum",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "watchman"
+  },
+  {
+    "id": "char_4223_botany",
+    "name": "伯塔尼",
+    "appellation": "Ботани",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_4224_turdus",
+    "name": "乌啾",
+    "appellation": "Укусик",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "chainhealer"
+  },
+  {
+    "id": "char_4225_tanya",
+    "name": "裂响",
+    "appellation": "Crackborne",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "primprotector"
+  },
+  {
+    "id": "char_422_aurora",
+    "name": "极光",
+    "appellation": "Aurora",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "duelist"
+  },
+  {
+    "id": "char_431_ashlok",
+    "name": "灰毫",
+    "appellation": "Ashlock",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "fortress"
+  },
+  {
+    "id": "char_433_windft",
+    "name": "掠风",
+    "appellation": "Windflit",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_436_whispr",
+    "name": "絮雨",
+    "appellation": "Whisperain",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "healer"
+  },
+  {
+    "id": "char_446_aroma",
+    "name": "阿罗玛",
+    "appellation": "Aroma",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "blastcaster"
+  },
+  {
+    "id": "char_449_glider",
+    "name": "蜜莓",
+    "appellation": "Honeyberry",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "wandermedic"
+  },
+  {
+    "id": "char_451_robin",
+    "name": "罗宾",
+    "appellation": "Robin",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_455_nothin",
+    "name": "乌有",
+    "appellation": "Mr.Nothing",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "merchant"
+  },
+  {
+    "id": "char_457_blitz",
+    "name": "闪击",
+    "appellation": "Blitz",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_458_rfrost",
+    "name": "霜华",
+    "appellation": "Frost",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_459_tachak",
+    "name": "战车",
+    "appellation": "Tachanka",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_464_cement",
+    "name": "洋灰",
+    "appellation": "Cement",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "duelist"
+  },
+  {
+    "id": "char_466_qanik",
+    "name": "雪绒",
+    "appellation": "Qanipalaat",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_473_mberry",
+    "name": "桑葚",
+    "appellation": "Mulberry",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "wandermedic"
+  },
+  {
+    "id": "char_475_akafyu",
+    "name": "赤冬",
+    "appellation": "Akafuyu",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "musha"
+  },
+  {
+    "id": "char_476_blkngt",
+    "name": "夜半",
+    "appellation": "Blacknight",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_478_kirara",
+    "name": "绮良",
+    "appellation": "Kirara",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_486_takila",
+    "name": "龙舌兰",
+    "appellation": "Tequila",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "librator"
+  },
+  {
+    "id": "char_487_bobb",
+    "name": "波卜",
+    "appellation": "Bobbing",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_488_buildr",
+    "name": "青枳",
+    "appellation": "Poncirus",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_489_serum",
+    "name": "蚀清",
+    "appellation": "Corroserum",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "blastcaster"
+  },
+  {
+    "id": "char_492_quercu",
+    "name": "夏栎",
+    "appellation": "Quercus",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_493_firwhl",
+    "name": "火哨",
+    "appellation": "Firewhistle",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "fortress"
+  },
+  {
+    "id": "char_494_vendla",
+    "name": "刺玫",
+    "appellation": "Vendela",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "incantationmedic"
+  },
+  {
+    "id": "char_496_wildmn",
+    "name": "野鬃",
+    "appellation": "Wild Mane",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_497_ctable",
+    "name": "晓歌",
+    "appellation": "Cantabile",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_498_inside",
+    "name": "隐现",
+    "appellation": "Insider",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_499_kaitou",
+    "name": "折光",
+    "appellation": "Diamante",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_508_aguard",
+    "name": "Sharp",
+    "appellation": "Sharp",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_509_acast",
+    "name": "Pith",
+    "appellation": "Pith",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_510_amedic",
+    "name": "Touch",
+    "appellation": "Touch",
+    "star": 5,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_511_asnipe",
+    "name": "Stormeye",
+    "appellation": "Stormeye",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_512_aprot",
+    "name": "暮落",
+    "appellation": "Shalem",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_513_apionr",
+    "name": "郁金香",
+    "appellation": "Tulip",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_003_kalts",
+    "name": "凯尔希",
+    "appellation": "Kal'tsit",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_010_chen",
+    "name": "陈",
+    "appellation": "Ch'en",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_017_huang",
+    "name": "煌",
+    "appellation": "Blaze",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_1012_skadi2",
+    "name": "浊心斯卡蒂",
+    "appellation": "Skadi the Corrupting Heart",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_1013_chen2",
+    "name": "假日威龙陈",
+    "appellation": "Ch'en the Holungday",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "reaperrange"
+  },
+  {
+    "id": "char_1014_nearl2",
+    "name": "耀骑士临光",
+    "appellation": "Nearl the Radiant Knight",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_1016_agoat2",
+    "name": "纯烬艾雅法拉",
+    "appellation": "Eyjafjalla the Hvít Aska",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "wandermedic"
+  },
+  {
+    "id": "char_1019_siege2",
+    "name": "维娜·维多利亚",
+    "appellation": "Vina Victoria",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_1020_reed2",
+    "name": "焰影苇草",
+    "appellation": "Reed The Flame Shadow",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "incantationmedic"
+  },
+  {
+    "id": "char_1023_ghost2",
+    "name": "归溟幽灵鲨",
+    "appellation": "Specter the Unchained",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
+  },
+  {
+    "id": "char_1026_gvial2",
+    "name": "百炼嘉维尔",
+    "appellation": "Gavial the Invincible",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "centurion"
+  },
+  {
+    "id": "char_1028_texas2",
+    "name": "缄默德克萨斯",
+    "appellation": "Texas the Omertosa",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_1029_yato2",
+    "name": "麒麟R夜刀",
+    "appellation": "Kirin R Yato",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_1031_slent2",
+    "name": "淬羽赫默",
+    "appellation": "Silence the Paradigmatic",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_1032_excu2",
+    "name": "圣约送葬人",
+    "appellation": "Executor the Ex Foedere",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "reaper"
+  },
+  {
+    "id": "char_1033_swire2",
+    "name": "琳琅诗怀雅",
+    "appellation": "Swire the Elegant Wit",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "merchant"
+  },
+  {
+    "id": "char_1034_jesca2",
+    "name": "涤火杰西卡",
+    "appellation": "Jessica the Liberated",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_1035_wisdel",
+    "name": "维什戴尔",
+    "appellation": "Wiš'adel",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "bombarder"
+  },
+  {
+    "id": "char_1038_whitw2",
+    "name": "荒芜拉普兰德",
+    "appellation": "Lappland the Decadenza",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_1039_thorn2",
+    "name": "引星棘刺",
+    "appellation": "Thorns the Lodestar",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "alchemist"
+  },
+  {
+    "id": "char_103_angel",
+    "name": "能天使",
+    "appellation": "Exusiai",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_1040_blaze2",
+    "name": "烛煌",
+    "appellation": "Blaze the Igniting Spark",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_1041_angel2",
+    "name": "新约能天使",
+    "appellation": "Exusiai the New Covenant",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "geek"
+  },
+  {
+    "id": "char_1042_phatm2",
+    "name": "酒神",
+    "appellation": "Tragodia",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_1043_leizi2",
+    "name": "司霆惊蛰",
+    "appellation": "Leizi the Thunderbringer",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "librator"
+  },
+  {
+    "id": "char_1044_hsgma2",
+    "name": "斩业星熊",
+    "appellation": "Hoshiguma the Breacher",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "artsprotector"
+  },
+  {
+    "id": "char_1045_svash2",
+    "name": "凛御银灰",
+    "appellation": "SilverAsh the Reignfrost",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "counsellor"
+  },
+  {
+    "id": "char_1046_sbell2",
+    "name": "圣聆初雪",
+    "appellation": "Pramanix the Prerita",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "phalanx"
+  },
+  {
+    "id": "char_1047_halo2",
+    "name": "溯光星源",
+    "appellation": "Astgenne the Lightchaser",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_1050_chen3",
+    "name": "赤刃明霄陈",
+    "appellation": "Ch'en the Dawnstreak",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_1051_headb2",
+    "name": "怒潮凛冬",
+    "appellation": "Zima the Raging Tide",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "hammer"
+  },
+  {
+    "id": "char_1052_kalts2",
+    "name": "凯尔希·思衡托",
+    "appellation": "Kal'tsit·Esperanta",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "watchman"
+  },
+  {
+    "id": "char_112_siege",
+    "name": "推进之王",
+    "appellation": "Siege",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_113_cqbw",
+    "name": "W",
+    "appellation": "W",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_134_ifrit",
+    "name": "伊芙利特",
+    "appellation": "Ifrit",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "blastcaster"
+  },
+  {
+    "id": "char_136_hsguma",
+    "name": "星熊",
+    "appellation": "Hoshiguma",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_147_shining",
+    "name": "闪灵",
+    "appellation": "Shining",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_1502_crosly",
+    "name": "弑君者",
+    "appellation": "Crownslayer",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_172_svrash",
+    "name": "银灰",
+    "appellation": "SilverAsh",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_179_cgbird",
+    "name": "夜莺",
+    "appellation": "Nightingale",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "ringhealer"
+  },
+  {
+    "id": "char_180_amgoat",
+    "name": "艾雅法拉",
+    "appellation": "Eyjafjalla",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_188_helage",
+    "name": "赫拉格",
+    "appellation": "Hellagur",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "musha"
+  },
+  {
+    "id": "char_197_poca",
+    "name": "早露",
+    "appellation": "Роса",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_2012_typhon",
+    "name": "提丰",
+    "appellation": "Typhon",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "siegesniper"
+  },
+  {
+    "id": "char_2013_cerber",
+    "name": "刻俄柏",
+    "appellation": "Ceobe",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_2014_nian",
+    "name": "年",
+    "appellation": "Nian",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_2015_dusk",
+    "name": "夕",
+    "appellation": "Dusk",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_2023_ling",
+    "name": "令",
+    "appellation": "Ling",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_2024_chyue",
+    "name": "重岳",
+    "appellation": "Chongyue",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_2025_shu",
+    "name": "黍",
+    "appellation": "Shu",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_2026_yu",
+    "name": "余",
+    "appellation": "Yu",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "primprotector"
+  },
+  {
+    "id": "char_2027_wang",
+    "name": "望",
+    "appellation": "Wang",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_202_demkni",
+    "name": "塞雷娅",
+    "appellation": "Saria",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_206_gnosis",
+    "name": "灵知",
+    "appellation": "Gnosis",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "underminer"
+  },
+  {
+    "id": "char_213_mostma",
+    "name": "莫斯提马",
+    "appellation": "Mostima",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_222_bpipe",
+    "name": "风笛",
+    "appellation": "Bagpipe",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "charger"
+  },
+  {
+    "id": "char_225_haak",
+    "name": "阿",
+    "appellation": "Aak",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "geek"
+  },
+  {
+    "id": "char_245_cello",
+    "name": "塑心",
+    "appellation": "Virtuosa",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "ritualist"
+  },
+  {
+    "id": "char_248_mgllan",
+    "name": "麦哲伦",
+    "appellation": "Magallan",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_249_mlyss",
+    "name": "缪尔赛思",
+    "appellation": "Muelsyse",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_250_phatom",
+    "name": "傀影",
+    "appellation": "Phantom",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_263_skadi",
+    "name": "斯卡蒂",
+    "appellation": "Skadi",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_264_f12yin",
+    "name": "山",
+    "appellation": "Mountain",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_291_aglina",
+    "name": "安洁莉娜",
+    "appellation": "Angelina",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_293_thorns",
+    "name": "棘刺",
+    "appellation": "Thorns",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_300_phenxi",
+    "name": "菲亚梅塔",
+    "appellation": "Fiammetta",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "aoesniper"
+  },
+  {
+    "id": "char_311_mudrok",
+    "name": "泥岩",
+    "appellation": "Mudrock",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "unyield"
+  },
+  {
+    "id": "char_322_lmlee",
+    "name": "老鲤",
+    "appellation": "Lee",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "merchant"
+  },
+  {
+    "id": "char_332_archet",
+    "name": "空弦",
+    "appellation": "Archetto",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_340_shwaz",
+    "name": "黑",
+    "appellation": "Schwarz",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
+  },
+  {
+    "id": "char_350_surtr",
+    "name": "史尔特尔",
+    "appellation": "Surtr",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_358_lisa",
+    "name": "铃兰",
+    "appellation": "Suzuran",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_362_saga",
+    "name": "嵯峨",
+    "appellation": "Saga",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_377_gdglow",
+    "name": "澄闪",
+    "appellation": "Goldenglow",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_391_rosmon",
+    "name": "迷迭香",
+    "appellation": "Rosmontis",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "bombarder"
+  },
+  {
+    "id": "char_4009_irene",
+    "name": "艾丽妮",
+    "appellation": "Irene",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_400_weedy",
+    "name": "温蒂",
+    "appellation": "Weedy",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "pusher"
+  },
+  {
+    "id": "char_4010_etlchi",
+    "name": "隐德来希",
+    "appellation": "Entelechia",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "reaper"
+  },
+  {
+    "id": "char_4011_lessng",
+    "name": "止颂",
+    "appellation": "Lessing",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_4026_vulpis",
+    "name": "忍冬",
+    "appellation": "Vulpisfoglia",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_4027_heyak",
+    "name": "霍尔海雅",
+    "appellation": "Ho'olheyak",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_4037_demetr",
+    "name": "贝洛内",
+    "appellation": "Bellone",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fighter"
+  },
+  {
+    "id": "char_4039_horn",
+    "name": "号角",
+    "appellation": "Horn",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "fortress"
+  },
+  {
+    "id": "char_4042_lumen",
+    "name": "流明",
+    "appellation": "Lumen",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "healer"
+  },
+  {
+    "id": "char_4046_ebnhlz",
+    "name": "黑键",
+    "appellation": "Ebenholz",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_4048_doroth",
+    "name": "多萝西",
+    "appellation": "Dorothy",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_4055_bgsnow",
+    "name": "鸿雪",
+    "appellation": "Позёмка",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
+  },
+  {
+    "id": "char_4056_titi",
+    "name": "缇缇",
+    "appellation": "Titi",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "incantationmedic"
+  },
+  {
+    "id": "char_4058_pepe",
+    "name": "佩佩",
+    "appellation": "Pepe",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "hammer"
+  },
+  {
+    "id": "char_4064_mlynar",
+    "name": "玛恩纳",
+    "appellation": "Młynar",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "librator"
+  },
+  {
+    "id": "char_4065_judge",
+    "name": "斥罪",
+    "appellation": "Penance",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "unyield"
+  },
+  {
+    "id": "char_4072_ironmn",
+    "name": "白铁",
+    "appellation": "Stainless",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_4080_lin",
+    "name": "林",
+    "appellation": "Lin",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "phalanx"
+  },
+  {
+    "id": "char_4082_qiubai",
+    "name": "仇白",
+    "appellation": "Qiubai",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_4087_ines",
+    "name": "伊内丝",
+    "appellation": "Ines",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "agent"
+  },
+  {
+    "id": "char_4088_hodrer",
+    "name": "赫德雷",
+    "appellation": "Hoederer",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "crusher"
+  },
+  {
+    "id": "char_4098_vvana",
+    "name": "薇薇安娜",
+    "appellation": "Viviana",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "artsfghter"
+  },
+  {
+    "id": "char_4116_blkkgt",
+    "name": "锏",
+    "appellation": "Degenbrecher",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
+    "id": "char_4117_ray",
+    "name": "莱伊",
+    "appellation": "Ray",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "hunter"
+  },
+  {
+    "id": "char_4121_zuole",
+    "name": "左乐",
+    "appellation": "Zuo Le",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "musha"
+  },
+  {
+    "id": "char_4123_ela",
+    "name": "艾拉",
+    "appellation": "Ela",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "traper"
+  },
+  {
+    "id": "char_4132_ascln",
+    "name": "阿斯卡纶",
+    "appellation": "Ascalon",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_4133_logos",
+    "name": "逻各斯",
+    "appellation": "Logos",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "corecaster"
+  },
+  {
+    "id": "char_4134_cetsyr",
+    "name": "魔王",
+    "appellation": "Civilight Eterna",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "bard"
+  },
+  {
+    "id": "char_4138_narant",
+    "name": "娜仁图亚",
+    "appellation": "Narantuya",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "loopshooter"
+  },
+  {
+    "id": "char_4141_marcil",
+    "name": "玛露西尔",
+    "appellation": "Marcille",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_4145_ulpia",
+    "name": "乌尔比安",
+    "appellation": "Ulpianus",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "crusher"
+  },
+  {
+    "id": "char_4146_nymph",
+    "name": "妮芙",
+    "appellation": "Nymph",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_416_zumama",
+    "name": "森蚺",
+    "appellation": "Eunectes",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "duelist"
+  },
+  {
+    "id": "char_4179_monstr",
+    "name": "Mon3tr",
+    "appellation": "Mon3tr",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "chainhealer"
+  },
+  {
+    "id": "char_4182_oblvns",
+    "name": "丰川祥子",
+    "appellation": "Togawa Sakiko",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  },
+  {
+    "id": "char_4193_lemuen",
+    "name": "蕾缪安",
+    "appellation": "Lemuen",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_4194_rmixer",
+    "name": "信仰搅拌机",
+    "appellation": "Sankta Miksaparato",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_4195_radian",
+    "name": "电弧",
+    "appellation": "Raidian",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "summoner"
+  },
+  {
+    "id": "char_4202_haruka",
+    "name": "遥",
+    "appellation": "Haruka",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "blessing"
+  },
+  {
+    "id": "char_4204_mantra",
+    "name": "真言",
+    "appellation": "Mantra",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "primcaster"
+  },
+  {
+    "id": "char_420_flamtl",
+    "name": "焰尾",
+    "appellation": "Flametail",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_4212_nasti",
+    "name": "娜斯提",
+    "appellation": "Nasti",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "craftsman"
+  },
+  {
+    "id": "char_4226_veen",
+    "name": "维伊",
+    "appellation": "Вий",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "mystic"
+  },
+  {
+    "id": "char_4228_closur",
+    "name": "可露希尔",
+    "appellation": "Closure",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_423_blemsh",
+    "name": "瑕光",
+    "appellation": "Blemishine",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "guardian"
+  },
+  {
+    "id": "char_426_billro",
+    "name": "卡涅利安",
+    "appellation": "Carnelian",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "phalanx"
+  },
+  {
+    "id": "char_427_vigil",
+    "name": "伺夜",
+    "appellation": "Vigil",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
+    "id": "char_430_fartth",
+    "name": "远牙",
+    "appellation": "Fartooth",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "longrange"
+  },
+  {
+    "id": "char_437_mizuki",
+    "name": "水月",
+    "appellation": "Mizuki",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_450_necras",
+    "name": "死芒",
+    "appellation": "Necrass",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "soulcaster"
+  },
+  {
+    "id": "char_456_ash",
+    "name": "灰烬",
+    "appellation": "Ash",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_472_pasngr",
+    "name": "异客",
+    "appellation": "Passenger",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "chain"
+  },
+  {
+    "id": "char_474_glady",
+    "name": "歌蕾蒂娅",
+    "appellation": "Gladiia",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "hookmaster"
+  },
+  {
+    "id": "char_479_sleach",
+    "name": "琴柳",
+    "appellation": "Saileach",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "bearer"
+  },
+  {
+    "id": "char_485_pallas",
+    "name": "帕拉斯",
+    "appellation": "Pallas",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
+  },
+  {
+    "id": "char_608_acpion",
+    "name": "郁金香",
+    "appellation": "Tulip",
+    "star": 6,
+    "profession": "PIONEER",
+    "subProfession": "pioneer"
+  },
+  {
+    "id": "char_609_acguad",
+    "name": "Sharp",
+    "appellation": "Sharp",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "fearless"
+  },
+  {
+    "id": "char_610_acfend",
+    "name": "Mechanist",
+    "appellation": "Mechanist",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "protector"
+  },
+  {
+    "id": "char_611_acnipe",
+    "name": "Stormeye",
+    "appellation": "Stormeye",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "fastshot"
+  },
+  {
+    "id": "char_612_accast",
+    "name": "Pith",
+    "appellation": "Pith",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "splashcaster"
+  },
+  {
+    "id": "char_613_acmedc",
+    "name": "Touch",
+    "appellation": "Touch",
+    "star": 6,
+    "profession": "MEDIC",
+    "subProfession": "physician"
+  },
+  {
+    "id": "char_614_acsupo",
+    "name": "Raidian",
+    "appellation": "Raidian",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "slower"
+  },
+  {
+    "id": "char_615_acspec",
+    "name": "Misery",
+    "appellation": "Misery",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "executor"
+  },
+  {
+    "id": "char_617_sharp2",
+    "name": "领主·Sharp",
+    "appellation": "Lord/Sharp",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "lord"
+  }
+]
