@@ -242,6 +242,9 @@ button.small { padding: 5px 10px; font-size: 12px; }
     <button class="primary" id="btnResume" onclick="resumeSorting()">继续上次</button>
     <button class="danger small" id="btnClear" onclick="clearProgress()">清除进度</button>
   </div>
+  <div style="margin-top:16px">
+    <button class="small danger" onclick="clearAllCache()" style="font-size:11px;padding:4px 10px;opacity:0.6;">清除全部缓存</button>
+  </div>
 </section>
 
 <!-- ===== SORT SECTION ===== -->
@@ -648,6 +651,27 @@ function clearProgress() {
 function autoSave() {
   saveSettings();
   saveProgress();
+}
+
+function clearAllCache() {
+  try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+  try { localStorage.removeItem(SETTINGS_KEY); } catch(e) {}
+  sorter = null;
+  pinnedTop = [];
+  buriedBottom = [];
+  postponedPairs = {};
+  postponedQueue = [];
+  _pendingNormalResults = null;
+  rankingResults = [];
+  document.getElementById('resumeBar').style.display = 'none';
+  document.getElementById('currentRankingTable').style.display = 'none';
+  // Reset settings to defaults
+  selectedStars = new Set([4, 5, 6]);
+  selectedGenders = new Set(['male', 'female', 'unknown']);
+  selectedRank = 20;
+  imageMode = 'portrait';
+  mergeAlters = true;
+  buildFilterPage();
 }
 
 // ============================================================
@@ -1079,18 +1103,22 @@ function postponePair() {
 function finishSort() {
   if (!sorter) return;
 
-  // Collect normal results from sorter
+  // Extract remaining locked ranks (items with single child chains)
   while (sorter.results.length < sorter.rankCount && sorter.items.length > 0) {
     while (sorter.items.length === 1) {
       sorter.results.push(sorter.items[0].op);
       sorter.items = sorter.items[0].children;
     }
-    if (sorter.items.length > 1) {
-      sorter.results.push(sorter.items.pop().op);
-    } else if (sorter.items.length === 1) {
-      sorter.results.push(sorter.items[0].op);
-      sorter.items = [];
+    if (sorter.items.length === 0) break;
+    // BFS extract: put winners before their children
+    const queue = [...sorter.items];
+    sorter.items = [];
+    while (queue.length > 0 && sorter.results.length < sorter.rankCount) {
+      const item = queue.shift();
+      sorter.results.push(item.op);
+      queue.push(...item.children);
     }
+    break;
   }
   const normalResults = [...sorter.results];
 
@@ -1169,8 +1197,8 @@ function finishSortEarly() {
   // If in pinned-top sort phase, merge with pending normal results
   if (_pendingNormalResults) {
     const pinnedResults = [...sorter.results];
-    function collectPinned(item) { pinnedResults.push(item.op); for (const c of item.children) collectPinned(c); }
-    for (const item of sorter.items) collectPinned(item);
+    const pq = [...sorter.items];
+    while (pq.length > 0) { const it = pq.shift(); pinnedResults.push(it.op); pq.push(...it.children); }
     pinnedTop = pinnedResults;
     rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
     sorter = null;
@@ -1182,9 +1210,14 @@ function finishSortEarly() {
     return;
   }
 
+  // BFS: operators closer to root (more wins) rank higher
   const collected = [...sorter.results];
-  function collectItems(item) { collected.push(item.op); for (const c of item.children) collectItems(c); }
-  for (const item of sorter.items) collectItems(item);
+  const queue = [...sorter.items];
+  while (queue.length > 0) {
+    const item = queue.shift();
+    collected.push(item.op);
+    queue.push(...item.children);
+  }
   const normalResults = collected.slice(0, sorter.rankCount);
   finalizeResults(normalResults);
 }
