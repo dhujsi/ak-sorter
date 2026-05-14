@@ -1,0 +1,1334 @@
+{
+  "char_285_medic2": {
+    "gender": "unknown"
+  },
+  "char_286_cast3": {
+    "gender": "unknown"
+  },
+  "char_376_therex": {
+    "gender": "unknown"
+  },
+  "char_4000_jnight": {
+    "gender": "unknown"
+  },
+  "char_4077_palico": {
+    "gender": "unknown"
+  },
+  "char_4091_ulika": {
+    "gender": "female"
+  },
+  "char_4093_frston": {
+    "gender": "unknown"
+  },
+  "char_4136_phonor": {
+    "gender": "unknown"
+  },
+  "char_4188_confes": {
+    "gender": "unknown"
+  },
+  "char_4227_gallus": {
+    "gender": "unknown"
+  },
+  "char_009_12fce": {
+    "gender": "male"
+  },
+  "char_500_noirc": {
+    "gender": "male"
+  },
+  "char_501_durin": {
+    "gender": "female"
+  },
+  "char_502_nblade": {
+    "gender": "female"
+  },
+  "char_503_rang": {
+    "gender": "male"
+  },
+  "char_120_hibisc": {
+    "gender": "female"
+  },
+  "char_121_lava": {
+    "gender": "female"
+  },
+  "char_122_beagle": {
+    "gender": "female"
+  },
+  "char_123_fang": {
+    "gender": "female"
+  },
+  "char_124_kroos": {
+    "gender": "female"
+  },
+  "char_192_falco": {
+    "gender": "female"
+  },
+  "char_208_melan": {
+    "gender": "female"
+  },
+  "char_209_ardign": {
+    "gender": "female"
+  },
+  "char_210_stward": {
+    "gender": "male"
+  },
+  "char_211_adnach": {
+    "gender": "male"
+  },
+  "char_212_ansel": {
+    "gender": "male"
+  },
+  "char_240_wyvern": {
+    "gender": "female"
+  },
+  "char_278_orchid": {
+    "gender": "female"
+  },
+  "char_281_popka": {
+    "gender": "female"
+  },
+  "char_282_catap": {
+    "gender": "female"
+  },
+  "char_283_midn": {
+    "gender": "male"
+  },
+  "char_284_spot": {
+    "gender": "male"
+  },
+  "char_504_rguard": {
+    "gender": "unknown"
+  },
+  "char_505_rcast": {
+    "gender": "unknown"
+  },
+  "char_506_rmedic": {
+    "gender": "unknown"
+  },
+  "char_507_rsnipe": {
+    "gender": "unknown"
+  },
+  "char_514_rdfend": {
+    "gender": "unknown"
+  },
+  "char_109_fmout": {
+    "gender": "female"
+  },
+  "char_110_deepcl": {
+    "gender": "female"
+  },
+  "char_117_myrrh": {
+    "gender": "female"
+  },
+  "char_118_yuki": {
+    "gender": "female"
+  },
+  "char_126_shotst": {
+    "gender": "female"
+  },
+  "char_127_estell": {
+    "gender": "female"
+  },
+  "char_130_doberm": {
+    "gender": "female"
+  },
+  "char_133_mm": {
+    "gender": "female"
+  },
+  "char_137_brownb": {
+    "gender": "female"
+  },
+  "char_141_nights": {
+    "gender": "female"
+  },
+  "char_149_scave": {
+    "gender": "female"
+  },
+  "char_150_snakek": {
+    "gender": "female"
+  },
+  "char_151_myrtle": {
+    "gender": "female"
+  },
+  "char_159_peacok": {
+    "gender": "unknown"
+  },
+  "char_181_flower": {
+    "gender": "female"
+  },
+  "char_183_skgoat": {
+    "gender": "female"
+  },
+  "char_185_frncat": {
+    "gender": "female"
+  },
+  "char_187_ccheal": {
+    "gender": "female"
+  },
+  "char_190_clour": {
+    "gender": "female"
+  },
+  "char_193_frostl": {
+    "gender": "female"
+  },
+  "char_196_sunbr": {
+    "gender": "female"
+  },
+  "char_198_blackd": {
+    "gender": "male"
+  },
+  "char_199_yak": {
+    "gender": "male"
+  },
+  "char_235_jesica": {
+    "gender": "female"
+  },
+  "char_236_rope": {
+    "gender": "female"
+  },
+  "char_237_gravel": {
+    "gender": "female"
+  },
+  "char_253_greyy": {
+    "gender": "male"
+  },
+  "char_258_podego": {
+    "gender": "female"
+  },
+  "char_260_durnar": {
+    "gender": "female"
+  },
+  "char_271_spikes": {
+    "gender": "male"
+  },
+  "char_272_strong": {
+    "gender": "male"
+  },
+  "char_277_sqrrel": {
+    "gender": "female"
+  },
+  "char_289_gyuki": {
+    "gender": "female"
+  },
+  "char_290_vigna": {
+    "gender": "female"
+  },
+  "char_298_susuro": {
+    "gender": "female"
+  },
+  "char_301_cutter": {
+    "gender": "female"
+  },
+  "char_302_glaze": {
+    "gender": "female"
+  },
+  "char_328_cammou": {
+    "gender": "female"
+  },
+  "char_337_utage": {
+    "gender": "female"
+  },
+  "char_347_jaksel": {
+    "gender": "female"
+  },
+  "char_355_ethan": {
+    "gender": "male"
+  },
+  "char_366_acdrop": {
+    "gender": "female"
+  },
+  "char_381_bubble": {
+    "gender": "female"
+  },
+  "char_385_finlpp": {
+    "gender": "female"
+  },
+  "char_4004_pudd": {
+    "gender": "female"
+  },
+  "char_4041_chnut": {
+    "gender": "male"
+  },
+  "char_4051_akkord": {
+    "gender": "female"
+  },
+  "char_4062_totter": {
+    "gender": "male"
+  },
+  "char_4063_quartz": {
+    "gender": "female"
+  },
+  "char_4067_lolxh": {
+    "gender": "male"
+  },
+  "char_4100_caper": {
+    "gender": "female"
+  },
+  "char_4107_vrdant": {
+    "gender": "male"
+  },
+  "char_4130_luton": {
+    "gender": "female"
+  },
+  "char_4165_ctrail": {
+    "gender": "female"
+  },
+  "char_4208_wintim": {
+    "gender": "female"
+  },
+  "char_440_pinecn": {
+    "gender": "female"
+  },
+  "char_445_wscoot": {
+    "gender": "male"
+  },
+  "char_452_bstalk": {
+    "gender": "female"
+  },
+  "char_469_indigo": {
+    "gender": "female"
+  },
+  "char_484_robrta": {
+    "gender": "female"
+  },
+  "char_491_humus": {
+    "gender": "male"
+  },
+  "char_600_cpione": {
+    "gender": "unknown"
+  },
+  "char_601_cguard": {
+    "gender": "unknown"
+  },
+  "char_602_cdfend": {
+    "gender": "unknown"
+  },
+  "char_603_csnipe": {
+    "gender": "unknown"
+  },
+  "char_604_ccast": {
+    "gender": "unknown"
+  },
+  "char_605_cmedic": {
+    "gender": "unknown"
+  },
+  "char_606_csuppo": {
+    "gender": "unknown"
+  },
+  "char_607_cspec": {
+    "gender": "unknown"
+  },
+  "char_616_pithst": {
+    "gender": "unknown"
+  },
+  "char_002_amiya": {
+    "gender": "female"
+  },
+  "char_1011_lava2": {
+    "gender": "female"
+  },
+  "char_101_sora": {
+    "gender": "female"
+  },
+  "char_1021_kroos2": {
+    "gender": "female"
+  },
+  "char_1022_flwr2": {
+    "gender": "female"
+  },
+  "char_1024_hbisc2": {
+    "gender": "female"
+  },
+  "char_1027_greyy2": {
+    "gender": "male"
+  },
+  "char_102_texas": {
+    "gender": "female"
+  },
+  "char_1030_noirc2": {
+    "gender": "male"
+  },
+  "char_1036_fang2": {
+    "gender": "female"
+  },
+  "char_106_franka": {
+    "gender": "female"
+  },
+  "char_107_liskam": {
+    "gender": "female"
+  },
+  "char_108_silent": {
+    "gender": "female"
+  },
+  "char_115_headbr": {
+    "gender": "female"
+  },
+  "char_128_plosis": {
+    "gender": "female"
+  },
+  "char_129_bluep": {
+    "gender": "female"
+  },
+  "char_131_flameb": {
+    "gender": "male"
+  },
+  "char_135_halo": {
+    "gender": "female"
+  },
+  "char_140_whitew": {
+    "gender": "female"
+  },
+  "char_143_ghost": {
+    "gender": "female"
+  },
+  "char_144_red": {
+    "gender": "female"
+  },
+  "char_145_prove": {
+    "gender": "female"
+  },
+  "char_148_nearl": {
+    "gender": "female"
+  },
+  "char_154_morgan": {
+    "gender": "female"
+  },
+  "char_155_tiger": {
+    "gender": "female"
+  },
+  "char_157_dagda": {
+    "gender": "female"
+  },
+  "char_158_milu": {
+    "gender": "female"
+  },
+  "char_163_hpsts": {
+    "gender": "female"
+  },
+  "char_164_nightm": {
+    "gender": "female"
+  },
+  "char_166_skfire": {
+    "gender": "female"
+  },
+  "char_171_bldsk": {
+    "gender": "female"
+  },
+  "char_173_slchan": {
+    "gender": "female"
+  },
+  "char_174_slbell": {
+    "gender": "female"
+  },
+  "char_194_leto": {
+    "gender": "female"
+  },
+  "char_195_glassb": {
+    "gender": "female"
+  },
+  "char_201_moeshd": {
+    "gender": "female"
+  },
+  "char_204_platnm": {
+    "gender": "female"
+  },
+  "char_214_kafka": {
+    "gender": "female"
+  },
+  "char_215_mantic": {
+    "gender": "female"
+  },
+  "char_218_cuttle": {
+    "gender": "female"
+  },
+  "char_219_meteo": {
+    "gender": "female"
+  },
+  "char_220_grani": {
+    "gender": "female"
+  },
+  "char_226_hmau": {
+    "gender": "male"
+  },
+  "char_230_savage": {
+    "gender": "female"
+  },
+  "char_241_panda": {
+    "gender": "female"
+  },
+  "char_242_otter": {
+    "gender": "female"
+  },
+  "char_243_waaifu": {
+    "gender": "female"
+  },
+  "char_252_bibeak": {
+    "gender": "female"
+  },
+  "char_254_vodfox": {
+    "gender": "female"
+  },
+  "char_261_sddrag": {
+    "gender": "female"
+  },
+  "char_265_sophia": {
+    "gender": "female"
+  },
+  "char_274_astesi": {
+    "gender": "female"
+  },
+  "char_275_breeze": {
+    "gender": "female"
+  },
+  "char_279_excu": {
+    "gender": "male"
+  },
+  "char_294_ayer": {
+    "gender": "male"
+  },
+  "char_297_hamoni": {
+    "gender": "female"
+  },
+  "char_304_zebra": {
+    "gender": "female"
+  },
+  "char_306_leizi": {
+    "gender": "female"
+  },
+  "char_308_swire": {
+    "gender": "female"
+  },
+  "char_325_bison": {
+    "gender": "male"
+  },
+  "char_326_glacus": {
+    "gender": "female"
+  },
+  "char_333_sidero": {
+    "gender": "female"
+  },
+  "char_336_folivo": {
+    "gender": "female"
+  },
+  "char_338_iris": {
+    "gender": "female"
+  },
+  "char_341_sntlla": {
+    "gender": "female"
+  },
+  "char_343_tknogi": {
+    "gender": "female"
+  },
+  "char_344_beewax": {
+    "gender": "female"
+  },
+  "char_345_folnic": {
+    "gender": "female"
+  },
+  "char_346_aosta": {
+    "gender": "male"
+  },
+  "char_348_ceylon": {
+    "gender": "female"
+  },
+  "char_349_chiave": {
+    "gender": "male"
+  },
+  "char_356_broca": {
+    "gender": "male"
+  },
+  "char_363_toddi": {
+    "gender": "female"
+  },
+  "char_365_aprl": {
+    "gender": "female"
+  },
+  "char_367_swllow": {
+    "gender": "female"
+  },
+  "char_369_bena": {
+    "gender": "female"
+  },
+  "char_373_lionhd": {
+    "gender": "male"
+  },
+  "char_378_asbest": {
+    "gender": "female"
+  },
+  "char_379_sesa": {
+    "gender": "male"
+  },
+  "char_383_snsant": {
+    "gender": "female"
+  },
+  "char_388_mint": {
+    "gender": "female"
+  },
+  "char_394_hadiya": {
+    "gender": "female"
+  },
+  "char_4006_melnte": {
+    "gender": "female"
+  },
+  "char_4013_kjera": {
+    "gender": "female"
+  },
+  "char_4014_lunacu": {
+    "gender": "female"
+  },
+  "char_4015_spuria": {
+    "gender": "female"
+  },
+  "char_4016_kazema": {
+    "gender": "female"
+  },
+  "char_4017_puzzle": {
+    "gender": "male"
+  },
+  "char_4019_ncdeer": {
+    "gender": "female"
+  },
+  "char_401_elysm": {
+    "gender": "male"
+  },
+  "char_4023_rfalcn": {
+    "gender": "female"
+  },
+  "char_4025_aprot2": {
+    "gender": "male"
+  },
+  "char_402_tuye": {
+    "gender": "female"
+  },
+  "char_4031_liesel": {
+    "gender": "female"
+  },
+  "char_4032_provs": {
+    "gender": "female"
+  },
+  "char_4036_forcer": {
+    "gender": "male"
+  },
+  "char_4040_rockr": {
+    "gender": "female"
+  },
+  "char_4043_erato": {
+    "gender": "female"
+  },
+  "char_4045_heidi": {
+    "gender": "female"
+  },
+  "char_4047_pianst": {
+    "gender": "male"
+  },
+  "char_4052_surfer": {
+    "gender": "female"
+  },
+  "char_4054_malist": {
+    "gender": "male"
+  },
+  "char_405_absin": {
+    "gender": "female"
+  },
+  "char_4066_highmo": {
+    "gender": "female"
+  },
+  "char_4071_peper": {
+    "gender": "female"
+  },
+  "char_4078_bdhkgt": {
+    "gender": "female"
+  },
+  "char_4079_haini": {
+    "gender": "female"
+  },
+  "char_4081_warmy": {
+    "gender": "female"
+  },
+  "char_4083_chimes": {
+    "gender": "female"
+  },
+  "char_4102_threye": {
+    "gender": "female"
+  },
+  "char_4104_coldst": {
+    "gender": "female"
+  },
+  "char_4105_almond": {
+    "gender": "female"
+  },
+  "char_4106_bryota": {
+    "gender": "male"
+  },
+  "char_4109_baslin": {
+    "gender": "male"
+  },
+  "char_4110_delphn": {
+    "gender": "female"
+  },
+  "char_4114_harold": {
+    "gender": "male"
+  },
+  "char_4119_wanqin": {
+    "gender": "male"
+  },
+  "char_411_tomimi": {
+    "gender": "female"
+  },
+  "char_4122_grabds": {
+    "gender": "female"
+  },
+  "char_4124_iana": {
+    "gender": "female"
+  },
+  "char_4125_rdoc": {
+    "gender": "male"
+  },
+  "char_4126_fuze": {
+    "gender": "male"
+  },
+  "char_4131_odda": {
+    "gender": "male"
+  },
+  "char_4137_udflow": {
+    "gender": "female"
+  },
+  "char_4139_papyrs": {
+    "gender": "female"
+  },
+  "char_4140_lasher": {
+    "gender": "male"
+  },
+  "char_4142_laios": {
+    "gender": "male"
+  },
+  "char_4143_sensi": {
+    "gender": "male"
+  },
+  "char_4144_chilc": {
+    "gender": "male"
+  },
+  "char_4147_mitm": {
+    "gender": "male"
+  },
+  "char_4148_philae": {
+    "gender": "female"
+  },
+  "char_4151_tinman": {
+    "gender": "male"
+  },
+  "char_4155_talr": {
+    "gender": "male"
+  },
+  "char_415_flint": {
+    "gender": "female"
+  },
+  "char_4162_cathy": {
+    "gender": "female"
+  },
+  "char_4163_rosesa": {
+    "gender": "female"
+  },
+  "char_4164_tecno": {
+    "gender": "female"
+  },
+  "char_4166_varkis": {
+    "gender": "male"
+  },
+  "char_4171_wulfen": {
+    "gender": "female"
+  },
+  "char_4172_xingzh": {
+    "gender": "female"
+  },
+  "char_4173_nowell": {
+    "gender": "male"
+  },
+  "char_4177_brigid": {
+    "gender": "female"
+  },
+  "char_4178_alanna": {
+    "gender": "female"
+  },
+  "char_4183_mortis": {
+    "gender": "female"
+  },
+  "char_4184_dolris": {
+    "gender": "female"
+  },
+  "char_4185_amoris": {
+    "gender": "female"
+  },
+  "char_4186_tmoris": {
+    "gender": "female"
+  },
+  "char_4187_graceb": {
+    "gender": "female"
+  },
+  "char_4191_tippi": {
+    "gender": "female"
+  },
+  "char_4196_reckpr": {
+    "gender": "male"
+  },
+  "char_4198_christ": {
+    "gender": "unknown"
+  },
+  "char_4199_makiri": {
+    "gender": "male"
+  },
+  "char_4203_kichi": {
+    "gender": "female"
+  },
+  "char_4207_branch": {
+    "gender": "female"
+  },
+  "char_4211_snhunt": {
+    "gender": "female"
+  },
+  "char_4213_skybx": {
+    "gender": "male"
+  },
+  "char_4214_cairn": {
+    "gender": "female"
+  },
+  "char_421_crow": {
+    "gender": "female"
+  },
+  "char_4221_ju": {
+    "gender": "male"
+  },
+  "char_4222_taraxa": {
+    "gender": "male"
+  },
+  "char_4223_botany": {
+    "gender": "female"
+  },
+  "char_4224_turdus": {
+    "gender": "female"
+  },
+  "char_4225_tanya": {
+    "gender": "female"
+  },
+  "char_422_aurora": {
+    "gender": "female"
+  },
+  "char_431_ashlok": {
+    "gender": "female"
+  },
+  "char_433_windft": {
+    "gender": "male"
+  },
+  "char_436_whispr": {
+    "gender": "female"
+  },
+  "char_446_aroma": {
+    "gender": "female"
+  },
+  "char_449_glider": {
+    "gender": "female"
+  },
+  "char_451_robin": {
+    "gender": "female"
+  },
+  "char_455_nothin": {
+    "gender": "male"
+  },
+  "char_457_blitz": {
+    "gender": "male"
+  },
+  "char_458_rfrost": {
+    "gender": "female"
+  },
+  "char_459_tachak": {
+    "gender": "male"
+  },
+  "char_464_cement": {
+    "gender": "female"
+  },
+  "char_466_qanik": {
+    "gender": "male"
+  },
+  "char_473_mberry": {
+    "gender": "female"
+  },
+  "char_475_akafyu": {
+    "gender": "female"
+  },
+  "char_476_blkngt": {
+    "gender": "female"
+  },
+  "char_478_kirara": {
+    "gender": "female"
+  },
+  "char_486_takila": {
+    "gender": "male"
+  },
+  "char_487_bobb": {
+    "gender": "male"
+  },
+  "char_488_buildr": {
+    "gender": "female"
+  },
+  "char_489_serum": {
+    "gender": "male"
+  },
+  "char_492_quercu": {
+    "gender": "female"
+  },
+  "char_493_firwhl": {
+    "gender": "female"
+  },
+  "char_494_vendla": {
+    "gender": "female"
+  },
+  "char_496_wildmn": {
+    "gender": "female"
+  },
+  "char_497_ctable": {
+    "gender": "female"
+  },
+  "char_498_inside": {
+    "gender": "male"
+  },
+  "char_499_kaitou": {
+    "gender": "male"
+  },
+  "char_508_aguard": {
+    "gender": "unknown"
+  },
+  "char_509_acast": {
+    "gender": "unknown"
+  },
+  "char_510_amedic": {
+    "gender": "unknown"
+  },
+  "char_511_asnipe": {
+    "gender": "unknown"
+  },
+  "char_512_aprot": {
+    "gender": "male"
+  },
+  "char_513_apionr": {
+    "gender": "unknown"
+  },
+  "char_003_kalts": {
+    "gender": "female"
+  },
+  "char_010_chen": {
+    "gender": "female"
+  },
+  "char_017_huang": {
+    "gender": "female"
+  },
+  "char_1012_skadi2": {
+    "gender": "female"
+  },
+  "char_1013_chen2": {
+    "gender": "female"
+  },
+  "char_1014_nearl2": {
+    "gender": "female"
+  },
+  "char_1016_agoat2": {
+    "gender": "female"
+  },
+  "char_1019_siege2": {
+    "gender": "female"
+  },
+  "char_1020_reed2": {
+    "gender": "female"
+  },
+  "char_1023_ghost2": {
+    "gender": "female"
+  },
+  "char_1026_gvial2": {
+    "gender": "female"
+  },
+  "char_1028_texas2": {
+    "gender": "female"
+  },
+  "char_1029_yato2": {
+    "gender": "female"
+  },
+  "char_1031_slent2": {
+    "gender": "female"
+  },
+  "char_1032_excu2": {
+    "gender": "male"
+  },
+  "char_1033_swire2": {
+    "gender": "female"
+  },
+  "char_1034_jesca2": {
+    "gender": "female"
+  },
+  "char_1035_wisdel": {
+    "gender": "female"
+  },
+  "char_1038_whitw2": {
+    "gender": "female"
+  },
+  "char_1039_thorn2": {
+    "gender": "male"
+  },
+  "char_103_angel": {
+    "gender": "female"
+  },
+  "char_1040_blaze2": {
+    "gender": "female"
+  },
+  "char_1041_angel2": {
+    "gender": "female"
+  },
+  "char_1042_phatm2": {
+    "gender": "male"
+  },
+  "char_1043_leizi2": {
+    "gender": "female"
+  },
+  "char_1044_hsgma2": {
+    "gender": "female"
+  },
+  "char_1045_svash2": {
+    "gender": "male"
+  },
+  "char_1046_sbell2": {
+    "gender": "female"
+  },
+  "char_1047_halo2": {
+    "gender": "female"
+  },
+  "char_1050_chen3": {
+    "gender": "female"
+  },
+  "char_1051_headb2": {
+    "gender": "female"
+  },
+  "char_1052_kalts2": {
+    "gender": "female"
+  },
+  "char_112_siege": {
+    "gender": "female"
+  },
+  "char_113_cqbw": {
+    "gender": "female"
+  },
+  "char_134_ifrit": {
+    "gender": "female"
+  },
+  "char_136_hsguma": {
+    "gender": "female"
+  },
+  "char_147_shining": {
+    "gender": "female"
+  },
+  "char_1502_crosly": {
+    "gender": "female"
+  },
+  "char_172_svrash": {
+    "gender": "male"
+  },
+  "char_179_cgbird": {
+    "gender": "female"
+  },
+  "char_180_amgoat": {
+    "gender": "female"
+  },
+  "char_188_helage": {
+    "gender": "male"
+  },
+  "char_197_poca": {
+    "gender": "female"
+  },
+  "char_2012_typhon": {
+    "gender": "female"
+  },
+  "char_2013_cerber": {
+    "gender": "female"
+  },
+  "char_2014_nian": {
+    "gender": "female"
+  },
+  "char_2015_dusk": {
+    "gender": "female"
+  },
+  "char_2023_ling": {
+    "gender": "female"
+  },
+  "char_2024_chyue": {
+    "gender": "male"
+  },
+  "char_2025_shu": {
+    "gender": "female"
+  },
+  "char_2026_yu": {
+    "gender": "male"
+  },
+  "char_2027_wang": {
+    "gender": "male"
+  },
+  "char_202_demkni": {
+    "gender": "female"
+  },
+  "char_206_gnosis": {
+    "gender": "male"
+  },
+  "char_213_mostma": {
+    "gender": "female"
+  },
+  "char_222_bpipe": {
+    "gender": "female"
+  },
+  "char_225_haak": {
+    "gender": "male"
+  },
+  "char_245_cello": {
+    "gender": "female"
+  },
+  "char_248_mgllan": {
+    "gender": "female"
+  },
+  "char_249_mlyss": {
+    "gender": "female"
+  },
+  "char_250_phatom": {
+    "gender": "male"
+  },
+  "char_263_skadi": {
+    "gender": "female"
+  },
+  "char_264_f12yin": {
+    "gender": "male"
+  },
+  "char_291_aglina": {
+    "gender": "female"
+  },
+  "char_293_thorns": {
+    "gender": "male"
+  },
+  "char_300_phenxi": {
+    "gender": "female"
+  },
+  "char_311_mudrok": {
+    "gender": "female"
+  },
+  "char_322_lmlee": {
+    "gender": "male"
+  },
+  "char_332_archet": {
+    "gender": "female"
+  },
+  "char_340_shwaz": {
+    "gender": "female"
+  },
+  "char_350_surtr": {
+    "gender": "female"
+  },
+  "char_358_lisa": {
+    "gender": "female"
+  },
+  "char_362_saga": {
+    "gender": "female"
+  },
+  "char_377_gdglow": {
+    "gender": "female"
+  },
+  "char_391_rosmon": {
+    "gender": "female"
+  },
+  "char_4009_irene": {
+    "gender": "female"
+  },
+  "char_400_weedy": {
+    "gender": "female"
+  },
+  "char_4010_etlchi": {
+    "gender": "female"
+  },
+  "char_4011_lessng": {
+    "gender": "male"
+  },
+  "char_4026_vulpis": {
+    "gender": "female"
+  },
+  "char_4027_heyak": {
+    "gender": "female"
+  },
+  "char_4037_demetr": {
+    "gender": "male"
+  },
+  "char_4039_horn": {
+    "gender": "female"
+  },
+  "char_4042_lumen": {
+    "gender": "male"
+  },
+  "char_4046_ebnhlz": {
+    "gender": "male"
+  },
+  "char_4048_doroth": {
+    "gender": "female"
+  },
+  "char_4055_bgsnow": {
+    "gender": "female"
+  },
+  "char_4056_titi": {
+    "gender": "female"
+  },
+  "char_4058_pepe": {
+    "gender": "female"
+  },
+  "char_4064_mlynar": {
+    "gender": "male"
+  },
+  "char_4065_judge": {
+    "gender": "female"
+  },
+  "char_4072_ironmn": {
+    "gender": "male"
+  },
+  "char_4080_lin": {
+    "gender": "female"
+  },
+  "char_4082_qiubai": {
+    "gender": "female"
+  },
+  "char_4087_ines": {
+    "gender": "female"
+  },
+  "char_4088_hodrer": {
+    "gender": "male"
+  },
+  "char_4098_vvana": {
+    "gender": "female"
+  },
+  "char_4116_blkkgt": {
+    "gender": "female"
+  },
+  "char_4117_ray": {
+    "gender": "female"
+  },
+  "char_4121_zuole": {
+    "gender": "male"
+  },
+  "char_4123_ela": {
+    "gender": "female"
+  },
+  "char_4132_ascln": {
+    "gender": "female"
+  },
+  "char_4133_logos": {
+    "gender": "male"
+  },
+  "char_4134_cetsyr": {
+    "gender": "female"
+  },
+  "char_4138_narant": {
+    "gender": "female"
+  },
+  "char_4141_marcil": {
+    "gender": "female"
+  },
+  "char_4145_ulpia": {
+    "gender": "male"
+  },
+  "char_4146_nymph": {
+    "gender": "female"
+  },
+  "char_416_zumama": {
+    "gender": "female"
+  },
+  "char_4179_monstr": {
+    "gender": "female"
+  },
+  "char_4182_oblvns": {
+    "gender": "female"
+  },
+  "char_4193_lemuen": {
+    "gender": "female"
+  },
+  "char_4194_rmixer": {
+    "gender": "male"
+  },
+  "char_4195_radian": {
+    "gender": "female"
+  },
+  "char_4202_haruka": {
+    "gender": "female"
+  },
+  "char_4204_mantra": {
+    "gender": "female"
+  },
+  "char_420_flamtl": {
+    "gender": "female"
+  },
+  "char_4212_nasti": {
+    "gender": "female"
+  },
+  "char_4226_veen": {
+    "gender": "male"
+  },
+  "char_4228_closur": {
+    "gender": "female"
+  },
+  "char_423_blemsh": {
+    "gender": "female"
+  },
+  "char_426_billro": {
+    "gender": "female"
+  },
+  "char_427_vigil": {
+    "gender": "male"
+  },
+  "char_430_fartth": {
+    "gender": "female"
+  },
+  "char_437_mizuki": {
+    "gender": "male"
+  },
+  "char_450_necras": {
+    "gender": "female"
+  },
+  "char_456_ash": {
+    "gender": "female"
+  },
+  "char_472_pasngr": {
+    "gender": "male"
+  },
+  "char_474_glady": {
+    "gender": "female"
+  },
+  "char_479_sleach": {
+    "gender": "female"
+  },
+  "char_485_pallas": {
+    "gender": "female"
+  },
+  "char_608_acpion": {
+    "gender": "unknown"
+  },
+  "char_609_acguad": {
+    "gender": "unknown"
+  },
+  "char_610_acfend": {
+    "gender": "unknown"
+  },
+  "char_611_acnipe": {
+    "gender": "unknown"
+  },
+  "char_612_accast": {
+    "gender": "unknown"
+  },
+  "char_613_acmedc": {
+    "gender": "unknown"
+  },
+  "char_614_acsupo": {
+    "gender": "unknown"
+  },
+  "char_615_acspec": {
+    "gender": "unknown"
+  },
+  "char_617_sharp2": {
+    "gender": "unknown"
+  }
+}
