@@ -1106,10 +1106,23 @@ function postponePair() {
 
 function finishSort() {
   if (!sorter) return;
+  // Snapshot BEFORE extraction so "返回排序" can restore the real state
+  const preSnapshot = snapshotSorter();
   _unrankedTierOps = extractTreeIntoResults();
   const normalResults = [...sorter.results];
   if (pinnedTop.length > 1) { startPinnedTopSort(normalResults); return; }
-  finalizeResults(normalResults);
+  finalizeResults(normalResults, preSnapshot);
+}
+
+function snapshotSorter() {
+  if (!sorter) return null;
+  return {
+    sorter: sorter.serialize(),
+    pinnedTop: pinnedTop.map(op => op.id),
+    buriedBottom: buriedBottom.map(op => op.id),
+    postponedPairs: { ...postponedPairs },
+    postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
+  };
 }
 
 // BFS-extract tree into sorter.results. Returns operators that were never compared.
@@ -1190,29 +1203,20 @@ function startPinnedTopSort(normalResults) {
 
 let _savedSorterSnapshot = null; // for "返回排序" from results page
 
-function finalizeResults(normalResults) {
+function finalizeResults(normalResults, preSnapshot) {
   const pinnedFinal = (pinnedTop.length > 1 && sorter && sorter.results.length === pinnedTop.length)
     ? [...sorter.results]
     : [...pinnedTop];
 
   rankingResults = [...pinnedFinal, ...normalResults, ...buriedBottom];
-  // Snapshot for potential return-to-sort — use same format as saveProgress
-  if (sorter) {
-    _savedSorterSnapshot = {
-      sorter: sorter.serialize(),
-      pinnedTop: pinnedTop.map(op => op.id),
-      buriedBottom: buriedBottom.map(op => op.id),
-      postponedPairs: { ...postponedPairs },
-      postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
-    };
-  }
+  // Use pre-extraction snapshot so "返回排序" restores real sort state
+  _savedSorterSnapshot = preSnapshot || snapshotSorter();
   sorter = null;
   _pendingNormalResults = null;
   document.getElementById('sortStatus').textContent = '';
   showSection('section-result');
   renderResults();
   document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
-  // Persist to localStorage using same key/format as saveProgress
   if (_savedSorterSnapshot) {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
   }
@@ -1222,16 +1226,11 @@ function finishSortEarly() {
   if (!sorter) return;
 
   if (_pendingNormalResults) {
+    const preSnapshot = snapshotSorter();
     _unrankedTierOps = extractTreeIntoResults();
     pinnedTop = [...sorter.results];
     rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
-    _savedSorterSnapshot = sorter ? {
-      sorter: sorter.serialize(),
-      pinnedTop: pinnedTop.map(op => op.id),
-      buriedBottom: buriedBottom.map(op => op.id),
-      postponedPairs: { ...postponedPairs },
-      postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
-    } : null;
+    _savedSorterSnapshot = preSnapshot;
     sorter = null; _pendingNormalResults = null;
     document.getElementById('sortStatus').textContent = '';
     showSection('section-result'); renderResults();
@@ -1240,9 +1239,10 @@ function finishSortEarly() {
     return;
   }
 
+  const preSnapshot = snapshotSorter();
   _unrankedTierOps = extractTreeIntoResults();
   const normalResults = [...sorter.results];
-  finalizeResults(normalResults);
+  finalizeResults(normalResults, preSnapshot);
 }
 
 // ============================================================
