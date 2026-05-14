@@ -242,7 +242,10 @@ button.small { padding: 5px 10px; font-size: 12px; }
     <button class="primary" id="btnResume" onclick="resumeSorting()">继续上次</button>
     <button class="danger small" id="btnClear" onclick="clearProgress()">清除进度</button>
   </div>
-  <div style="margin-top:16px">
+  <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+    <button class="small" onclick="exportState()" style="font-size:11px;padding:4px 10px;opacity:0.6;">导出进度</button>
+    <button class="small" onclick="document.getElementById('importStateFile').click()" style="font-size:11px;padding:4px 10px;opacity:0.6;">导入进度</button>
+    <input type="file" id="importStateFile" accept=".json" onchange="importState(event)" style="display:none">
     <button class="small danger" onclick="clearAllCache()" style="font-size:11px;padding:4px 10px;opacity:0.6;">清除全部缓存</button>
   </div>
 </section>
@@ -657,6 +660,54 @@ function autoSave() {
   saveProgress();
 }
 
+function exportState() {
+  let data = null;
+  // Use current sorter state if active, otherwise saved snapshot
+  if (sorter && sorter.items && sorter.items.length > 0) {
+    data = snapshotSorter();
+  } else {
+    try { const raw = localStorage.getItem(SAVE_KEY); if (raw) data = JSON.parse(raw); } catch(e) {}
+  }
+  if (!data) { alert('没有可导出的进度。'); return; }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.download = 'ak-sorter-progress.json';
+  a.href = URL.createObjectURL(blob);
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importState(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.sorter) { alert('无效的进度文件。'); return; }
+      // Validate by trying to deserialize
+      TournamentSorter.deserialize(data.sorter, opMap);
+      // Restore state
+      pinnedTop = (data.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
+      buriedBottom = (data.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
+      postponedPairs = data.postponedPairs || {};
+      postponedQueue = (data.postponedQueue || []).map(p => {
+        const l = opMap[p.l], r = opMap[p.r];
+        return l && r ? { left: l, right: r } : null;
+      }).filter(Boolean);
+      sorter = TournamentSorter.deserialize(data.sorter, opMap);
+      _savedSorterSnapshot = data;
+      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      updateResumeBar();
+      alert('进度已导入。可点击「继续上次」恢复。');
+    } catch(ex) {
+      alert('导入失败：' + ex.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
 function clearAllCache() {
   try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
   try { localStorage.removeItem(SETTINGS_KEY); } catch(e) {}
@@ -666,10 +717,10 @@ function clearAllCache() {
   postponedPairs = {};
   postponedQueue = [];
   _pendingNormalResults = null;
+  _savedSorterSnapshot = null;
   rankingResults = [];
   document.getElementById('resumeBar').style.display = 'none';
   document.getElementById('currentRankingTable').style.display = 'none';
-  // Reset settings to defaults
   selectedStars = new Set([4, 5, 6]);
   selectedGenders = new Set(['male', 'female', 'unknown']);
   selectedRank = 20;
@@ -1201,7 +1252,7 @@ function startPinnedTopSort(normalResults) {
   };
 }
 
-let _savedSorterSnapshot = null; // for "返回排序" from results page
+let _savedSorterSnapshot = null; // snapshot for "返回排序", survives page nav
 
 function finalizeResults(normalResults, preSnapshot) {
   const pinnedFinal = (pinnedTop.length > 1 && sorter && sorter.results.length === pinnedTop.length)
@@ -1209,9 +1260,8 @@ function finalizeResults(normalResults, preSnapshot) {
     : [...pinnedTop];
 
   rankingResults = [...pinnedFinal, ...normalResults, ...buriedBottom];
-  // Use pre-extraction snapshot so "返回排序" restores real sort state
+  // Save pre-extraction snapshot for return-to-sort; keep sorter alive
   _savedSorterSnapshot = preSnapshot || snapshotSorter();
-  sorter = null;
   _pendingNormalResults = null;
   document.getElementById('sortStatus').textContent = '';
   showSection('section-result');
@@ -1220,6 +1270,7 @@ function finalizeResults(normalResults, preSnapshot) {
   if (_savedSorterSnapshot) {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
   }
+  // Don't null sorter — keep it for potential return-to-sort
 }
 
 function finishSortEarly() {
@@ -1231,7 +1282,7 @@ function finishSortEarly() {
     pinnedTop = [...sorter.results];
     rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
     _savedSorterSnapshot = preSnapshot;
-    sorter = null; _pendingNormalResults = null;
+    _pendingNormalResults = null;
     document.getElementById('sortStatus').textContent = '';
     showSection('section-result'); renderResults();
     document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
@@ -1513,15 +1564,12 @@ function backToFilterClear() {
   backToFilter();
 }
 function backToSort() {
-  let snap = _savedSorterSnapshot;
-  // Fall back to localStorage if in-memory snapshot was lost (page nav)
-  if (!snap) {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (raw) snap = JSON.parse(raw);
-    } catch(e) {}
+  // Load from localStorage (survives page nav) or in-memory fallback
+  if (!_savedSorterSnapshot) {
+    try { const raw = localStorage.getItem(SAVE_KEY); if (raw) _savedSorterSnapshot = JSON.parse(raw); } catch(e) {}
   }
-  if (!snap || !snap.sorter) { backToFilterKeep(); return; }
+  if (!_savedSorterSnapshot || !_savedSorterSnapshot.sorter) { backToFilter(); return; }
+  const snap = _savedSorterSnapshot;
   pinnedTop = (snap.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
   buriedBottom = (snap.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
   postponedPairs = snap.postponedPairs || {};
@@ -1530,8 +1578,6 @@ function backToSort() {
     return l && r ? { left: l, right: r } : null;
   }).filter(Boolean);
   sorter = TournamentSorter.deserialize(snap.sorter, opMap);
-  _savedSorterSnapshot = null;
-  saveProgress();
   showSection('section-sort');
   updateSortUI();
   advanceSort();
