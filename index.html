@@ -1196,12 +1196,12 @@ function finalizeResults(normalResults) {
     : [...pinnedTop];
 
   rankingResults = [...pinnedFinal, ...normalResults, ...buriedBottom];
-  // Snapshot for potential return-to-sort
+  // Snapshot for potential return-to-sort — use same format as saveProgress
   if (sorter) {
     _savedSorterSnapshot = {
-      sorterState: sorter.serialize(),
-      pinnedTopIds: pinnedTop.map(op => op.id),
-      buriedBottomIds: buriedBottom.map(op => op.id),
+      sorter: sorter.serialize(),
+      pinnedTop: pinnedTop.map(op => op.id),
+      buriedBottom: buriedBottom.map(op => op.id),
       postponedPairs: { ...postponedPairs },
       postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
     };
@@ -1211,10 +1211,11 @@ function finalizeResults(normalResults) {
   document.getElementById('sortStatus').textContent = '';
   showSection('section-result');
   renderResults();
-  // Show "返回排序" if we have a snapshot
   document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
-  // Save progress so resume works from filter page too
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
+  // Persist to localStorage using same key/format as saveProgress
+  if (_savedSorterSnapshot) {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
+  }
 }
 
 function finishSortEarly() {
@@ -1225,9 +1226,9 @@ function finishSortEarly() {
     pinnedTop = [...sorter.results];
     rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
     _savedSorterSnapshot = sorter ? {
-      sorterState: sorter.serialize(),
-      pinnedTopIds: pinnedTop.map(op => op.id),
-      buriedBottomIds: buriedBottom.map(op => op.id),
+      sorter: sorter.serialize(),
+      pinnedTop: pinnedTop.map(op => op.id),
+      buriedBottom: buriedBottom.map(op => op.id),
       postponedPairs: { ...postponedPairs },
       postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
     } : null;
@@ -1235,7 +1236,7 @@ function finishSortEarly() {
     document.getElementById('sortStatus').textContent = '';
     showSection('section-result'); renderResults();
     document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
-    try { if (_savedSorterSnapshot) localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
+    if (_savedSorterSnapshot) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {} }
     return;
   }
 
@@ -1512,18 +1513,24 @@ function backToFilterClear() {
   backToFilter();
 }
 function backToSort() {
-  if (!_savedSorterSnapshot) { backToFilter(); return; }
-  const snap = _savedSorterSnapshot;
-  pinnedTop = (snap.pinnedTopIds || []).map(id => opMap[id]).filter(Boolean);
-  buriedBottom = (snap.buriedBottomIds || []).map(id => opMap[id]).filter(Boolean);
+  let snap = _savedSorterSnapshot;
+  // Fall back to localStorage if in-memory snapshot was lost (page nav)
+  if (!snap) {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) snap = JSON.parse(raw);
+    } catch(e) {}
+  }
+  if (!snap || !snap.sorter) { backToFilterKeep(); return; }
+  pinnedTop = (snap.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
+  buriedBottom = (snap.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
   postponedPairs = snap.postponedPairs || {};
   postponedQueue = (snap.postponedQueue || []).map(p => {
     const l = opMap[p.l], r = opMap[p.r];
     return l && r ? { left: l, right: r } : null;
   }).filter(Boolean);
-  sorter = TournamentSorter.deserialize(snap.sorterState, opMap);
+  sorter = TournamentSorter.deserialize(snap.sorter, opMap);
   _savedSorterSnapshot = null;
-  // Re-save current progress
   saveProgress();
   showSection('section-sort');
   updateSortUI();
