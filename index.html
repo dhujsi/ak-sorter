@@ -390,6 +390,7 @@ let buriedBottom = [];     // [{ op }] — operators buried to bottom, in order
 let postponedPairs = {};   // { "idA|idB": count }
 let postponedQueue = [];   // [{ left, right }] — postponed pairs for later
 let _pendingNormalResults = null; // held across pinned-top sort phase
+let _unrankedTierOps = null;     // operators that were pending when Tier was generated
 
 // Settings
 let selectedStars = new Set([4, 5, 6]);
@@ -892,43 +893,39 @@ function toggleCurrentRanking() {
     return;
   }
 
-  // Collect current ranking state
   const lines = [];
   let rank = 1;
+  let pendingCount = 0;
 
-  // Pinned top
   pinnedTop.forEach(op => {
     lines.push({ r: rank++, name: op.name, app: op.appellation, source: '置顶' });
   });
 
-  // Locked results from sorter
   if (sorter) {
     sorter.results.forEach(op => {
       lines.push({ r: rank++, name: op.name, app: op.appellation, source: '已锁定' });
     });
 
-    // Remaining items in tree (current comparison pool + children)
-    function collectTree(items) {
-      const out = [];
+    // Count pending operators but don't rank them
+    function countTree(items) {
+      let n = 0;
       for (const item of items) {
-        out.push(item.op);
-        out.push(...collectTree(item.children));
+        n += 1 + countTree(item.children);
       }
-      return out;
+      return n;
     }
-    const remaining = collectTree(sorter.items);
-    remaining.forEach(op => {
-      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '待排序' });
-    });
+    pendingCount = countTree(sorter.items);
   }
 
-  // Buried bottom
   buriedBottom.forEach(op => {
     lines.push({ r: rank++, name: op.name, app: op.appellation, source: '沉底' });
   });
 
   let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#ccc;">';
   html += '<tr style="border-bottom:1px solid #333;"><th style="padding:4px 8px;text-align:right;">#</th><th style="padding:4px 8px;">名称</th><th style="padding:4px 8px;">状态</th></tr>';
+  if (lines.length === 0) {
+    html += '<tr><td colspan="3" style="padding:8px;color:#666;text-align:center;">暂无已锁定排名</td></tr>';
+  }
   lines.forEach(l => {
     html += '<tr style="border-bottom:1px solid #222;">';
     html += '<td style="padding:3px 8px;text-align:right;color:#888;">' + l.r + '</td>';
@@ -937,6 +934,9 @@ function toggleCurrentRanking() {
     html += '</tr>';
   });
   html += '</table>';
+  if (pendingCount > 0) {
+    html += '<p style="margin-top:8px;font-size:12px;color:#666;">仍有 ' + pendingCount + ' 名待排序，不计入当前排名</p>';
+  }
   div.innerHTML = html;
   div.style.display = 'block';
 }
@@ -1103,33 +1103,36 @@ function postponePair() {
 function finishSort() {
   if (!sorter) return;
 
-  // Extract remaining locked ranks (items with single child chains)
-  while (sorter.results.length < sorter.rankCount && sorter.items.length > 0) {
-    while (sorter.items.length === 1) {
-      sorter.results.push(sorter.items[0].op);
-      sorter.items = sorter.items[0].children;
-    }
-    if (sorter.items.length === 0) break;
-    // BFS extract: put winners before their children
+  const organicLocked = sorter.results.length; // already locked before this call
+  // Extract remaining locked ranks via tournament
+  while (sorter.items.length === 1) {
+    sorter.results.push(sorter.items[0].op);
+    sorter.items = sorter.items[0].children;
+  }
+  // BFS extract whatever remains (these were never locked organically)
+  let bfsCount = 0;
+  if (sorter.results.length < sorter.rankCount && sorter.items.length > 1) {
     const queue = [...sorter.items];
     sorter.items = [];
     while (queue.length > 0 && sorter.results.length < sorter.rankCount) {
       const item = queue.shift();
       sorter.results.push(item.op);
       queue.push(...item.children);
+      bfsCount++;
     }
-    break;
   }
   const normalResults = [...sorter.results];
+  const lockedCount = normalResults.length - bfsCount; // organic locked (before + during while)
 
   // Check if pinnedTop needs a 1v1 final phase
   if (pinnedTop.length > 1) {
     // Enter pinned-top-only sort phase
+    _finishSortLockedCount = lockedCount; // pass through to pinned sort completion
     startPinnedTopSort(normalResults);
     return;
   }
 
-  finalizeResults(normalResults);
+  finalizeResults(normalResults, lockedCount);
 }
 
 function startPinnedTopSort(normalResults) {
@@ -1150,7 +1153,8 @@ function startPinnedTopSort(normalResults) {
     if (result) { updateSortPair(result); }
     else {
       _pendingNormalResults = null;
-      finalizeResults(normalResults);
+      // Pinned sort fully completed — all pinned ops are locked, no unranked
+      finalizeResults(normalResults, normalResults.length);
     }
     return result;
   };
@@ -1175,13 +1179,19 @@ function startPinnedTopSort(normalResults) {
   };
 }
 
-function finalizeResults(normalResults) {
+function finalizeResults(normalResults, lockedCount) {
   // Merge: pinnedTop + normal + buriedBottom
   const pinnedFinal = (pinnedTop.length > 1 && sorter && sorter.results.length === pinnedTop.length)
     ? [...sorter.results]
     : [...pinnedTop];
 
   rankingResults = [...pinnedFinal, ...normalResults, ...buriedBottom];
+  // Track operators that were never locked (pending when sort ended)
+  if (typeof lockedCount === 'number' && lockedCount < normalResults.length) {
+    _unrankedTierOps = normalResults.slice(lockedCount);
+  } else {
+    _unrankedTierOps = null;
+  }
   sorter = null;
   _pendingNormalResults = null;
   document.getElementById('sortStatus').textContent = '';
@@ -1211,6 +1221,7 @@ function finishSortEarly() {
   }
 
   // BFS: operators closer to root (more wins) rank higher
+  const lockedCount = sorter.results.length; // organically locked before BFS
   const collected = [...sorter.results];
   const queue = [...sorter.items];
   while (queue.length > 0) {
@@ -1219,7 +1230,7 @@ function finishSortEarly() {
     queue.push(...item.children);
   }
   const normalResults = collected.slice(0, sorter.rankCount);
-  finalizeResults(normalResults);
+  finalizeResults(normalResults, lockedCount);
 }
 
 // ============================================================
@@ -1275,12 +1286,21 @@ function escapeHTML(str) {
 // ============================================================
 function generateTier() {
   if (rankingResults.length === 0) return;
+  // Separate unranked operators (never locked organically)
+  let ranked = rankingResults;
+  let unranked = [];
+  if (_unrankedTierOps && _unrankedTierOps.length > 0) {
+    const unrankedSet = new Set(_unrankedTierOps.map(op => op.id));
+    ranked = rankingResults.filter(op => !unrankedSet.has(op.id));
+    unranked = _unrankedTierOps;
+  }
+
   tierData = TIER_CONFIG.map(tc => ({ ...tc, items: [] }));
-  const N = rankingResults.length;
+  const N = ranked.length;
   if (N <= 3) {
-    rankingResults.forEach(op => tierData[0].items.push({ ...op }));
+    ranked.forEach(op => tierData[0].items.push({ ...op }));
   } else {
-    for (let i = 0; i < 3; i++) tierData[0].items.push({ ...rankingResults[i] });
+    for (let i = 0; i < 3; i++) tierData[0].items.push({ ...ranked[i] });
     const rest = N - 3;
     const baseCount = Math.floor(rest / 9);
     let extra = rest % 9;
@@ -1289,10 +1309,14 @@ function generateTier() {
       let count = baseCount + (extra > 0 ? 1 : 0);
       if (extra > 0) extra--;
       for (let j = 0; j < count && idx < N; j++) {
-        tierData[t].items.push({ ...rankingResults[idx] });
+        tierData[t].items.push({ ...ranked[idx] });
         idx++;
       }
     }
+  }
+  // Append unranked tier if any
+  if (unranked.length > 0) {
+    tierData.push({ id: 't99', name: '未排序', color: '#999', items: unranked.map(op => ({ ...op })) });
   }
   showSection('section-tier');
   renderTier();
