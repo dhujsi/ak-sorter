@@ -337,7 +337,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 </div><!-- .container -->
 
 <footer class="site-footer">
-  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.05.14-5</span></p>
+  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.05.14-6</span></p>
   <p>
     <a href="about.html">关于 / 声明 / 开源许可</a> &nbsp;·&nbsp;
     <a href="https://github.com/dhujsi/ak-sorter" target="_blank" rel="noopener">Source code</a> &nbsp;·&nbsp;
@@ -1196,13 +1196,15 @@ function extractTreeIntoResults() {
     }
     markHistory(sorter.items);
     // BFS: operators with comparison history go into results, others go to unranked
+    const alreadyInResults = new Set(sorter.results.map(op => op.id));
     const queue = [...sorter.items];
     while (queue.length > 0) {
       const item = queue.shift();
-      if (hasHistory.has(item.op.id)) {
+      if (hasHistory.has(item.op.id) && !alreadyInResults.has(item.op.id)) {
         sorter.results.push(item.op);
+        alreadyInResults.add(item.op.id);
         queue.push(...item.children);
-      } else {
+      } else if (!hasHistory.has(item.op.id)) {
         unranked.push(item.op);
       }
     }
@@ -1260,7 +1262,12 @@ function finalizeResults(normalResults, preSnapshot) {
     ? [...sorter.results]
     : [...pinnedTop];
 
-  rankingResults = [...pinnedFinal, ...normalResults, ...buriedBottom];
+  // Deduplicate: keep first occurrence of each operator
+  const seen = new Set();
+  rankingResults = [];
+  for (const op of [...pinnedFinal, ...normalResults, ...buriedBottom]) {
+    if (!seen.has(op.id)) { seen.add(op.id); rankingResults.push(op); }
+  }
   // Save pre-extraction snapshot for return-to-sort; keep sorter alive
   _savedSorterSnapshot = preSnapshot || snapshotSorter();
   _pendingNormalResults = null;
@@ -1281,7 +1288,11 @@ function finishSortEarly() {
     const preSnapshot = snapshotSorter();
     _unrankedTierOps = extractTreeIntoResults();
     pinnedTop = [...sorter.results];
-    rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
+    const seen2 = new Set();
+    rankingResults = [];
+    for (const op of [...pinnedTop, ..._pendingNormalResults, ...buriedBottom]) {
+      if (!seen2.has(op.id)) { seen2.add(op.id); rankingResults.push(op); }
+    }
     _savedSorterSnapshot = preSnapshot;
     _pendingNormalResults = null;
     document.getElementById('sortStatus').textContent = '';
