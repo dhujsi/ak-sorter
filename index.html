@@ -601,13 +601,8 @@ function loadSettings() {
 }
 
 function saveProgress() {
-  // Only save if we have a sorter with actual work remaining
   if (!sorter) return;
-  if (!sorter.items || sorter.items.length === 0) {
-    // Sort is done — don't re-save, and clean up any stale save
-    try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
-    return;
-  }
+  if (!sorter.items || sorter.items.length === 0) return; // just skip, don't delete
   try {
     const state = {
       sorter: sorter.serialize(),
@@ -892,9 +887,7 @@ function resumeSorting() {
     return;
   }
   _savedSorterSnapshot = null;
-  showSection('section-sort');
-  updateSortUI();
-  advanceSort();
+  _continueSorting();
 }
 
 // ============================================================
@@ -1564,22 +1557,17 @@ function backToFilterClear() {
   backToFilter();
 }
 function backToSort() {
-  // Load from localStorage (survives page nav) or in-memory fallback
-  if (!_savedSorterSnapshot) {
-    try { const raw = localStorage.getItem(SAVE_KEY); if (raw) _savedSorterSnapshot = JSON.parse(raw); } catch(e) {}
-  }
-  if (!_savedSorterSnapshot || !_savedSorterSnapshot.sorter) { backToFilter(); return; }
-  const snap = _savedSorterSnapshot;
-  pinnedTop = (snap.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
-  buriedBottom = (snap.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
-  postponedPairs = snap.postponedPairs || {};
-  postponedQueue = (snap.postponedQueue || []).map(p => {
-    const l = opMap[p.l], r = opMap[p.r];
-    return l && r ? { left: l, right: r } : null;
-  }).filter(Boolean);
-  sorter = TournamentSorter.deserialize(snap.sorter, opMap);
+  if (!loadProgress()) { backToFilter(); return; }
+  _continueSorting();
+}
+
+function _continueSorting() {
   showSection('section-sort');
   updateSortUI();
+  if (!sorter.items || sorter.items.length === 0) {
+    finishSort();
+    return;
+  }
   advanceSort();
 }
 function backToResult() { showSection('section-result'); }
