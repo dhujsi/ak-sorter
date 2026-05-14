@@ -337,7 +337,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 </div><!-- .container -->
 
 <footer class="site-footer">
-  <p>非官方 fan-made project · 游戏素材版权归原权利方所有</p>
+  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.05.14-5</span></p>
   <p>
     <a href="about.html">关于 / 声明 / 开源许可</a> &nbsp;·&nbsp;
     <a href="https://github.com/dhujsi/ak-sorter" target="_blank" rel="noopener">Source code</a> &nbsp;·&nbsp;
@@ -547,13 +547,18 @@ class TournamentSorter {
       const item = { op: opMap[d.o], children: d.c.map(deserializeItem) };
       return item;
     }
-    // Use a dummy array with enough length to avoid rankCount being clamped to 0
-    const dummyLen = Math.max(1, data.rankCount || 0);
-    const s = new TournamentSorter(new Array(dummyLen).fill({ id: '_dummy' }), data.rankCount || 0);
+    function countItems(arr) {
+      let n = arr.length;
+      for (const it of arr) n += countItems(it.c || []);
+      return n;
+    }
+    const totalItems = (data.items ? countItems(data.items) : 0) + (data.results ? data.results.length : 0);
+    const rankCount = (data.rankCount > 0) ? data.rankCount : Math.max(1, totalItems);
+    const s = new TournamentSorter(new Array(rankCount).fill({ id: '_dummy' }), rankCount);
     s.items = data.items.map(deserializeItem);
     s.results = data.results.map(id => opMap[id]);
     s.comparisons = data.comparisons;
-    s.rankCount = data.rankCount || 0;
+    s.rankCount = rankCount;
     s.history = data.history.map(h => {
       const winner = s.findItem(h.w);
       const loser = s.findItem(h.l);
