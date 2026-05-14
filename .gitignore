@@ -1,10 +1,15 @@
 # ArknightsGameResource submodule (huge, not needed)
 ak-sorter-assets/
 
+# Raw PRTS assets (only mapped output in assets/ak/portrait/ is committed)
+assets/prts/halfbody/
+
 # Build artifacts
 build_summary.txt
 missing_files.txt
 _check.js
+prts_analysis.txt
+prts_map_output.txt
 
 # Claude Code settings
 .claude/

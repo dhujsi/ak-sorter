@@ -1,6 +1,6 @@
 # ak-sorter — 明日方舟已实装干员喜好排序
 
-基于 [Khrisma13/barank](https://github.com/Khrisma13/barank) 修改的明日方舟干员喜好排序工具。
+基于 [Khrisma13/barank](https://github.com/Khrisma13/barank) 的二选一排序创意改造的明日方舟干员喜好排序工具。本项目代码位于 [dhujsi/ak-sorter](https://github.com/dhujsi/ak-sorter)。
 
 ## 功能
 
@@ -26,7 +26,8 @@ npx serve .
 
 ## 资源来源
 
-- 干员数据和图片来自 [yuanyan3060/ArknightsGameResource](https://github.com/yuanyan3060/ArknightsGameResource)
+- 干员数据和头像来自 [yuanyan3060/ArknightsGameResource](https://github.com/yuanyan3060/ArknightsGameResource)
+- 干员半身图来自 [PRTS Wiki](https://prts.wiki/)
 - 游戏素材（角色形象、名称、设定等）版权归鹰角网络（Hypergryph）所有
 
 ## 许可
