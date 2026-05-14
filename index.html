@@ -213,9 +213,12 @@ button.small { padding: 5px 10px; font-size: 12px; }
 
   <div class="filter-group">
     <h3>异格</h3>
-    <div class="filter-gender" id="alterFilter">
-      <label class="checked" id="alterLabel">
-        <input type="checkbox" id="alterCheckbox" checked onchange="toggleMergeAlters()"> 合并异格 (排除异格干员)
+    <div class="filter-gender" id="alterFilters">
+      <label class="checked" id="alterMergeLabel">
+        <input type="radio" name="alter" checked onchange="setMergeAlters(true)"> 合并异格
+      </label>
+      <label id="alterShowLabel">
+        <input type="radio" name="alter" onchange="setMergeAlters(false)"> 不合并
       </label>
     </div>
   </div>
@@ -385,7 +388,7 @@ let _pendingNormalResults = null; // held across pinned-top sort phase
 
 // Settings
 let selectedStars = new Set([4, 5, 6]);
-let selectedGender = 'all'; // 'all' | 'male' | 'female' | 'unknown'
+let selectedGenders = new Set(['male', 'female', 'unknown']);
 let selectedRank = 20;
 let imageMode = 'portrait'; // 'portrait' | 'avatar'
 let mergeAlters = true;      // true = exclude alter operators
@@ -405,7 +408,6 @@ const TIER_CONFIG = [
 const RANK_OPTIONS = [10, 20, 30, 50, 100, 0];
 const STAR_OPTIONS = [1, 2, 3, 4, 5, 6];
 const GENDER_OPTIONS = [
-  { value: 'all', label: '全部' },
   { value: 'male', label: '男' },
   { value: 'female', label: '女' },
   { value: 'unknown', label: '其他 / 未知' }
@@ -565,7 +567,7 @@ class TournamentSorter {
 function saveSettings() {
   const settings = {
     selectedStars: [...selectedStars],
-    selectedGender,
+    selectedGenders: [...selectedGenders],
     selectedRank,
     imageMode,
     mergeAlters
@@ -579,7 +581,7 @@ function loadSettings() {
     if (raw) {
       const s = JSON.parse(raw);
       if (s.selectedStars) selectedStars = new Set(s.selectedStars);
-      if (s.selectedGender) selectedGender = s.selectedGender;
+      if (s.selectedGenders) selectedGenders = new Set(s.selectedGenders);
       if (s.selectedRank !== undefined) selectedRank = s.selectedRank;
       if (s.imageMode) imageMode = s.imageMode;
       if (s.mergeAlters !== undefined) mergeAlters = s.mergeAlters;
@@ -664,19 +666,19 @@ function buildFilterPage() {
     starDiv.appendChild(label);
   });
 
-  // Gender filters
+  // Gender filters (multi-select checkboxes, like stars)
   const genderDiv = document.getElementById('genderFilters');
   genderDiv.innerHTML = '';
   GENDER_OPTIONS.forEach(g => {
     const label = document.createElement('label');
-    if (selectedGender === g.value) label.classList.add('checked');
+    if (selectedGenders.has(g.value)) label.classList.add('checked');
     const input = document.createElement('input');
-    input.type = 'radio'; input.name = 'gender';
-    input.checked = selectedGender === g.value;
+    input.type = 'checkbox';
+    input.checked = selectedGenders.has(g.value);
     input.addEventListener('change', () => {
-      selectedGender = g.value;
-      document.querySelectorAll('#genderFilters label').forEach(l => l.classList.remove('checked'));
-      label.classList.add('checked');
+      if (input.checked) selectedGenders.add(g.value);
+      else selectedGenders.delete(g.value);
+      label.classList.toggle('checked', input.checked);
       updateOpCount(); saveSettings();
     });
     label.appendChild(input);
@@ -725,9 +727,11 @@ function buildFilterPage() {
     imgDiv.appendChild(label);
   });
 
-  // Sync alter checkbox with state
-  document.getElementById('alterCheckbox').checked = mergeAlters;
-  document.getElementById('alterLabel').classList.toggle('checked', mergeAlters);
+  // Sync alter radios with state
+  document.querySelector('#alterFilters input[type=radio]:first-of-type').checked = mergeAlters;
+  document.querySelector('#alterFilters input[type=radio]:last-of-type').checked = !mergeAlters;
+  document.getElementById('alterMergeLabel').classList.toggle('checked', mergeAlters);
+  document.getElementById('alterShowLabel').classList.toggle('checked', !mergeAlters);
 
   updateOpCount();
   updateResumeBar();
@@ -735,18 +739,17 @@ function buildFilterPage() {
 
 function getFilteredOps() {
   let ops = allOperators.filter(op => selectedStars.has(op.star));
-  if (selectedGender !== 'all') {
-    ops = ops.filter(op => (op.gender || 'unknown') === selectedGender);
-  }
+  ops = ops.filter(op => selectedGenders.has(op.gender || 'unknown'));
   if (mergeAlters) {
     ops = ops.filter(op => !op.isAlter);
   }
   return ops;
 }
 
-function toggleMergeAlters() {
-  mergeAlters = document.getElementById('alterCheckbox').checked;
-  document.getElementById('alterLabel').classList.toggle('checked', mergeAlters);
+function setMergeAlters(v) {
+  mergeAlters = v;
+  document.getElementById('alterMergeLabel').classList.toggle('checked', v);
+  document.getElementById('alterShowLabel').classList.toggle('checked', !v);
   updateOpCount();
   saveSettings();
 }
