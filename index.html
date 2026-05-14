@@ -119,19 +119,63 @@ button.small { padding: 5px 10px; font-size: 12px; }
 
 /* ===== RESULT SECTION ===== */
 #section-result h2 { text-align: center; margin-bottom: 8px; }
-.result-meta { text-align: center; font-size: 14px; color: #888; margin-bottom: 24px; }
+.result-meta { text-align: center; font-size: 14px; color: #888; margin-bottom: 18px; }
+.result-ranking { margin-bottom: 26px; }
+.result-row { margin: 14px 0; text-align: center; }
+.result-card {
+  display: inline-block; position: relative; width: 13em; padding: 0 1.2em;
+  vertical-align: top; text-align: center;
+}
+.result-card.lg { font-size: 1.125rem; }
+.result-card.md { font-size: 1rem; }
+.result-card.sm { font-size: 0.78rem; max-width: 50%; }
+.result-card-rank {
+  color: #d6d9e3; line-height: 1.6; padding: 0.2em 0 0.35em;
+  font-size: 0.95em; font-weight: 700;
+}
+.result-card-rank.top3 { color: #8fb8ff; }
+.result-card-rank.pinned { color: #f0be67; }
+.result-card-rank.buried { color: #d49494; }
+.result-visual {
+  background: #111; border: 1px solid #000;
+  box-shadow: 0 0 2px 1px rgba(0,0,0,0.53);
+}
+.result-visual img {
+  width: 100%; height: 18em; display: block;
+  object-fit: contain; background: #111;
+}
+.result-card-info {
+  color: #d6d9e3; line-height: 1.6; padding: 0.35em 0 0;
+  width: max-content; max-width: 100%;
+  position: relative; left: 50%; transform: translateX(-50%);
+}
+.result-card-info .cn-name { font-size: 1.18em; font-weight: 700; }
+.result-card-info .en-name { font-size: 0.92em; color: #8c93a8; margin-top: 0.08em; }
+.result-details {
+  max-width: 940px; margin: 0 auto 24px; background: #1f2137;
+  border: 1px solid #313559; border-radius: 12px; overflow: hidden;
+}
+.result-details summary {
+  cursor: pointer; padding: 14px 18px; font-size: 15px; font-weight: 700;
+  color: #e5e8f1; user-select: none; list-style: none;
+}
+.result-details summary::-webkit-details-marker { display: none; }
+.result-details[open] summary { border-bottom: 1px solid #313559; }
+.result-details-body { padding: 16px 18px 18px; }
+.result-summary { color: #9ea5b7; line-height: 1.7; margin-bottom: 14px; }
+.result-table-wrap { overflow-x: auto; }
+.result-table {
+  width: 100%; border-collapse: collapse; text-align: center;
+  color: #d6d9e3; min-width: 420px;
+}
+.result-table th, .result-table td {
+  border: 1px solid #383d63; padding: 9px 12px;
+}
+.result-table th {
+  background: #2a2f4e; color: #eef1f8; font-weight: 700;
+}
+.result-table tr:nth-child(even) td { background: rgba(255,255,255,0.025); }
 .result-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-
-.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-.result-card { background: #22223a; border-radius: 8px; overflow: hidden; text-align: center; }
-.result-card-rank { padding: 6px; font-size: 13px; font-weight: 700; background: #33335a; }
-.result-card-rank.top3 { background: #4a7ac7; }
-.result-card-rank.pinned { background: #c78a3a; }
-.result-card-rank.buried { background: #5a3a3a; }
-.result-card img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #111; }
-.result-card-info { padding: 8px 6px; }
-.result-card-info .cn-name { font-size: 14px; font-weight: 600; }
-.result-card-info .en-name { font-size: 11px; color: #888; margin-top: 2px; }
 
 /* ===== TIER SECTION ===== */
 #section-tier h2 { text-align: center; margin-bottom: 8px; }
@@ -177,16 +221,22 @@ button.small { padding: 5px 10px; font-size: 12px; }
   .sort-card img { height: 280px; }
   .sort-side-actions { gap: 16px; }
   .sort-side-group { width: 160px; }
+  .result-card { width: 11.5em; padding: 0 0.75em; }
+  .result-card.sm { max-width: 46%; }
+  .result-details-body { padding: 14px; }
   .tier-board { width: 800px; }
   .tier-row { grid-template-columns: 64px 1fr; }
   .tier-label { font-size: 11px; }
   .tier-char { width: 52px; height: 52px; }
-  .result-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  .result-table { min-width: 0; }
 }
 @media (max-width: 480px) {
   .sort-card { width: 160px; }
   .sort-card img { height: 200px; }
   .sort-side-group { width: 130px; }
+  .result-card { width: 10em; padding: 0 0.45em; }
+  .result-card.sm { max-width: 50%; }
+  .result-table th.appellation, .result-table td.appellation { display: none; }
   .tier-board { width: 600px; }
   .tier-char { width: 42px; height: 42px; }
 }
@@ -304,8 +354,18 @@ button.small { padding: 5px 10px; font-size: 12px; }
 
 <!-- ===== RESULT SECTION ===== -->
 <section id="section-result" class="section">
-  <h2>我的干员喜好排名</h2>
+  <h2 id="resultTitle">我的干员喜好排名</h2>
   <p class="result-meta" id="resultMeta"></p>
+  <div class="result-ranking" id="resultRanking"></div>
+  <details class="result-details" open>
+    <summary>结果明细</summary>
+    <div class="result-details-body">
+      <p class="result-summary" id="resultSummary"></p>
+      <div class="result-table-wrap">
+        <table class="result-table" id="resultTable"></table>
+      </div>
+    </div>
+  </details>
   <div class="result-actions">
     <button class="primary" id="btnExportRanking" onclick="exportRanking()">导出排名图</button>
     <button class="primary" id="btnGenTier" onclick="generateTier()">生成 Tier 图</button>
@@ -313,7 +373,6 @@ button.small { padding: 5px 10px; font-size: 12px; }
     <button onclick="backToFilterKeep()">返回首页</button>
     <button class="danger small" onclick="backToFilterClear()" style="font-size:12px;padding:5px 10px;">清除并返回首页</button>
   </div>
-  <div class="result-grid" id="resultGrid"></div>
 </section>
 
 <!-- ===== TIER SECTION ===== -->
@@ -1311,7 +1370,119 @@ function finishSortEarly() {
 // ============================================================
 // RESULT PAGE
 // ============================================================
+function buildResultSmallRows(total, rowSize, offset) {
+  total -= offset;
+  const chunks = new Array(Math.ceil(total / rowSize)).fill(null);
+  chunks[chunks.length - 1] = total % rowSize;
+  return chunks.map(function(remain, idx) {
+    if (idx < chunks.length - 1) {
+      const start = rowSize * idx + offset;
+      return ['sm', start, start + rowSize];
+    }
+    const end = total + offset;
+    const size = remain || rowSize;
+    return ['sm', end - size, end];
+  });
+}
+
+const RESULT_ROW_BUILDERS = {
+  2: function(total) {
+    switch (total % 2) {
+      case 0: return buildResultSmallRows(total, 2, 0);
+      case 1: return [['lg', 0, 1]].concat(buildResultSmallRows(total, 2, 1));
+    }
+  },
+  3: function(total) {
+    switch (total % 3) {
+      case 0: return [['lg', 0, 1], ['md', 1, 3]].concat(buildResultSmallRows(total, 3, 3));
+      case 1: return [['lg', 0, 1]].concat(buildResultSmallRows(total, 3, 1));
+      case 2: return [['lg', 0, 2]].concat(buildResultSmallRows(total, 3, 2));
+    }
+  },
+  4: function(total) {
+    if (total === 1) return [['lg', 0, 1]];
+    switch (total % 4) {
+      case 0: return [['lg', 0, 1], ['sm', 1, 4]].concat(buildResultSmallRows(total, 4, 4));
+      case 1: return [['lg', 0, 2], ['sm', 2, 5]].concat(buildResultSmallRows(total, 4, 5));
+      case 2: return [['lg', 0, 2]].concat(buildResultSmallRows(total, 4, 2));
+      case 3: return [['lg', 0, 1], ['md', 2, 3]].concat(buildResultSmallRows(total, 4, 3));
+    }
+  },
+  5: function(total) {
+    if (total === 1) return [['lg', 0, 1]];
+    if (total === 2) return [['lg', 0, 2]];
+    if (total === 3) return [['lg', 0, 1], ['md', 1, 3]];
+    switch (total % 5) {
+      case 0: return [['lg', 0, 2], ['md', 2, 5]].concat(buildResultSmallRows(total, 5, 5));
+      case 1: return [['lg', 0, 1], ['md', 1, 3], ['md', 3, 6]].concat(buildResultSmallRows(total, 5, 6));
+      case 2: return [['lg', 0, 1], ['md', 1, 4], ['md', 4, 7]].concat(buildResultSmallRows(total, 5, 7));
+      case 3: return [['lg', 0, 2], ['md', 2, 5], ['md', 5, 8]].concat(buildResultSmallRows(total, 5, 8));
+      case 4: return [['lg', 0, 1], ['md', 1, 4]].concat(buildResultSmallRows(total, 5, 4));
+    }
+  },
+  6: function(total) {
+    if (total === 1) return [['lg', 0, 1]];
+    if (total === 2) return [['lg', 0, 2]];
+    if (total === 3) return [['lg', 0, 1], ['md', 1, 3]];
+    if (total === 4) return [['lg', 0, 1], ['md', 1, 4]];
+    if (total === 5) return [['lg', 0, 2], ['md', 2, 5]];
+    switch (total % 6) {
+      case 0: return [['lg', 0, 1], ['md', 1, 3], ['md', 3, 6]].concat(buildResultSmallRows(total, 6, 6));
+      case 1: return [['lg', 0, 1], ['md', 1, 4], ['md', 4, 7]].concat(buildResultSmallRows(total, 6, 7));
+      case 2: return [['lg', 0, 2], ['md', 2, 5], ['md', 5, 8]].concat(buildResultSmallRows(total, 6, 8));
+      case 3: return [['lg', 0, 2], ['md', 2, 5], ['md', 5, 9]].concat(buildResultSmallRows(total, 6, 9));
+      case 4: return [['lg', 0, 2], ['md', 2, 5], ['sm', 5, 10]].concat(buildResultSmallRows(total, 6, 10));
+      case 5: return [['lg', 0, 2], ['md', 2, 6], ['sm', 6, 11]].concat(buildResultSmallRows(total, 6, 11));
+    }
+  }
+};
+
+function getResultRows(total, width) {
+  if (total <= 0) return [];
+  const perRow = Math.max(Math.min(Math.floor((width - 49) / 156), 6), 2);
+  return RESULT_ROW_BUILDERS[perRow](total);
+}
+
+function getResultRankClass(idx, pinnedCount, buriedCount) {
+  let cls = 'result-card-rank';
+  if (idx < pinnedCount && pinnedCount > 0) cls += ' pinned';
+  else if (idx >= rankingResults.length - buriedCount && buriedCount > 0) cls += ' buried';
+  else if (idx < 3) cls += ' top3';
+  return cls;
+}
+
+function createResultCard(op, idx, sizeClass, pinnedCount, buriedCount, imageUsage, eagerImage) {
+  const card = document.createElement('div');
+  card.className = 'result-card ' + sizeClass;
+
+  const rankDiv = document.createElement('div');
+  rankDiv.className = getResultRankClass(idx, pinnedCount, buriedCount);
+  rankDiv.textContent = '第 ' + (idx + 1) + ' 位';
+  card.appendChild(rankDiv);
+
+  const visual = document.createElement('div');
+  visual.className = 'result-visual';
+
+  const img = document.createElement('img');
+  setImgSrc(img, op, imageUsage || 'auto');
+  img.loading = eagerImage ? 'eager' : 'lazy';
+  img.decoding = eagerImage ? 'sync' : 'async';
+  img.alt = '';
+  visual.appendChild(img);
+  card.appendChild(visual);
+
+  const info = document.createElement('div');
+  info.className = 'result-card-info';
+  info.innerHTML = '<div class="cn-name">' + escapeHTML(op.name) + '</div>' +
+    '<div class="en-name">' + escapeHTML(op.appellation) + '</div>';
+  card.appendChild(info);
+
+  return card;
+}
+
 function renderResults() {
+  document.getElementById('resultTitle').textContent = '我的前 ' + rankingResults.length + ' 位干员排行';
+
   let meta = '共 ' + rankingResults.length + ' 名干员';
   const pinnedCount = pinnedTop.length;
   const buriedCount = buriedBottom.length;
@@ -1320,33 +1491,36 @@ function renderResults() {
   }
   document.getElementById('resultMeta').textContent = meta;
 
-  const grid = document.getElementById('resultGrid');
-  grid.innerHTML = '';
+  const totalCandidates = getFilteredOps().length;
+  document.getElementById('resultSummary').textContent =
+    '当前排序范围共有 ' + totalCandidates + ' 名干员，本页展示前 ' + rankingResults.length + ' 名结果。';
 
-  rankingResults.forEach((op, idx) => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
+  const table = document.getElementById('resultTable');
+  let tableHTML = '<thead><tr><th>排名</th><th>干员</th><th class="appellation">称呼</th></tr></thead><tbody>';
+  rankingResults.forEach(function(op, idx) {
+    tableHTML += '<tr><td>' + (idx + 1) + '</td><td>' + escapeHTML(op.name) + '</td><td class="appellation">' +
+      escapeHTML(op.appellation) + '</td></tr>';
+  });
+  tableHTML += '</tbody>';
+  table.innerHTML = tableHTML;
 
-    const rankDiv = document.createElement('div');
-    let cls = 'result-card-rank';
-    if (idx < 3 && idx < pinnedCount) cls += ' pinned';
-    else if (idx >= rankingResults.length - buriedCount && buriedCount > 0) cls += ' buried';
-    else if (idx < 3) cls += ' top3';
-    rankDiv.className = cls;
-    rankDiv.textContent = '第 ' + (idx + 1) + ' 位';
-    card.appendChild(rankDiv);
+  const ranking = document.getElementById('resultRanking');
+  ranking.innerHTML = '';
 
-    const img = document.createElement('img');
-    setImgSrc(img, op, 'lazy');
-    img.alt = '';
-    card.appendChild(img);
+  const rows = getResultRows(rankingResults.length, window.innerWidth || document.documentElement.clientWidth || 1200);
+  rows.forEach(function(rowDef) {
+    const sizeClass = rowDef[0];
+    const start = rowDef[1];
+    const end = rowDef[2];
+    const row = document.createElement('div');
+    row.className = 'result-row';
 
-    const info = document.createElement('div');
-    info.className = 'result-card-info';
-    info.innerHTML = '<div class="cn-name">' + escapeHTML(op.name) + '</div>' +
-      '<div class="en-name">' + escapeHTML(op.appellation) + '</div>';
-    card.appendChild(info);
-    grid.appendChild(card);
+    rankingResults.slice(start, end).forEach(function(op, localIdx) {
+      const idx = start + localIdx;
+      row.appendChild(createResultCard(op, idx, sizeClass, pinnedCount, buriedCount, 'auto', false));
+    });
+
+    ranking.appendChild(row);
   });
 }
 
@@ -1512,36 +1686,65 @@ function ensureHtml2canvas(callback) {
 function exportRanking() {
   ensureHtml2canvas(function() {
     const container = document.createElement('div');
-    container.style.cssText = 'position:fixed;left:-9999px;top:0;background:#1a1a2e;padding:20px;';
-    container.innerHTML = '<h2 style="text-align:center;color:#e0e0e0;margin-bottom:16px;font-size:22px;">我的干员喜好排名</h2>';
-    const grid = document.createElement('div');
-    grid.style.cssText = 'display:grid;grid-template-columns:repeat(5,1fr);gap:10px;';
-    rankingResults.forEach((op, idx) => {
-      const card = document.createElement('div');
-      card.style.cssText = 'background:#22223a;border-radius:8px;overflow:hidden;text-align:center;';
-      const rankDiv = document.createElement('div');
-      rankDiv.style.cssText = 'padding:6px;font-size:13px;font-weight:700;background:' + (idx < 3 ? '#4a7ac7' : '#33335a') + ';color:#e0e0e0;';
-      rankDiv.textContent = '第 ' + (idx + 1) + ' 位'; card.appendChild(rankDiv);
-      const img = document.createElement('img');
-      img.src = getOperatorImage(op, 'auto'); img.style.cssText = 'width:100%;aspect-ratio:1;object-fit:contain;background:#111;display:block;';
-      img.onerror = function() { this.src = 'assets/ak/avatar/' + op.id + '.png'; this.onerror = null; };
-      card.appendChild(img);
-      const info = document.createElement('div'); info.style.cssText = 'padding:8px 6px;';
-      info.innerHTML = '<div style="font-size:14px;font-weight:600;color:#e0e0e0;">' + escapeHTML(op.name) + '</div>' + '<div style="font-size:11px;color:#888;margin-top:2px;">' + escapeHTML(op.appellation) + '</div>';
-      card.appendChild(info); grid.appendChild(card);
+    container.style.cssText = 'position:fixed;left:-20000px;top:0;width:1280px;background:#1a1a2e;padding:28px 36px 24px;color:#e0e0e0;';
+
+    const pinnedCount = pinnedTop.length;
+    const buriedCount = buriedBottom.length;
+
+    const title = document.createElement('h2');
+    title.style.cssText = 'text-align:center;color:#f4f6fb;margin:0 0 8px;font-size:32px;font-weight:800;';
+    title.textContent = '我的前 ' + rankingResults.length + ' 位干员排行';
+    container.appendChild(title);
+
+    const meta = document.createElement('p');
+    let metaText = '共 ' + rankingResults.length + ' 名干员';
+    if (pinnedCount > 0 || buriedCount > 0) {
+      metaText += ' · 含 ' + pinnedCount + ' 名置顶、' + buriedCount + ' 名沉底';
+    }
+    meta.style.cssText = 'text-align:center;color:#9ea5b7;margin:0 0 22px;font-size:18px;';
+    meta.textContent = metaText;
+    container.appendChild(meta);
+
+    const ranking = document.createElement('div');
+    ranking.className = 'result-ranking';
+    getResultRows(rankingResults.length, 1280).forEach(function(rowDef) {
+      const row = document.createElement('div');
+      row.className = 'result-row';
+      const sizeClass = rowDef[0];
+      const start = rowDef[1];
+      const end = rowDef[2];
+      rankingResults.slice(start, end).forEach(function(op, localIdx) {
+        row.appendChild(createResultCard(op, start + localIdx, sizeClass, pinnedCount, buriedCount, 'auto', true));
+      });
+      ranking.appendChild(row);
     });
-    container.appendChild(grid);
+    container.appendChild(ranking);
+
     const footer = document.createElement('div');
-    footer.style.cssText = 'margin-top:16px;display:flex;justify-content:space-between;align-items:flex-end;font-size:12px;color:#777;';
+    footer.style.cssText = 'margin-top:20px;display:flex;justify-content:space-between;align-items:flex-end;font-size:14px;color:#7f8598;gap:16px;';
     footer.innerHTML = '<div>非官方 fan-made project<br>游戏素材版权归原权利方所有</div>';
-    const qrWrap = document.createElement('div'); qrWrap.style.cssText = 'width:48px;height:48px;';
-    try { const url = window.location.href.split('?')[0]; const qrImg = document.createElement('img'); qrImg.src = QR.toDataURL(url, 3); qrImg.style.cssText = 'width:48px;height:48px;'; qrWrap.appendChild(qrImg); } catch(e) {}
-    footer.appendChild(qrWrap); container.appendChild(footer);
+    const qrWrap = document.createElement('div'); qrWrap.style.cssText = 'width:56px;height:56px;flex:0 0 auto;';
+    try {
+      const url = window.location.href.split('?')[0];
+      const qrImg = document.createElement('img');
+      qrImg.src = QR.toDataURL(url, 4);
+      qrImg.style.cssText = 'width:56px;height:56px;display:block;';
+      qrWrap.appendChild(qrImg);
+    } catch(e) {}
+    footer.appendChild(qrWrap);
+    container.appendChild(footer);
+
     document.body.appendChild(container);
     const images = container.querySelectorAll('img'); let loaded = 0; const total = images.length;
     function checkDone() { loaded++; if (loaded >= total) { setTimeout(function() { html2canvas(container, { backgroundColor: '#1a1a2e', scale: 2, useCORS: true, allowTaint: true }).then(function(canvas) { document.body.removeChild(container); downloadCanvas(canvas, 'ak-ranking.png'); }).catch(function(err) { document.body.removeChild(container); console.error('Export failed:', err); alert('导出失败，请重试。'); }); }, 300); } }
     if (total === 0) checkDone();
-    images.forEach(function(img) { if (img.complete) checkDone(); else img.onload = checkDone; });
+    images.forEach(function(img) {
+      if (img.complete) checkDone();
+      else {
+        img.onload = checkDone;
+        img.onerror = checkDone;
+      }
+    });
   });
 }
 
