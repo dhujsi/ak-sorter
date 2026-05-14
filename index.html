@@ -289,9 +289,11 @@ button.small { padding: 5px 10px; font-size: 12px; }
   <div class="sort-actions">
     <button id="btnUndo" disabled onclick="sorter.undo()">撤销</button>
     <button id="btnPostpone" onclick="postponePair()">搁置这一组</button>
+    <button id="btnViewRank" onclick="toggleCurrentRanking()">查看当前排名</button>
     <button id="btnSkip" onclick="finishSortEarly()">结束排序</button>
   </div>
   <div class="sort-status" id="sortStatus"></div>
+  <div id="currentRankingTable" style="display:none;margin-top:16px;text-align:left;max-width:500px;margin-left:auto;margin-right:auto;"></div>
 </section>
 
 <!-- ===== RESULT SECTION ===== -->
@@ -855,6 +857,62 @@ function updateSortUI() {
   document.getElementById('btnUndo').disabled = sorter.history.length === 0;
 }
 
+function toggleCurrentRanking() {
+  const div = document.getElementById('currentRankingTable');
+  if (div.style.display !== 'none') {
+    div.style.display = 'none';
+    return;
+  }
+
+  // Collect current ranking state
+  const lines = [];
+  let rank = 1;
+
+  // Pinned top
+  pinnedTop.forEach(op => {
+    lines.push({ r: rank++, name: op.name, app: op.appellation, source: '置顶' });
+  });
+
+  // Locked results from sorter
+  if (sorter) {
+    sorter.results.forEach(op => {
+      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '已锁定' });
+    });
+
+    // Remaining items in tree (current comparison pool + children)
+    function collectTree(items) {
+      const out = [];
+      for (const item of items) {
+        out.push(item.op);
+        out.push(...collectTree(item.children));
+      }
+      return out;
+    }
+    const remaining = collectTree(sorter.items);
+    remaining.forEach(op => {
+      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '待排序' });
+    });
+  }
+
+  // Buried bottom
+  buriedBottom.forEach(op => {
+    lines.push({ r: rank++, name: op.name, app: op.appellation, source: '沉底' });
+  });
+
+  let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#ccc;">';
+  html += '<tr style="border-bottom:1px solid #333;"><th style="padding:4px 8px;text-align:right;">#</th><th style="padding:4px 8px;">名称</th><th style="padding:4px 8px;">状态</th></tr>';
+  lines.forEach(l => {
+    html += '<tr style="border-bottom:1px solid #222;">';
+    html += '<td style="padding:3px 8px;text-align:right;color:#888;">' + l.r + '</td>';
+    html += '<td style="padding:3px 8px;">' + escapeHTML(l.name) + ' <span style="color:#666;font-size:11px;">' + escapeHTML(l.app) + '</span></td>';
+    html += '<td style="padding:3px 8px;color:#888;">' + l.source + '</td>';
+    html += '</tr>';
+  });
+  html += '</table>';
+  div.innerHTML = html;
+  div.style.display = 'block';
+}
+
 // ============================================================
 // SORT ACTIONS (override select/undo, add bury/pin/postpone)
 // ============================================================
@@ -870,10 +928,25 @@ TournamentSorter.prototype.select = function(leftIsBetter) {
 
 const _undoOrig = TournamentSorter.prototype.undo;
 TournamentSorter.prototype.undo = function() {
+  // Snapshot the pair before undoing so we can restore it
+  const last = this.history[this.history.length - 1];
+  if (!last) return false;
+  const leftOp = last.winner.op;
+  const rightOp = last.loser.op;
+
   if (!_undoOrig.call(this)) return false;
   updateSortUI(); autoSave();
-  const pair = this.getNextPair();
-  if (pair) { updateSortPair(pair); }
+
+  // Restore the exact same comparison pair
+  const wi = this.items.findIndex(it => it.op.id === leftOp.id);
+  const li = this.items.findIndex(it => it.op.id === rightOp.id);
+  if (wi >= 0 && li >= 0) {
+    this.currentPair = { i: Math.max(wi, li), j: Math.min(wi, li) };
+    updateSortPair({ left: leftOp, right: rightOp });
+  } else {
+    const pair = this.getNextPair();
+    if (pair) updateSortPair(pair);
+  }
   return true;
 };
 
@@ -1051,10 +1124,21 @@ function startPinnedTopSort(normalResults) {
   };
 
   sorter.undo = function() {
+    const last = this.history[this.history.length - 1];
+    if (!last) return false;
+    const leftOp = last.winner.op;
+    const rightOp = last.loser.op;
     if (!_undoOrig.call(this)) return false;
     updateSortUI();
-    const pair = this.getNextPair();
-    if (pair) updateSortPair(pair);
+    const wi = this.items.findIndex(it => it.op.id === leftOp.id);
+    const li = this.items.findIndex(it => it.op.id === rightOp.id);
+    if (wi >= 0 && li >= 0) {
+      this.currentPair = { i: Math.max(wi, li), j: Math.min(wi, li) };
+      updateSortPair({ left: leftOp, right: rightOp });
+    } else {
+      const pair = this.getNextPair();
+      if (pair) updateSortPair(pair);
+    }
     return true;
   };
 }
