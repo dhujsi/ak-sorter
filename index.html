@@ -622,8 +622,13 @@ function hasSavedProgress() {
 function loadProgress() {
   try {
     const raw = localStorage.getItem(SAVE_KEY);
+    console.log('loadProgress: raw exists=' + !!raw);
     if (!raw) return false;
     const state = JSON.parse(raw);
+    console.log('loadProgress: state.sorter.items.length=' +
+      (state.sorter && state.sorter.items ? state.sorter.items.length : '?') +
+      ', state.sorter.results.length=' +
+      (state.sorter && state.sorter.results ? state.sorter.results.length : '?'));
     pinnedTop = (state.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
     buriedBottom = (state.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
     postponedPairs = state.postponedPairs || {};
@@ -632,8 +637,11 @@ function loadProgress() {
       return l && r ? { left: l, right: r } : null;
     }).filter(Boolean);
     sorter = TournamentSorter.deserialize(state.sorter, opMap);
+    console.log('loadProgress: deserialized OK, sorter.items.length=' +
+      (sorter.items ? sorter.items.length : 'null') +
+      ', sorter.results.length=' + (sorter.results ? sorter.results.length : 'null'));
     return true;
-  } catch(e) { return false; }
+  } catch(e) { console.error('loadProgress error:', e); return false; }
 }
 
 function clearProgress() {
@@ -1261,6 +1269,10 @@ function finalizeResults(normalResults, preSnapshot) {
   renderResults();
   document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
   if (_savedSorterSnapshot) {
+    console.log('finalizeResults: saving snapshot, sorter.items.length=' +
+      (_savedSorterSnapshot.sorter && _savedSorterSnapshot.sorter.items ? _savedSorterSnapshot.sorter.items.length : '?') +
+      ', sorter.results.length=' +
+      (_savedSorterSnapshot.sorter && _savedSorterSnapshot.sorter.results ? _savedSorterSnapshot.sorter.results.length : '?'));
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
   }
   // Don't null sorter — keep it for potential return-to-sort
@@ -1279,11 +1291,19 @@ function finishSortEarly() {
     document.getElementById('sortStatus').textContent = '';
     showSection('section-result'); renderResults();
     document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
-    if (_savedSorterSnapshot) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {} }
+    if (_savedSorterSnapshot) {
+      console.log('finishSortEarly(pinned): saving snapshot, items=' +
+        (_savedSorterSnapshot.sorter && _savedSorterSnapshot.sorter.items ? _savedSorterSnapshot.sorter.items.length : '?'));
+      try { localStorage.setItem(SAVE_KEY, JSON.stringify(_savedSorterSnapshot)); } catch(e) {}
+    }
     return;
   }
 
   const preSnapshot = snapshotSorter();
+  console.log('finishSortEarly: preSnapshot items.length=' +
+    (preSnapshot && preSnapshot.sorter && preSnapshot.sorter.items ? preSnapshot.sorter.items.length : '?') +
+    ', results.length=' +
+    (preSnapshot && preSnapshot.sorter && preSnapshot.sorter.results ? preSnapshot.sorter.results.length : '?'));
   _unrankedTierOps = extractTreeIntoResults();
   const normalResults = [...sorter.results];
   finalizeResults(normalResults, preSnapshot);
@@ -1564,7 +1584,11 @@ function backToSort() {
 function _continueSorting() {
   showSection('section-sort');
   updateSortUI();
+  console.log('_continueSorting: sorter.items.length=' + (sorter.items ? sorter.items.length : 'null'),
+    'results.length=' + (sorter.results ? sorter.results.length : 'null'),
+    'rankCount=' + sorter.rankCount);
   if (!sorter.items || sorter.items.length === 0) {
+    console.log('_continueSorting: items empty, calling finishSort');
     finishSort();
     return;
   }
