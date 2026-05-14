@@ -1102,31 +1102,43 @@ function postponePair() {
 
 function finishSort() {
   if (!sorter) return;
+  _unrankedTierOps = extractTreeIntoResults();
+  const normalResults = [...sorter.results];
+  if (pinnedTop.length > 1) { startPinnedTopSort(normalResults); return; }
+  finalizeResults(normalResults);
+}
 
-  // Extract remaining organic locked ranks
+// BFS-extract tree into sorter.results. Returns operators that were never compared.
+function extractTreeIntoResults() {
+  // Organic locks from single-child chains
   while (sorter.items.length === 1) {
     sorter.results.push(sorter.items[0].op);
     sorter.items = sorter.items[0].children;
   }
-  // Collect any remaining pending ops (never locked) — they won't be ranked
-  _unrankedTierOps = [];
-  function collectPending(items) {
-    for (const item of items) {
-      _unrankedTierOps.push(item.op);
-      collectPending(item.children);
+  const unranked = [];
+  if (sorter.items.length > 1) {
+    // Build set of operator IDs that appear as a child somewhere (have comparison history)
+    const hasHistory = new Set();
+    function markHistory(items) {
+      for (const item of items) {
+        for (const c of item.children) { hasHistory.add(c.op.id); markHistory(c.children); }
+        if (item.children.length > 0) hasHistory.add(item.op.id);
+      }
+    }
+    markHistory(sorter.items);
+    // BFS: operators with comparison history go into results, others go to unranked
+    const queue = [...sorter.items];
+    while (queue.length > 0) {
+      const item = queue.shift();
+      if (hasHistory.has(item.op.id)) {
+        sorter.results.push(item.op);
+        queue.push(...item.children);
+      } else {
+        unranked.push(item.op);
+      }
     }
   }
-  collectPending(sorter.items);
-
-  const normalResults = [...sorter.results];
-
-  // Check if pinnedTop needs a 1v1 final phase
-  if (pinnedTop.length > 1) {
-    startPinnedTopSort(normalResults);
-    return;
-  }
-
-  finalizeResults(normalResults);
+  return unranked;
 }
 
 function startPinnedTopSort(normalResults) {
@@ -1189,35 +1201,19 @@ function finalizeResults(normalResults) {
 function finishSortEarly() {
   if (!sorter) return;
 
-  // If in pinned-top sort phase, merge with pending normal results
   if (_pendingNormalResults) {
-    const pinnedResults = [...sorter.results];
-    // Collect pending from pinned sort too
-    _unrankedTierOps = [];
-    const pq = [...sorter.items];
-    while (pq.length > 0) { const it = pq.shift(); _unrankedTierOps.push(it.op); pq.push(...it.children); }
-    pinnedTop = pinnedResults;
+    _unrankedTierOps = extractTreeIntoResults();
+    pinnedTop = [...sorter.results];
     rankingResults = [...pinnedTop, ..._pendingNormalResults, ...buriedBottom];
-    sorter = null;
-    _pendingNormalResults = null;
+    sorter = null; _pendingNormalResults = null;
     document.getElementById('sortStatus').textContent = '';
-    showSection('section-result');
-    renderResults();
+    showSection('section-result'); renderResults();
     try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
     return;
   }
 
-  // Only locked results go into ranking; pending ops are excluded
-  _unrankedTierOps = [];
-  function collectPending(items) {
-    for (const item of items) {
-      _unrankedTierOps.push(item.op);
-      collectPending(item.children);
-    }
-  }
-  collectPending(sorter.items);
-
-  const normalResults = [...sorter.results].slice(0, sorter.rankCount);
+  _unrankedTierOps = extractTreeIntoResults();
+  const normalResults = [...sorter.results];
   finalizeResults(normalResults);
 }
 
