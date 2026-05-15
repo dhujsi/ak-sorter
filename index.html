@@ -595,7 +595,7 @@ class TournamentSorter {
       results: this.results.map(op => op.id),
       comparisons: this.comparisons,
       history: this.history.map(h => ({
-        w: h.winner.op.id, l: h.loser.op.id
+        w: h.winner.op.id, l: h.loser.op.id, rlb: h._rlb
       }))
     };
   }
@@ -621,7 +621,7 @@ class TournamentSorter {
     s.history = data.history.map(h => {
       const winner = s.findItem(h.w);
       const loser = s.findItem(h.l);
-      return { winner, loser };
+      return { winner, loser, _rlb: h.rlb };
     });
     return s;
   }
@@ -1082,11 +1082,9 @@ TournamentSorter.prototype.undo = function() {
 
   // Rollback any results that were auto-locked by getNextPair()
   const rlb = last._rlb;
-  if (typeof rlb === 'number') {
-    while (this.results.length > rlb) {
-      const op = this.results.pop();
-      this.items = [{ op, children: this.items }];
-    }
+  if (typeof rlb === 'number' && this.results.length > rlb) {
+    while (this.results.length > rlb) { this.results.pop(); }
+    this.items = [last.winner];
   }
 
   if (!_undoOrig.call(this)) return false;
@@ -1316,11 +1314,9 @@ function startPinnedTopSort(normalResults) {
     const rightOp = last.loser.op;
     // Rollback auto-locked results
     const rlb = last._rlb;
-    if (typeof rlb === 'number') {
-      while (this.results.length > rlb) {
-        const op = this.results.pop();
-        this.items = [{ op, children: this.items }];
-      }
+    if (typeof rlb === 'number' && this.results.length > rlb) {
+      while (this.results.length > rlb) { this.results.pop(); }
+      this.items = [last.winner];
     }
     if (!_undoOrig.call(this)) return false;
     updateSortUI();
@@ -1363,16 +1359,31 @@ function finalizeResults(normalResults, preSnapshot) {
   // Don't null sorter — keep it for potential return-to-sort
 }
 
+function getPinnedPreviewResults() {
+  const out = [];
+  const seen = new Set();
+  function add(op) { if (op && !seen.has(op.id)) { seen.add(op.id); out.push(op); } }
+  // If in pinned sort phase, use sorter.results (partial) + original pinnedTop
+  if (sorter && _pendingNormalResults) {
+    sorter.results.forEach(add);
+    // Add remaining pinned ops not yet locked by the pinned sorter
+    pinnedTop.forEach(add);
+    return out;
+  }
+  pinnedTop.forEach(add);
+  return out;
+}
+
 function finishSortEarly() {
   if (!sorter) return;
 
   if (_pendingNormalResults) {
     const preSnapshot = snapshotSorter();
     _unrankedTierOps = extractTreeIntoResults();
-    pinnedTop = [...sorter.results];
+    const pinnedPreview = getPinnedPreviewResults();
     const seen2 = new Set();
     rankingResults = [];
-    for (const op of [...pinnedTop, ..._pendingNormalResults, ...buriedBottom]) {
+    for (const op of [...pinnedPreview, ..._pendingNormalResults, ...buriedBottom]) {
       if (!seen2.has(op.id)) { seen2.add(op.id); rankingResults.push(op); }
     }
     _savedSorterSnapshot = preSnapshot;
