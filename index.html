@@ -356,6 +356,13 @@ button.small { padding: 5px 10px; font-size: 12px; }
 <section id="section-result" class="section">
   <h2 id="resultTitle">我的干员喜好排名</h2>
   <p class="result-meta" id="resultMeta"></p>
+  <div class="result-actions">
+    <button class="primary" id="btnExportRanking" onclick="exportRanking()">导出排名图</button>
+    <button class="primary" id="btnGenTier" onclick="generateTier()">生成 Tier 图</button>
+    <button id="btnBackSort" onclick="backToSort()" style="display:none">返回排序</button>
+    <button onclick="backToFilterKeep()">返回首页</button>
+    <button class="danger small" onclick="backToFilterClear()" style="font-size:12px;padding:5px 10px;">清除并返回首页</button>
+  </div>
   <div class="result-ranking" id="resultRanking"></div>
   <details class="result-details" open>
     <summary>结果明细</summary>
@@ -366,13 +373,6 @@ button.small { padding: 5px 10px; font-size: 12px; }
       </div>
     </div>
   </details>
-  <div class="result-actions">
-    <button class="primary" id="btnExportRanking" onclick="exportRanking()">导出排名图</button>
-    <button class="primary" id="btnGenTier" onclick="generateTier()">生成 Tier 图</button>
-    <button id="btnBackSort" onclick="backToSort()" style="display:none">返回排序</button>
-    <button onclick="backToFilterKeep()">返回首页</button>
-    <button class="danger small" onclick="backToFilterClear()" style="font-size:12px;padding:5px 10px;">清除并返回首页</button>
-  </div>
 </section>
 
 <!-- ===== TIER SECTION ===== -->
