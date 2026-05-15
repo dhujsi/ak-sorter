@@ -1083,12 +1083,12 @@ TournamentSorter.prototype.undo = function() {
   if (!_undoOrig.call(this)) return false;
   updateSortUI(); autoSave();
 
-  // Restore the exact same comparison pair
+  // Restore exact pair: leftOp→left side, rightOp→right side
   const wi = this.items.findIndex(it => it.op.id === leftOp.id);
   const li = this.items.findIndex(it => it.op.id === rightOp.id);
   if (wi >= 0 && li >= 0) {
-    this.currentPair = { i: Math.max(wi, li), j: Math.min(wi, li) };
-    updateSortPair({ left: leftOp, right: rightOp });
+    this.currentPair = { i: wi, j: li };
+    updateSortPair({ left: this.items[wi].op, right: this.items[li].op });
   } else {
     const pair = this.getNextPair();
     if (pair) updateSortPair(pair);
@@ -1307,8 +1307,8 @@ function startPinnedTopSort(normalResults) {
     const wi = this.items.findIndex(it => it.op.id === leftOp.id);
     const li = this.items.findIndex(it => it.op.id === rightOp.id);
     if (wi >= 0 && li >= 0) {
-      this.currentPair = { i: Math.max(wi, li), j: Math.min(wi, li) };
-      updateSortPair({ left: leftOp, right: rightOp });
+      this.currentPair = { i: wi, j: li };
+      updateSortPair({ left: this.items[wi].op, right: this.items[li].op });
     } else {
       const pair = this.getNextPair();
       if (pair) updateSortPair(pair);
