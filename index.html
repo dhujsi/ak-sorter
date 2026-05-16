@@ -1211,7 +1211,8 @@ function postponePair() {
   const ops = getCurrentPairOps();
   if (!ops) return;
 
-  // Track pair postponement count
+  // Track pair postponement count only; postpone means "skip this comparison"
+  // and must not create another state path via postponedQueue.
   const ids = [ops.left.id, ops.right.id].sort();
   const key = ids[0] + '|' + ids[1];
   postponedPairs[key] = (postponedPairs[key] || 0) + 1;
@@ -1220,23 +1221,9 @@ function postponePair() {
     if (!confirm('这组已搁置多次，继续搁置可能导致无限循环。确定继续？')) return;
   }
 
-  postponedQueue.push({ left: ops.left, right: ops.right });
-
-  // Remove both items from sorter items
-  const p = sorter.currentPair;
-  // Remove larger index first to avoid index shift issues
-  const leftItem = sorter.items[p.i];
-  const rightItem = sorter.items[p.j];
-  sorter.items.splice(p.i, 1);
-  if (p.i !== p.j) {
-    const jIdx = sorter.items.indexOf(rightItem);
-    if (jIdx >= 0) sorter.items.splice(jIdx, 1);
-  }
-  // Put them back as independent items (no winner/loser)
-  sorter.items.push(leftItem, rightItem);
-
   sorter.currentPair = null;
-  updateSortUI(); autoSave();
+  updateSortUI();
+  autoSave();
   advanceSort();
 }
 
