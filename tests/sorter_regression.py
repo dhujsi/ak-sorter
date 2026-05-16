@@ -285,28 +285,39 @@ function runSorterRegressionTests() {
     __assert(pinnedTop[0].id === dom.left, 'pinnedTop recorded a non-left operator');
   }));
 
-  tests.push(__run('4. postponed pair restore keeps DOM pair aligned with getCurrentPairOps', function() {
-    __reset(['A', 'B'], 2);
-    sorter.items = [];
-    sorter.currentPair = null;
-    postponedQueue = [{ left: opMap.A, right: opMap.B }];
-    advanceSort();
+  tests.push(__run('4. postpone skips current comparison without queue growth and keeps DOM/internal aligned', function() {
+    __reset(['A', 'B', 'C', 'D'], 4);
+    __setPair('A', 'B');
+    var queueBefore = postponedQueue.length;
+    postponePair();
+
+    __assert(postponedQueue.length === queueBefore, 'postpone should not add to postponedQueue');
+    __assert(sorter.history.length === 0, 'postpone should not record comparison history');
+    __assert(sorter.results.length === 0, 'postpone should not lock any result');
+
+    var ids = __flattenItemIds(sorter.items, []);
+    __assert(__countId(ids, 'A') === 1, 'A should appear exactly once in sorter.items after postpone');
+    __assert(__countId(ids, 'B') === 1, 'B should appear exactly once in sorter.items after postpone');
+
     var pair = getCurrentPairOps();
     var dom = __domPairIds();
-    __assert(pair && dom.left === pair.left.id, 'restored left mismatch');
-    __assert(pair && dom.right === pair.right.id, 'restored right mismatch');
+    __assert(pair && dom.left === pair.left.id, 'left mismatch after postpone skip');
+    __assert(pair && dom.right === pair.right.id, 'right mismatch after postpone skip');
   }));
 
   tests.push(__run('5. postpone A/B then bury A leaves A only in buried region', function() {
     __reset(['A', 'B', 'C'], 3);
     __setPair('A', 'B');
     postponePair();
+
     __setPair('A', 'C');
     buryOp(true);
+
     __setResults(['B', 'C']);
     sorter.items = [];
     sorter.currentPair = null;
     advanceSort();
+
     var ids = __ids(rankingResults);
     __assert(ids[ids.length - 1] === 'A', 'A is not last in final ranking');
     __assert(__countId(ids, 'A') === 1, 'A appears more than once');
@@ -316,12 +327,15 @@ function runSorterRegressionTests() {
     __reset(['A', 'B', 'C'], 3);
     __setPair('A', 'B');
     postponePair();
+
     __setPair('A', 'C');
     pinTop(true);
+
     __setResults(['B', 'C']);
     sorter.items = [];
     sorter.currentPair = null;
     advanceSort();
+
     var ids = __ids(rankingResults);
     __assert(ids[0] === 'A', 'A is not first in final ranking');
     __assert(__countId(ids, 'A') === 1, 'A appears more than once');
