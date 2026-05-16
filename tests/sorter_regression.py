@@ -8,6 +8,7 @@ from py_mini_racer import py_mini_racer
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 INDEX_HTML = REPO_ROOT / "index.html"
+OPERATORS_JSON = REPO_ROOT / "assets" / "ak" / "data" / "operators.json"
 
 
 def extract_inline_script(html_text: str) -> str:
@@ -402,6 +403,237 @@ function runSorterRegressionTests() {
     __assert(restored.history[0]._rlb === 0, 'deserialized history is missing _rlb');
   }));
 
+
+  tests.push(__run('12. full real-roster preference oracle simulation with pinned buried and postponed choices', function() {
+    __assert(typeof __REAL_OPERATORS !== 'undefined', 'real operator roster was not injected');
+    __assert(__REAL_OPERATORS.length > 50, 'real operator roster is unexpectedly small');
+
+    function uniqIds(ops) {
+      var seen = {};
+      var out = [];
+      (ops || []).forEach(function(op) {
+        if (!op || !op.id || seen[op.id]) return;
+        seen[op.id] = true;
+        out.push(op.id);
+      });
+      return out;
+    }
+
+    function seededShuffle(input, seed) {
+      var arr = input.slice();
+      var state = seed >>> 0;
+      function rnd() {
+        state = (state * 1664525 + 1013904223) >>> 0;
+        return state / 4294967296;
+      }
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(rnd() * (i + 1));
+        var tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+      }
+      return arr;
+    }
+
+    function setDeterministicMathRandom(seed) {
+      var state = seed >>> 0;
+      Math.random = function() {
+        state = (state * 1103515245 + 12345) >>> 0;
+        return state / 4294967296;
+      };
+    }
+
+    function pairKey(a, b) {
+      return [a, b].sort().join('|');
+    }
+
+    var ids = uniqIds(__REAL_OPERATORS);
+    var preference = seededShuffle(ids, 20260517);
+
+    var pinnedOrder = preference.slice(0, 8);
+    var buriedCandidateOrder = preference.slice(preference.length - 8);
+    var pinnedSet = {};
+    var buriedSet = {};
+    pinnedOrder.forEach(function(id) { pinnedSet[id] = true; });
+    buriedCandidateOrder.forEach(function(id) { buriedSet[id] = true; });
+
+    var rank = {};
+    preference.forEach(function(id, idx) { rank[id] = idx; });
+
+    var postponedOnce = {};
+    var postponedKeys = [];
+    var buriedActionOrder = [];
+
+    __reset(ids, ids.length);
+    setDeterministicMathRandom(987654321);
+    advanceSort();
+
+    function assertNoDuplicateLiveState(label) {
+      var entries = [];
+      var inPinnedFinalSort = !!_pendingNormalResults;
+
+      function add(id, source) {
+        if (!id) return;
+        entries.push({ id: id, source: source });
+      }
+
+      function walk(items, source) {
+        (items || []).forEach(function(item) {
+          if (!item || !item.op) return;
+          add(item.op.id, source);
+          walk(item.children, source + '.children');
+        });
+      }
+
+      if (sorter) {
+        walk(sorter.items, 'sorter.items');
+        (sorter.results || []).forEach(function(op) {
+          add(op.id, 'sorter.results');
+        });
+      }
+
+      if (!inPinnedFinalSort) {
+        (pinnedTop || []).forEach(function(op) {
+          add(op.id, 'pinnedTop');
+        });
+      }
+
+      (buriedBottom || []).forEach(function(op) {
+        add(op.id, 'buriedBottom');
+      });
+
+      var byId = {};
+      entries.forEach(function(e) {
+        if (!byId[e.id]) byId[e.id] = [];
+        byId[e.id].push(e.source);
+      });
+
+      Object.keys(byId).forEach(function(id) {
+        var sources = byId[id];
+        if (sources.length > 1) {
+          throw new Error(label + ': duplicate live id ' + id + ' sources=' + sources.join(','));
+        }
+      });
+    }
+
+    function driveOneStep() {
+      if (!sorter.currentPair) {
+        advanceSort();
+        return true;
+      }
+
+      var pair = getCurrentPairOps();
+      if (!pair) return false;
+
+      var left = pair.left.id;
+      var right = pair.right.id;
+      var inPinnedFinalSort = !!_pendingNormalResults;
+
+      var dom = __domPairIds();
+      __assert(dom.left === left, 'DOM/internal left mismatch during full oracle simulation');
+      __assert(dom.right === right, 'DOM/internal right mismatch during full oracle simulation');
+
+      if (!inPinnedFinalSort) {
+        if (pinnedSet[left]) {
+          pinTop(true);
+          assertNoDuplicateLiveState('after pin left');
+          return true;
+        }
+        if (pinnedSet[right]) {
+          pinTop(false);
+          assertNoDuplicateLiveState('after pin right');
+          return true;
+        }
+
+        if (buriedSet[left]) {
+          buriedActionOrder.push(left);
+          buryOp(true);
+          assertNoDuplicateLiveState('after bury left');
+          return true;
+        }
+        if (buriedSet[right]) {
+          buriedActionOrder.push(right);
+          buryOp(false);
+          assertNoDuplicateLiveState('after bury right');
+          return true;
+        }
+
+        var key = pairKey(left, right);
+        if (!postponedOnce[key] && postponedKeys.length < 8) {
+          postponedOnce[key] = true;
+          postponedKeys.push(key);
+
+          var historyBefore = sorter.history.length;
+          var resultsBefore = sorter.results.length;
+          var queueBefore = postponedQueue.length;
+
+          postponePair();
+
+          __assert(sorter.history.length === historyBefore, 'postpone should not add history');
+          __assert(sorter.results.length === resultsBefore, 'postpone should not add results');
+          __assert(postponedQueue.length === queueBefore, 'postpone should not add postponedQueue under skip semantics');
+          assertNoDuplicateLiveState('after postpone');
+          return true;
+        }
+      }
+
+      sorter.select(rank[left] < rank[right]);
+
+      // If this select finished the pinned final sorter, finalizeResults()
+      // keeps sorter.results alive for return-to-sort while pinnedTop also
+      // still exists. That overlap is expected after reaching the result page.
+      if (__lastSection !== 'section-result') {
+        assertNoDuplicateLiveState('after select');
+      }
+
+      return true;
+    }
+
+    var guard = 0;
+    while (__lastSection !== 'section-result' && guard++ < 20000) {
+      driveOneStep();
+    }
+
+    __assert(guard < 20000, 'full oracle simulation did not finish');
+    __assert(__lastSection === 'section-result', 'full oracle simulation did not reach result section');
+    __assert(postponedKeys.length >= 3, 'full oracle simulation did not exercise enough postponed pairs');
+
+    var resultIds = __ids(rankingResults);
+    __assert(resultIds.length === ids.length, 'rankingResults length mismatch: ' + resultIds.length + ' vs ' + ids.length);
+    __assert(resultIds.length === new Set(resultIds).size, 'rankingResults contains duplicate ids');
+
+    var resultSet = {};
+    resultIds.forEach(function(id) { resultSet[id] = true; });
+    ids.forEach(function(id) {
+      __assert(resultSet[id], 'final ranking is missing id ' + id);
+    });
+
+    pinnedOrder.forEach(function(id, idx) {
+      __assert(resultIds[idx] === id, 'pinned order mismatch at #' + idx + ': expected ' + id + ', got ' + resultIds[idx]);
+    });
+
+    var buriedTail = resultIds.slice(resultIds.length - buriedBottom.length);
+    var buriedIds = __ids(buriedBottom);
+    __assert(buriedIds.length === buriedActionOrder.length, 'buried action/order length mismatch');
+
+    buriedIds.forEach(function(id, idx) {
+      __assert(id === buriedActionOrder[idx], 'buriedBottom action order mismatch at #' + idx);
+      __assert(buriedTail[idx] === id, 'buried tail mismatch at #' + idx + ': expected ' + id + ', got ' + buriedTail[idx]);
+    });
+
+    var pinnedIds = {};
+    pinnedOrder.forEach(function(id) { pinnedIds[id] = true; });
+    var buriedIdSet = {};
+    buriedIds.forEach(function(id) { buriedIdSet[id] = true; });
+
+    var normalSlice = resultIds.slice(pinnedOrder.length, resultIds.length - buriedIds.length);
+    normalSlice.forEach(function(id) {
+      __assert(!pinnedIds[id], 'pinned id leaked into normal region: ' + id);
+      __assert(!buriedIdSet[id], 'buried id leaked into normal region: ' + id);
+    });
+  }));
+
+
   return tests;
 }
 """
@@ -414,6 +646,13 @@ def main() -> int:
     ctx = py_mini_racer.MiniRacer()
     ctx.eval(PRELUDE)
     ctx.eval(app_script)
+
+    real_ops = [
+        op for op in json.loads(OPERATORS_JSON.read_text(encoding="utf-8"))
+        if op.get("id")
+    ]
+    ctx.eval("var __REAL_OPERATORS = " + json.dumps(real_ops, ensure_ascii=False) + ";")
+
     ctx.eval(TEST_HELPERS)
 
     raw = ctx.eval("JSON.stringify(runSorterRegressionTests())")

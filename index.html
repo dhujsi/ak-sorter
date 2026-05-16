@@ -44,7 +44,22 @@ button.small { padding: 5px 10px; font-size: 12px; }
   transition: border-color 0.15s, background 0.15s;
 }
 .filter-stars label.checked, .filter-gender label.checked { border-color: #4a7ac7; background: #2a2a4a; }
-.filter-stars label:hover, .filter-gender label:hover { border-color: #55558a; }
+@media (hover: hover) and (pointer: fine) {
+  .filter-stars label:hover,
+  .filter-gender label:hover,
+  .filter-rank label:hover,
+  .filter-img-mode label:hover {
+    border-color: #55558a;
+  }
+}
+
+.filter-stars label.checked:hover,
+.filter-gender label.checked:hover,
+.filter-rank label.checked:hover,
+.filter-img-mode label.checked:hover {
+  border-color: #4a7ac7;
+  background: #2a2a4a;
+}
 .filter-stars input, .filter-gender input { display: none; }
 .star-icon { color: #ffbf00; font-size: 14px; }
 
