@@ -1062,9 +1062,6 @@ function toggleCurrentRanking() {
     pendingCount = countTree(sorter.items);
   }
 
-  buriedBottom.forEach(op => {
-    lines.push({ r: rank++, name: op.name, app: op.appellation, source: '沉底' });
-  });
 
   let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#ccc;">';
   html += '<tr style="border-bottom:1px solid #333;"><th style="padding:4px 8px;text-align:right;">#</th><th style="padding:4px 8px;">名称</th><th style="padding:4px 8px;">状态</th></tr>';
@@ -1081,6 +1078,10 @@ function toggleCurrentRanking() {
   html += '</table>';
   if (pendingCount > 0) {
     html += '<p style="margin-top:8px;font-size:12px;color:#666;">仍有 ' + pendingCount + ' 名待排序，不计入当前排名</p>';
+  }
+  if (buriedBottom.length > 0) {
+    html += '<p style="margin-top:8px;font-size:12px;color:#996;">已排除 ' + buriedBottom.length + ' 名：' +
+      buriedBottom.map(op => escapeHTML(op.name)).join('、') + '</p>';
   }
   div.innerHTML = html;
   div.style.display = 'block';
@@ -1161,65 +1162,65 @@ function pinTop(isLeft) {
   autoSave();
 }
 
+function getExcludedIds() {
+  const ids = new Set();
+  pinnedTop.forEach(op => { if (op) ids.add(op.id); });
+  buriedBottom.forEach(op => { if (op) ids.add(op.id); });
+  return ids;
+}
+
 function rebuildSorterState() {
-  // Collect all IDs that should be excluded from normal sorting
-  const excludedIds = new Set();
-  pinnedTop.forEach(op => excludedIds.add(op.id));
-  buriedBottom.forEach(op => excludedIds.add(op.id));
+  if (!sorter) return;
 
-  // Keep existing results that aren't in excluded sets
-  const keepResults = sorter.results.filter(op => !excludedIds.has(op.id));
+  const excludedIds = getExcludedIds();
 
-  // Collect all operators still in the sorter tree (items + children)
-  function collectTreeItems(items, out) {
-    for (const item of items) {
-      if (!excludedIds.has(item.op.id)) out.push(item.op);
-      collectTreeItems(item.children, out);
+  // Remove excluded operators from locked results.
+  sorter.results = (sorter.results || []).filter(op => op && !excludedIds.has(op.id));
+
+  // Remove excluded operators from the tournament tree while preserving
+  // the remaining comparison structure. If a removed node has children,
+  // promote those children to the same level instead of flattening the
+  // whole sorter.
+  function pruneItems(items) {
+    const out = [];
+    for (const item of (items || [])) {
+      if (!item || !item.op) continue;
+
+      item.children = pruneItems(item.children || []);
+
+      if (excludedIds.has(item.op.id)) {
+        out.push(...item.children);
+      } else {
+        out.push(item);
+      }
     }
+    return out;
   }
-  const remainingOps = [];
-  collectTreeItems(sorter.items, remainingOps);
 
-  // Also preserve history that doesn't involve excluded items
-  const keepHistory = sorter.history.filter(h =>
-    !excludedIds.has(h.winner.op.id) && !excludedIds.has(h.loser.op.id)
+  sorter.items = pruneItems(sorter.items || []);
+
+  // Keep undo history only for comparisons that still make sense.
+  sorter.history = (sorter.history || []).filter(h =>
+    h && h.winner && h.loser && h.winner.op && h.loser.op &&
+    !excludedIds.has(h.winner.op.id) &&
+    !excludedIds.has(h.loser.op.id)
   );
 
-  // Rebuild sorter with remaining operators
-  const rankCount = sorter.rankCount - keepResults.length;
-  const newRankCount = Math.max(0, Math.min(rankCount, remainingOps.length));
+  // Legacy safety: old saves may still contain postponedQueue entries.
+  postponedQueue = (postponedQueue || []).filter(p => {
+    const left = p.left || (p.leftItem && p.leftItem.op);
+    const right = p.right || (p.rightItem && p.rightItem.op);
+    return left && right && !excludedIds.has(left.id) && !excludedIds.has(right.id);
+  });
 
-  if (remainingOps.length === 0) {
-    sorter.results = keepResults;
-    sorter.items = [];
-    sorter.history = [];
-    sorter.comparisons = keepHistory.length;
-    sorter.rankCount = keepResults.length;
-    sorter.currentPair = null;
-    updateSortUI();
-    const np = sorter.getNextPair();
-    if (np) updateSortPair(np);
-    else finishSort();
-    return;
-  }
-
-  // Shuffle remaining
-  for (let i = remainingOps.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [remainingOps[i], remainingOps[j]] = [remainingOps[j], remainingOps[i]];
-  }
-
-  const newSorter = new TournamentSorter(remainingOps, newRankCount);
-  newSorter.results = keepResults;
-  newSorter.history = keepHistory;
-  newSorter.comparisons = keepHistory.length;
-  sorter = newSorter;
-
+  sorter.currentPair = null;
   updateSortUI();
+
   const np = sorter.getNextPair();
   if (np) updateSortPair(np);
   else finishSort();
 }
+
 
 function postponePair() {
   if (!sorter || !sorter.currentPair) return;
@@ -1276,7 +1277,7 @@ function mergeRankingResults(pinnedResults, normalResults) {
 
   const seen = new Set();
   const merged = [];
-  for (const op of [...pinnedFinal, ...cleanNormalResults, ...buriedBottom]) {
+  for (const op of [...pinnedFinal, ...cleanNormalResults]) {
     if (op && !seen.has(op.id)) {
       seen.add(op.id);
       merged.push(op);
@@ -1568,15 +1569,20 @@ function renderResults() {
 
   let meta = '共 ' + rankingResults.length + ' 名干员';
   const pinnedCount = pinnedTop.length;
-  const buriedCount = buriedBottom.length;
-  if (pinnedCount > 0 || buriedCount > 0) {
-    meta += ' · 含 ' + pinnedCount + ' 名置顶、' + buriedCount + ' 名沉底';
+  const excludedCount = buriedBottom.length;
+  const buriedCount = 0; // excluded operators are not rendered/ranked
+  if (pinnedCount > 0) {
+    meta += '  含 ' + pinnedCount + ' 名置顶';
+  }
+  if (excludedCount > 0) {
+    meta += '  已排除 ' + excludedCount + ' 名';
   }
   document.getElementById('resultMeta').textContent = meta;
 
   const totalCandidates = getFilteredOps().length;
-  document.getElementById('resultSummary').textContent =
-    '当前排序范围共有 ' + totalCandidates + ' 名干员，本页展示前 ' + rankingResults.length + ' 名结果。';
+  let summary = '当前排序范围共有 ' + totalCandidates + ' 名干员，本页展示前 ' + rankingResults.length + ' 名结果。';
+  if (excludedCount > 0) summary += ' 已排除 ' + excludedCount + ' 名不参与排名。';
+  document.getElementById('resultSummary').textContent = summary;
 
   const table = document.getElementById('resultTable');
   let tableHTML = '<thead><tr><th>排名</th><th>干员</th><th class="appellation">称呼</th></tr></thead><tbody>';

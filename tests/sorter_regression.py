@@ -306,7 +306,7 @@ function runSorterRegressionTests() {
     __assert(pair && dom.right === pair.right.id, 'right mismatch after postpone skip');
   }));
 
-  tests.push(__run('5. postpone A/B then bury A leaves A only in buried region', function() {
+  tests.push(__run('5. postpone A/B then bury A excludes A from rankingResults', function() {
     __reset(['A', 'B', 'C'], 3);
     __setPair('A', 'B');
     postponePair();
@@ -320,8 +320,9 @@ function runSorterRegressionTests() {
     advanceSort();
 
     var ids = __ids(rankingResults);
-    __assert(ids[ids.length - 1] === 'A', 'A is not last in final ranking');
-    __assert(__countId(ids, 'A') === 1, 'A appears more than once');
+    __assert(ids.indexOf('A') === -1, 'A should be excluded from final rankingResults');
+    __assert(__ids(buriedBottom).indexOf('A') >= 0, 'A should remain recorded in buriedBottom/excluded list');
+    __assert(ids.length === 2, 'rankingResults should contain only non-excluded operators');
   }));
 
   tests.push(__run('6. postpone A/B then pin A keeps A only in pinned region', function() {
@@ -599,39 +600,69 @@ function runSorterRegressionTests() {
     __assert(postponedKeys.length >= 3, 'full oracle simulation did not exercise enough postponed pairs');
 
     var resultIds = __ids(rankingResults);
-    __assert(resultIds.length === ids.length, 'rankingResults length mismatch: ' + resultIds.length + ' vs ' + ids.length);
+    var buriedIds = __ids(buriedBottom);
+    var buriedIdSet = {};
+    buriedIds.forEach(function(id) { buriedIdSet[id] = true; });
+
+    __assert(resultIds.length === ids.length - buriedIds.length, 'rankingResults length mismatch after excluding buried ids: ' + resultIds.length + ' vs ' + (ids.length - buriedIds.length));
     __assert(resultIds.length === new Set(resultIds).size, 'rankingResults contains duplicate ids');
 
     var resultSet = {};
     resultIds.forEach(function(id) { resultSet[id] = true; });
+
     ids.forEach(function(id) {
-      __assert(resultSet[id], 'final ranking is missing id ' + id);
+      if (buriedIdSet[id]) {
+        __assert(!resultSet[id], 'excluded/buried id leaked into final ranking: ' + id);
+      } else {
+        __assert(resultSet[id], 'final ranking is missing non-excluded id ' + id);
+      }
     });
 
     pinnedOrder.forEach(function(id, idx) {
       __assert(resultIds[idx] === id, 'pinned order mismatch at #' + idx + ': expected ' + id + ', got ' + resultIds[idx]);
     });
 
-    var buriedTail = resultIds.slice(resultIds.length - buriedBottom.length);
-    var buriedIds = __ids(buriedBottom);
     __assert(buriedIds.length === buriedActionOrder.length, 'buried action/order length mismatch');
 
     buriedIds.forEach(function(id, idx) {
       __assert(id === buriedActionOrder[idx], 'buriedBottom action order mismatch at #' + idx);
-      __assert(buriedTail[idx] === id, 'buried tail mismatch at #' + idx + ': expected ' + id + ', got ' + buriedTail[idx]);
+      __assert(resultIds.indexOf(id) === -1, 'buried/excluded id should not appear in rankingResults: ' + id);
     });
 
     var pinnedIds = {};
     pinnedOrder.forEach(function(id) { pinnedIds[id] = true; });
-    var buriedIdSet = {};
-    buriedIds.forEach(function(id) { buriedIdSet[id] = true; });
 
-    var normalSlice = resultIds.slice(pinnedOrder.length, resultIds.length - buriedIds.length);
+    var normalSlice = resultIds.slice(pinnedOrder.length);
     normalSlice.forEach(function(id) {
       __assert(!pinnedIds[id], 'pinned id leaked into normal region: ' + id);
       __assert(!buriedIdSet[id], 'buried id leaked into normal region: ' + id);
     });
   }));
+
+  tests.push(__run('13. burying a tree parent preserves compared child subtree for current results', function() {
+    __reset(['A', 'B', 'C', 'D', 'E'], 5);
+
+    __setPair('A', 'B');
+    sorter.select(true);   // A > B
+
+    __setPair('C', 'D');
+    sorter.select(true);   // C > D
+
+    __setPair('A', 'C');
+    sorter.select(true);   // A > C > D, A also has B
+
+    __setPair('A', 'E');
+    buryOp(true);          // Exclude A, but keep B and C>D structure alive
+
+    finishSortEarly();
+
+    var ids = __ids(rankingResults);
+    __assert(ids.indexOf('A') === -1, 'buried parent A should be excluded');
+    __assert(ids.indexOf('C') >= 0, 'compared child C should remain available for current results');
+    __assert(ids.indexOf('D') >= 0, 'C child D should remain available for current results');
+    __assert(ids.length >= 2, 'current results lost too much compared subtree after bury');
+  }));
+
 
 
   return tests;
