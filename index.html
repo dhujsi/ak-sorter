@@ -824,6 +824,11 @@ function restoreNewOpMergeState(state) {
 function mergeNewDatabaseOperatorsIntoProgress() {
   if (!sorter) return 0;
 
+  if (!_newOpInsertion && _newOpQueue.length === 0 && _newOpMergeDone >= _newOpMergeTotal) {
+    _newOpMergeTotal = 0;
+    _newOpMergeDone = 0;
+  }
+
   const eligible = getOpsForSessionFilter(_sessionFilter);
   const represented = collectSessionOperatorIds();
   const queuedIds = new Set((_newOpQueue || []).map(op => op.id));
@@ -1201,7 +1206,9 @@ function finishNewOpInsertion(position) {
   _newOpInsertion = null;
   _newOpMergeDone += 1;
   autoSave();
-  startNextNewOpInsertion();
+  if (!startNextNewOpInsertion()) {
+    advanceSort();
+  }
 }
 
 function startNextNewOpInsertion() {
@@ -1871,6 +1878,8 @@ function getSessionCandidateCount() {
   addOps(buriedBottom);
   addOps(_unrankedTierOps);
   addOps(_pendingNormalResults);
+  addOps(_newOpQueue);
+  if (_newOpInsertion) addOp(_newOpInsertion.op);
   (postponedQueue || []).forEach(function(pair) {
     if (!pair) return;
     addOp(pair.left); addOp(pair.right);
