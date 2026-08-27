@@ -318,7 +318,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 <!-- ===== SORT SECTION ===== -->
 <section id="section-sort" class="section">
   <div class="sort-header">
-    <div class="sort-progress" id="sortProgress">第 0 次比较 · 已锁定 0 名</div>
+  <div class="sort-progress" id="sortProgress">第 0 次比较 · 尚无比较证据</div>
     <div class="sort-progress-bar"><div class="sort-progress-fill" id="sortProgressFill" style="width:0%"></div></div>
   </div>
 
@@ -561,6 +561,164 @@ function setImgSrc(img, op, usage) {
 // ============================================================
 // SORTING ALGORITHM (barank-style tournament tree)
 // ============================================================
+// A comparison ledger is deliberately kept separate from the tournament tree.
+// The tree is useful for choosing the next question, but it must not become the
+// only source of truth: an old tree can lock an item merely because it happens
+// to be the last root, while the ledger still contains the actual evidence.
+function resolveSavedOperator(id, sourceMap) {
+  if (!id) return null;
+  return sourceMap[id] || {
+    id,
+    name: id,
+    appellation: '旧进度中的干员',
+    star: 0,
+    gender: 'unknown',
+    missingFromDataset: true
+  };
+}
+
+class ComparisonLedger {
+  constructor(records = []) {
+    this.records = [];
+    this.wins = new Map();
+    this.losses = new Map();
+    this.ties = new Map();
+    records.forEach(record => this.add(record));
+  }
+
+  static fromHistory(history = []) {
+    return new ComparisonLedger(history.map(h => ({
+      w: h.w || (h.winner && h.winner.op && h.winner.op.id),
+      l: h.l || (h.loser && h.loser.op && h.loser.op.id),
+      o: h.o || (h.tie ? 'tie' : 'win')
+    })));
+  }
+
+  static fromSerialized(data, history = []) {
+    if (data && Array.isArray(data.records)) {
+      return new ComparisonLedger(data.records);
+    }
+    return ComparisonLedger.fromHistory(history);
+  }
+
+  add(record) {
+    if (!record) return false;
+    const w = record.w || record.winner;
+    const l = record.l || record.loser;
+    const outcome = record.o || record.outcome || (record.tie ? 'tie' : 'win');
+    if (typeof w !== 'string' || typeof l !== 'string' || !w || !l || w === l) return false;
+
+    this.records.push({ w, l, o: outcome === 'tie' ? 'tie' : 'win' });
+    if (outcome === 'tie') {
+      this.ties.set(w, (this.ties.get(w) || 0) + 1);
+      this.ties.set(l, (this.ties.get(l) || 0) + 1);
+    } else {
+      this.wins.set(w, (this.wins.get(w) || 0) + 1);
+      this.losses.set(l, (this.losses.get(l) || 0) + 1);
+    }
+    return true;
+  }
+
+  serialize() {
+    return { version: 1, records: this.records.map(r => ({ ...r })) };
+  }
+
+  withoutLastMatch(winnerId, loserId) {
+    const records = this.records.map(r => ({ ...r }));
+    for (let i = records.length - 1; i >= 0; i--) {
+      if (records[i].w === winnerId && records[i].l === loserId) {
+        records.splice(i, 1);
+        break;
+      }
+    }
+    return new ComparisonLedger(records);
+  }
+
+  // A conservative evidence score for previews and future adaptive pairing.
+  // It is intentionally not called a lock/rank: it can change when new
+  // comparisons arrive, including when a non-transitive cycle is observed.
+  score(id) {
+    const wins = this.wins.get(id) || 0;
+    const losses = this.losses.get(id) || 0;
+    const ties = this.ties.get(id) || 0;
+    return (wins + ties * 0.5 + 1) / (wins + losses + ties + 2);
+  }
+
+  getComparedIds() {
+    const ids = new Set();
+    this.records.forEach(record => { ids.add(record.w); ids.add(record.l); });
+    return ids;
+  }
+
+  // Bradley-Terry strengths fitted with an MM update and a weak neutral prior.
+  // The prior keeps disconnected/rarely seen operators comparable without
+  // pretending that the estimate is certain.
+  calculateScores(operators = []) {
+    const allIds = new Set(operators.filter(Boolean).map(op => op.id));
+    // Keep historical opponents in the fitted graph even when they have since
+    // been pinned or buried; otherwise their earlier comparisons would vanish.
+    this.records.forEach(record => { allIds.add(record.w); allIds.add(record.l); });
+    const ids = [...allIds];
+    const idSet = new Set(ids);
+    const strengths = new Map(ids.map(id => [id, 1]));
+    const effectiveWins = new Map(ids.map(id => [id, 0]));
+    const opponents = new Map(ids.map(id => [id, new Map()]));
+
+    this.records.forEach(record => {
+      if (!idSet.has(record.w) || !idSet.has(record.l)) return;
+      const wOpp = opponents.get(record.w);
+      const lOpp = opponents.get(record.l);
+      wOpp.set(record.l, (wOpp.get(record.l) || 0) + 1);
+      lOpp.set(record.w, (lOpp.get(record.w) || 0) + 1);
+      if (record.o === 'tie') {
+        effectiveWins.set(record.w, effectiveWins.get(record.w) + 0.5);
+        effectiveWins.set(record.l, effectiveWins.get(record.l) + 0.5);
+      } else {
+        effectiveWins.set(record.w, effectiveWins.get(record.w) + 1);
+      }
+    });
+
+    const priorWins = 1;
+    const priorGames = 2;
+    for (let iteration = 0; iteration < 80; iteration++) {
+      const next = new Map();
+      let maxDelta = 0;
+      ids.forEach(id => {
+        const own = strengths.get(id);
+        let denominator = priorGames / (own + 1);
+        opponents.get(id).forEach((games, opponentId) => {
+          denominator += games / (own + strengths.get(opponentId));
+        });
+        const updated = (effectiveWins.get(id) + priorWins) / Math.max(denominator, 1e-12);
+        next.set(id, Math.max(updated, 1e-9));
+      });
+
+      // Keep the scale stable; only ratios have meaning in Bradley-Terry.
+      const logMean = ids.length
+        ? [...next.values()].reduce((sum, value) => sum + Math.log(value), 0) / ids.length
+        : 0;
+      const scale = Math.exp(logMean);
+      ids.forEach(id => {
+        const normalized = next.get(id) / scale;
+        maxDelta = Math.max(maxDelta, Math.abs(Math.log(normalized / strengths.get(id))));
+        strengths.set(id, normalized);
+      });
+      if (maxDelta < 1e-8) break;
+    }
+
+    return strengths;
+  }
+
+  rank(operators = []) {
+    const scores = this.calculateScores(operators);
+    return [...operators].sort((a, b) => {
+      const delta = (scores.get(b.id) || 1) - (scores.get(a.id) || 1);
+      if (Math.abs(delta) > 1e-12) return delta;
+      return (a.name || a.id).localeCompare(b.name || b.id, 'zh-CN');
+    });
+  }
+}
+
 class TournamentSorter {
   constructor(operators, rankCount) {
     this.rankCount = Math.min(rankCount, operators.length);
@@ -569,23 +727,137 @@ class TournamentSorter {
     this.currentPair = null;
     this.history = [];
     this.comparisons = 0;
+    this.ledger = new ComparisonLedger();
+    this.comparisonBudget = this.getBaseComparisonBudget();
+    this.avoidPairKey = null;
+  }
+
+  getBaseComparisonBudget() {
+    const n = this.items.length;
+    if (n < 2) return 0;
+    const maxUniquePairs = n * (n - 1) / 2;
+    const target = Math.max(1, Math.min(this.rankCount, n));
+    return Math.min(maxUniquePairs, Math.max(n - 1, Math.ceil(n + target * 2)));
+  }
+
+  extendComparisonBudget() {
+    const n = this.items.length;
+    const batch = Math.max(10, Math.min(n, this.rankCount || n));
+    this.comparisonBudget = Math.max(this.comparisonBudget, this.comparisons) + batch;
+  }
+
+  isComparisonBudgetComplete() {
+    return this.items.length < 2 || this.comparisons >= this.comparisonBudget;
+  }
+
+  pairKey(a, b) {
+    return a < b ? a + '|' + b : b + '|' + a;
+  }
+
+  chooseAdaptivePair() {
+    const operators = this.items.map(item => item.op);
+    const indexById = new Map(operators.map((op, index) => [op.id, index]));
+    const appearances = new Map(operators.map(op => [op.id, 0]));
+    const pairCounts = new Map();
+    this.ledger.records.forEach(record => {
+      if (appearances.has(record.w)) appearances.set(record.w, appearances.get(record.w) + 1);
+      if (appearances.has(record.l)) appearances.set(record.l, appearances.get(record.l) + 1);
+      const key = this.pairKey(record.w, record.l);
+      pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
+    });
+
+    const strengths = this.ledger.calculateScores(operators);
+    const ranked = [...operators].sort((a, b) => (strengths.get(b.id) || 1) - (strengths.get(a.id) || 1));
+    const rankById = new Map(ranked.map((op, index) => [op.id, index]));
+    const exposureValues = operators.map(op => appearances.get(op.id));
+    const minExposure = Math.min(...exposureValues);
+    let chosen = null;
+
+    // Coverage phase: first make sure everyone is seen at least twice. Pair
+    // equally under-exposed operators and prefer an unseen matchup.
+    if (minExposure < 2) {
+      const primaryPool = operators
+        .map((op, index) => ({ op, index }))
+        .filter(entry => appearances.get(entry.op.id) === minExposure);
+      const primary = primaryPool[Math.floor(Math.random() * primaryPool.length)];
+      let bestScore = -Infinity;
+      operators.forEach((op, index) => {
+        if (index === primary.index) return;
+        const key = this.pairKey(primary.op.id, op.id);
+        if (key === this.avoidPairKey && operators.length > 2) return;
+        const pairCount = pairCounts.get(key) || 0;
+        const logDistance = Math.abs(Math.log((strengths.get(primary.op.id) || 1) / (strengths.get(op.id) || 1)));
+        const score = (pairCount === 0 ? 100 : 0)
+          - appearances.get(op.id) * 8
+          - logDistance
+          + Math.random() * 0.01;
+        if (score > bestScore) { bestScore = score; chosen = [primary.index, index]; }
+      });
+    }
+
+    // Refinement phase: compare close scores, especially around the requested
+    // cutoff. Repeats are allowed but strongly deprioritized, which lets noisy
+    // or context-sensitive preferences correct earlier evidence.
+    if (!chosen) {
+      const targetIndex = Math.max(0, Math.min(this.rankCount, ranked.length) - 1);
+      const focusLimit = this.rankCount < ranked.length
+        ? Math.min(ranked.length, this.rankCount + Math.max(12, Math.ceil(this.rankCount * 0.35)))
+        : ranked.length;
+      let bestScore = -Infinity;
+      const consider = (leftRank, rightRank) => {
+        if (leftRank < 0 || rightRank >= ranked.length || leftRank === rightRank) return;
+        const left = ranked[leftRank], right = ranked[rightRank];
+        const key = this.pairKey(left.id, right.id);
+        if (key === this.avoidPairKey && operators.length > 2) return;
+        const pairCount = pairCounts.get(key) || 0;
+        const logDistance = Math.abs(Math.log((strengths.get(left.id) || 1) / (strengths.get(right.id) || 1)));
+        const cutoffDistance = Math.min(Math.abs(leftRank - targetIndex), Math.abs(rightRank - targetIndex));
+        const score = 4 / (1 + logDistance * 5)
+          + (pairCount === 0 ? 3 : 1 / (1 + pairCount * 3))
+          + 1.5 / (1 + cutoffDistance)
+          + 1 / (1 + Math.min(appearances.get(left.id), appearances.get(right.id)))
+          + Math.random() * 0.01;
+        if (score > bestScore) {
+          bestScore = score;
+          chosen = [indexById.get(left.id), indexById.get(right.id)];
+        }
+      };
+
+      for (let i = 0; i < focusLimit; i++) {
+        for (let offset = 1; offset <= 6 && i + offset < ranked.length; offset++) {
+          consider(i, i + offset);
+        }
+      }
+      // Always include a band crossing the top-N cutoff.
+      for (let i = Math.max(0, targetIndex - 8); i <= targetIndex; i++) {
+        for (let j = targetIndex + 1; j <= Math.min(ranked.length - 1, targetIndex + 8); j++) consider(i, j);
+      }
+    }
+
+    if (!chosen) {
+      for (let i = 0; i < this.items.length && !chosen; i++) {
+        for (let j = i + 1; j < this.items.length; j++) {
+          if (this.pairKey(this.items[i].op.id, this.items[j].op.id) !== this.avoidPairKey || this.items.length === 2) {
+            chosen = [i, j];
+            break;
+          }
+        }
+      }
+    }
+    if (chosen && Math.random() < 0.5) chosen.reverse();
+    return chosen;
   }
 
   getNextPair() {
-    if (this.results.length >= this.rankCount) return null;
-    while (this.items.length === 1) {
-      const winner = this.items[0];
-      this.results.push(winner.op);
-      this.items = winner.children;
+    if (this.currentPair) {
+      return { left: this.items[this.currentPair.i].op, right: this.items[this.currentPair.j].op };
     }
-    if (this.items.length === 0) return null;
-    if (this.results.length >= this.rankCount) return null;
-
-    const i = Math.floor(Math.random() * this.items.length);
-    let j;
-    do { j = Math.floor(Math.random() * this.items.length); } while (j === i);
-
-    this.currentPair = { i: Math.max(i, j), j: Math.min(i, j) };
+    if (this.isComparisonBudgetComplete()) return null;
+    const chosen = this.chooseAdaptivePair();
+    if (!chosen) return null;
+    this.currentPair = { i: chosen[0], j: chosen[1] };
+    const chosenKey = this.pairKey(this.items[chosen[0]].op.id, this.items[chosen[1]].op.id);
+    if (chosenKey !== this.avoidPairKey) this.avoidPairKey = null;
     return {
       left: this.items[this.currentPair.i].op,
       right: this.items[this.currentPair.j].op
@@ -599,18 +871,12 @@ class TournamentSorter {
     const rightItem = this.items[j];
     const rollbackBase = this.results.length;
 
-    this.items.splice(i, 1);
-    const j2 = this.items.indexOf(rightItem);
-    this.items.splice(j2, 1);
-
     if (leftIsBetter) {
-      leftItem.children.push(rightItem);
-      this.items.push(leftItem);
       this.history.push({ winner: leftItem, loser: rightItem, _rlb: rollbackBase });
+      this.ledger.add({ w: leftItem.op.id, l: rightItem.op.id });
     } else {
-      rightItem.children.push(leftItem);
-      this.items.push(rightItem);
       this.history.push({ winner: rightItem, loser: leftItem, _rlb: rollbackBase });
+      this.ledger.add({ w: rightItem.op.id, l: leftItem.op.id });
     }
 
     this.comparisons++;
@@ -629,17 +895,37 @@ class TournamentSorter {
       this.items = [last.winner];
     }
     const { winner, loser } = this.history.pop();
-    const wi = this.items.indexOf(winner);
-    if (wi >= 0) this.items.splice(wi, 1);
-    const li = winner.children.indexOf(loser);
-    if (li >= 0) winner.children.splice(li, 1);
-    this.items.push(winner, loser);
+    this.ledger = this.ledger.withoutLastMatch(winner.op.id, loser.op.id);
     this.comparisons--;
+    this.currentPair = null;
     return true;
   }
 
   getProgress() {
-    return { comparisons: this.comparisons, locked: this.results.length, total: this.rankCount };
+    const candidates = this.getAllOperators();
+    const comparedIds = this.ledger.getComparedIds();
+    const covered = candidates.reduce((count, op) => count + (comparedIds.has(op.id) ? 1 : 0), 0);
+    return {
+      comparisons: this.comparisons,
+      covered,
+      total: candidates.length,
+      target: this.rankCount,
+      budget: this.comparisonBudget
+    };
+  }
+
+  getAllOperators() {
+    const out = [];
+    const seen = new Set();
+    const add = op => {
+      if (op && op.id && !seen.has(op.id)) { seen.add(op.id); out.push(op); }
+    };
+    this.items.forEach(item => add(item.op));
+    return out;
+  }
+
+  getEvidenceRanking(operators = this.getAllOperators()) {
+    return this.ledger.rank(operators);
   }
 
   // Serialize for localStorage — only IDs and structure, no base64 images
@@ -648,10 +934,13 @@ class TournamentSorter {
       return { o: item.op.id, c: item.children.map(serializeItem) };
     }
     return {
+      schemaVersion: 3,
       rankCount: this.rankCount,
-      items: this.items.map(serializeItem),
-      results: this.results.map(op => op.id),
+      items: this.items.map(item => ({ o: item.op.id, c: [] })),
+      results: [],
       comparisons: this.comparisons,
+      comparisonBudget: this.comparisonBudget,
+      evidence: this.ledger.serialize(),
       history: this.history.map(h => ({
         w: h.winner.op.id, l: h.loser.op.id, rlb: h._rlb
       }))
@@ -661,7 +950,7 @@ class TournamentSorter {
   // Deserialize — rebuild from IDs
   static deserialize(data, opMap) {
     function deserializeItem(d) {
-      const item = { op: opMap[d.o], children: d.c.map(deserializeItem) };
+      const item = { op: resolveSavedOperator(d.o, opMap), children: (d.c || []).map(deserializeItem) };
       return item;
     }
     function countItems(arr) {
@@ -669,31 +958,40 @@ class TournamentSorter {
       for (const it of arr) n += countItems(it.c || []);
       return n;
     }
-    const totalItems = (data.items ? countItems(data.items) : 0) + (data.results ? data.results.length : 0);
-    const rankCount = (data.rankCount > 0) ? data.rankCount : Math.max(1, totalItems);
-    const s = new TournamentSorter(new Array(rankCount).fill({ id: '_dummy' }), rankCount);
-    s.items = data.items.map(deserializeItem);
-    s.results = data.results.map(id => opMap[id]);
-    s.comparisons = data.comparisons;
-    s.rankCount = rankCount;
+    const treeItems = (data.items || []).map(deserializeItem);
+    const candidates = [];
+    const seen = new Set();
+    const add = op => { if (op && !seen.has(op.id)) { seen.add(op.id); candidates.push(op); } };
+    const walk = items => items.forEach(item => { add(item.op); walk(item.children || []); });
+    walk(treeItems);
+    (data.results || []).forEach(id => add(resolveSavedOperator(id, opMap)));
+    if (candidates.length === 0) {
+      (data.history || []).forEach(h => { add(resolveSavedOperator(h.w, opMap)); add(resolveSavedOperator(h.l, opMap)); });
+    }
+    const totalItems = candidates.length;
+    const rankCount = (data.rankCount > 0) ? Math.min(data.rankCount, totalItems) : Math.max(1, totalItems);
+    const s = new TournamentSorter(candidates, rankCount);
+    const itemById = new Map(s.items.map(item => [item.op.id, item]));
+    s.results = [];
+    s.comparisons = Number.isFinite(data.comparisons) ? data.comparisons : (data.history || []).length;
     s.history = (data.history || []).map(h => {
-      const winner = s.findItem(h.w);
-      const loser = s.findItem(h.l);
+      // A legacy tree may already have moved this node into `results`.
+      // Keep a lightweight history reference so old files can still be
+      // re-exported even when the node is no longer reachable from `items`.
+      const winner = itemById.get(h.w) || { op: resolveSavedOperator(h.w, opMap), children: [] };
+      const loser = itemById.get(h.l) || { op: resolveSavedOperator(h.l, opMap), children: [] };
       return { winner, loser, _rlb: h.rlb };
-    }).filter(h => h.winner && h.loser);
+    });
+    s.ledger = ComparisonLedger.fromSerialized(data.evidence, data.history || []);
+    const baseBudget = s.getBaseComparisonBudget();
+    s.comparisonBudget = Number.isFinite(data.comparisonBudget)
+      ? Math.max(data.comparisonBudget, s.comparisons)
+      : Math.max(baseBudget, s.comparisons >= baseBudget ? s.comparisons + Math.max(10, rankCount) : baseBudget);
     return s;
   }
 
   findItem(opId) {
-    function search(items) {
-      for (const item of items) {
-        if (item.op.id === opId) return item;
-        const found = search(item.children);
-        if (found) return found;
-      }
-      return null;
-    }
-    return search(this.items);
+    return this.items.find(item => item.op.id === opId) || null;
   }
 }
 
@@ -865,11 +1163,11 @@ function loadProgress() {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return false;
     const state = JSON.parse(raw);
-    pinnedTop = (state.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
-    buriedBottom = (state.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
+    pinnedTop = (state.pinnedTop || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
+    buriedBottom = (state.buriedBottom || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
     postponedPairs = state.postponedPairs || {};
     postponedQueue = (state.postponedQueue || []).map(p => {
-      const l = opMap[p.l], r = opMap[p.r];
+      const l = resolveSavedOperator(p.l, opMap), r = resolveSavedOperator(p.r, opMap);
       return l && r ? { left: l, right: r } : null;
     }).filter(Boolean);
     sorter = TournamentSorter.deserialize(state.sorter, opMap);
@@ -934,11 +1232,11 @@ function importState(event) {
       // Validate by trying to deserialize
       TournamentSorter.deserialize(data.sorter, opMap);
       // Restore state
-      pinnedTop = (data.pinnedTop || []).map(id => opMap[id]).filter(Boolean);
-      buriedBottom = (data.buriedBottom || []).map(id => opMap[id]).filter(Boolean);
+      pinnedTop = (data.pinnedTop || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
+      buriedBottom = (data.buriedBottom || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
       postponedPairs = data.postponedPairs || {};
       postponedQueue = (data.postponedQueue || []).map(p => {
-        const l = opMap[p.l], r = opMap[p.r];
+        const l = resolveSavedOperator(p.l, opMap), r = resolveSavedOperator(p.r, opMap);
         return l && r ? { left: l, right: r } : null;
       }).filter(Boolean);
       sorter = TournamentSorter.deserialize(data.sorter, opMap);
@@ -1323,10 +1621,15 @@ function updateSortPair(pair) {
 
 function updateSortUI() {
   if (!sorter) return;
+  const rankingPreview = document.getElementById('currentRankingTable');
+  if (rankingPreview && rankingPreview.style.display !== 'none') {
+    rankingPreview.style.display = 'none';
+  }
   const p = sorter.getProgress();
   document.getElementById('sortProgress').textContent =
-    '第 ' + p.comparisons + ' 次比较 · 已锁定 ' + p.locked + ' 名';
-  const pct = p.total > 0 ? Math.min(100, Math.round(p.locked / p.total * 100)) : 0;
+    '第 ' + p.comparisons + ' 次比较 · 已覆盖 ' + p.covered + ' / ' + p.total
+    + ' 名 · 本轮建议 ' + p.budget + ' 次';
+  const pct = p.budget > 0 ? Math.min(100, Math.round(p.comparisons / p.budget * 100)) : 100;
   document.getElementById('sortProgressFill').style.width = pct + '%';
   document.getElementById('btnUndo').disabled = _newOpInsertion
     ? (!_newOpInsertion.history || _newOpInsertion.history.length === 0)
@@ -1349,26 +1652,22 @@ function toggleCurrentRanking() {
   });
 
   if (sorter) {
-    sorter.results.forEach(op => {
-      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '已锁定' });
+    const candidates = sorter.getAllOperators();
+    const comparedIds = sorter.ledger.getComparedIds();
+    const provisional = sorter.getEvidenceRanking(candidates)
+      .filter(op => comparedIds.has(op.id))
+      .slice(0, sorter.rankCount);
+    provisional.forEach(op => {
+      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '暂定' });
     });
-
-    // Count pending operators but don't rank them
-    function countTree(items) {
-      let n = 0;
-      for (const item of items) {
-        n += 1 + countTree(item.children);
-      }
-      return n;
-    }
-    pendingCount = countTree(sorter.items);
+    pendingCount = candidates.reduce((count, op) => count + (comparedIds.has(op.id) ? 0 : 1), 0);
   }
 
 
   let html = '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#ccc;">';
   html += '<tr style="border-bottom:1px solid #333;"><th style="padding:4px 8px;text-align:right;">#</th><th style="padding:4px 8px;">名称</th><th style="padding:4px 8px;">状态</th></tr>';
   if (lines.length === 0) {
-    html += '<tr><td colspan="3" style="padding:8px;color:#666;text-align:center;">暂无已锁定排名</td></tr>';
+    html += '<tr><td colspan="3" style="padding:8px;color:#666;text-align:center;">暂无比较结果</td></tr>';
   }
   lines.forEach(l => {
     html += '<tr style="border-bottom:1px solid #222;">';
@@ -1379,12 +1678,13 @@ function toggleCurrentRanking() {
   });
   html += '</table>';
   if (pendingCount > 0) {
-    html += '<p style="margin-top:8px;font-size:12px;color:#666;">仍有 ' + pendingCount + ' 名待排序，不计入当前排名</p>';
+    html += '<p style="margin-top:8px;font-size:12px;color:#666;">仍有 ' + pendingCount + ' 名尚未参与比较，暂不计入排名</p>';
   }
   if (buriedBottom.length > 0) {
     html += '<p style="margin-top:8px;font-size:12px;color:#996;">已排除 ' + buriedBottom.length + ' 名：' +
       buriedBottom.map(op => escapeHTML(op.name)).join('、') + '</p>';
   }
+  html += '<p style="margin-top:6px;font-size:12px;color:#777;">暂定排名会随之后的选择继续变化，不代表已锁定。</p>';
   div.innerHTML = html;
   div.style.display = 'block';
 }
@@ -1398,7 +1698,7 @@ TournamentSorter.prototype.select = function(leftIsBetter) {
   if (!this.currentPair) return null;
   const resultsLenBefore = this.results.length;
   const result = _selectOrig.call(this, leftIsBetter);
-  // Tag the history entry with results length before auto-lock
+  // Keep the legacy rollback marker so older progress remains undoable.
   const last = this.history[this.history.length - 1];
   if (last) last._rlb = resultsLenBefore;
   updateSortUI(); autoSave();
@@ -1415,7 +1715,7 @@ TournamentSorter.prototype.undo = function() {
   const leftOp = last.winner.op;
   const rightOp = last.loser.op;
 
-  // Rollback any results that were auto-locked by getNextPair()
+  // Roll back auto-locked results found in a legacy progress file.
   const rlb = last._rlb;
   if (typeof rlb === 'number' && this.results.length > rlb) {
     while (this.results.length > rlb) { this.results.pop(); }
@@ -1477,38 +1777,14 @@ function rebuildSorterState() {
   if (!sorter) return;
 
   const excludedIds = getExcludedIds();
-
-  // Remove excluded operators from locked results.
-  sorter.results = (sorter.results || []).filter(op => op && !excludedIds.has(op.id));
-
-  // Remove excluded operators from the tournament tree while preserving
-  // the remaining comparison structure. If a removed node has children,
-  // promote those children to the same level instead of flattening the
-  // whole sorter.
-  function pruneItems(items) {
-    const out = [];
-    for (const item of (items || [])) {
-      if (!item || !item.op) continue;
-
-      item.children = pruneItems(item.children || []);
-
-      if (excludedIds.has(item.op.id)) {
-        out.push(...item.children);
-      } else {
-        out.push(item);
-      }
-    }
-    return out;
-  }
-
-  sorter.items = pruneItems(sorter.items || []);
-
-  // Keep undo history only for comparisons that still make sense.
-  sorter.history = (sorter.history || []).filter(h =>
+  // Legacy exports may have candidates in both `results` and the tree. Use the
+  // deduplicated candidate set; neither location means the item is locked.
+  const remainingOps = sorter.getAllOperators().filter(op => !excludedIds.has(op.id));
+  const preservedLedger = ComparisonLedger.fromSerialized(sorter.ledger.serialize());
+  const preservedBudget = sorter.comparisonBudget;
+  const keepHistory = (sorter.history || []).filter(h =>
     h && h.winner && h.loser && h.winner.op && h.loser.op &&
-    !excludedIds.has(h.winner.op.id) &&
-    !excludedIds.has(h.loser.op.id)
-  );
+    !excludedIds.has(h.winner.op.id) && !excludedIds.has(h.loser.op.id));
 
   // Legacy safety: old saves may still contain postponedQueue entries.
   postponedQueue = (postponedQueue || []).filter(p => {
@@ -1516,6 +1792,36 @@ function rebuildSorterState() {
     const right = p.right || (p.rightItem && p.rightItem.op);
     return left && right && !excludedIds.has(left.id) && !excludedIds.has(right.id);
   });
+  // Rebuild sorter with remaining operators
+  const newRankCount = Math.max(0, Math.min(sorter.rankCount, remainingOps.length));
+
+  if (remainingOps.length === 0) {
+    sorter.results = [];
+    sorter.items = [];
+    sorter.history = keepHistory;
+    sorter.ledger = preservedLedger;
+    sorter.comparisons = preservedLedger.records.length;
+    sorter.rankCount = 0;
+    sorter.currentPair = null;
+    updateSortUI();
+    const np = sorter.getNextPair();
+    if (np) updateSortPair(np);
+    else finishSort();
+    return;
+  }
+
+  // Shuffle remaining
+  for (let i = remainingOps.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [remainingOps[i], remainingOps[j]] = [remainingOps[j], remainingOps[i]];
+  }
+
+  const newSorter = new TournamentSorter(remainingOps, newRankCount);
+  newSorter.history = keepHistory;
+  newSorter.ledger = preservedLedger;
+  newSorter.comparisons = preservedLedger.records.length;
+  newSorter.comparisonBudget = Math.max(preservedBudget, newSorter.comparisons + Math.max(10, newRankCount));
+  sorter = newSorter;
 
   sorter.currentPair = null;
   updateSortUI();
@@ -1541,6 +1847,8 @@ function postponePair() {
     if (!confirm('这组已搁置多次，继续搁置可能导致无限循环。确定继续？')) return;
   }
 
+  // Adaptive pairing can simply avoid this pair once and choose another.
+  sorter.avoidPairKey = key;
   sorter.currentPair = null;
   updateSortUI();
   autoSave();
@@ -1592,10 +1900,16 @@ function mergeRankingResults(pinnedResults, normalResults) {
 
 function finishSort() {
   if (!sorter) return;
-  // Snapshot BEFORE extraction so "返回排序" can restore the real state
+  if (_pendingNormalResults) {
+    finalizeResults(_pendingNormalResults);
+    return;
+  }
+  // Snapshot before building a provisional view so "返回排序" restores the
+  // exact comparison state.
   const preSnapshot = snapshotSorter();
-  _unrankedTierOps = extractTreeIntoResults();
-  const normalResults = [...sorter.results];
+  const provisional = buildEvidenceResults();
+  _unrankedTierOps = provisional.unranked;
+  const normalResults = provisional.results;
   if (pinnedTop.length > 1) { startPinnedTopSort(normalResults, preSnapshot); return; }
   finalizeResults(normalResults, preSnapshot);
 }
@@ -1611,39 +1925,18 @@ function snapshotSorter() {
   });
 }
 
-// BFS-extract tree into sorter.results. Returns operators that were never compared.
-function extractTreeIntoResults() {
-  // Organic locks from single-child chains
-  while (sorter.items.length === 1) {
-    sorter.results.push(sorter.items[0].op);
-    sorter.items = sorter.items[0].children;
-  }
-  const unranked = [];
-  if (sorter.items.length > 1) {
-    // Build set of operator IDs that appear as a child somewhere (have comparison history)
-    const hasHistory = new Set();
-    function markHistory(items) {
-      for (const item of items) {
-        for (const c of item.children) { hasHistory.add(c.op.id); markHistory(c.children); }
-        if (item.children.length > 0) hasHistory.add(item.op.id);
-      }
-    }
-    markHistory(sorter.items);
-    // BFS: operators with comparison history go into results, others go to unranked
-    const alreadyInResults = new Set(sorter.results.map(op => op.id));
-    const queue = [...sorter.items];
-    while (queue.length > 0) {
-      const item = queue.shift();
-      if (hasHistory.has(item.op.id) && !alreadyInResults.has(item.op.id)) {
-        sorter.results.push(item.op);
-        alreadyInResults.add(item.op.id);
-        queue.push(...item.children);
-      } else if (!hasHistory.has(item.op.id)) {
-        unranked.push(item.op);
-      }
-    }
-  }
-  return unranked;
+// Build a read-only provisional result from all available comparison evidence.
+// This never drains the tree and never writes a hard lock into `sorter.results`.
+function buildEvidenceResults() {
+  const candidates = sorter.getAllOperators();
+  const comparedIds = sorter.ledger.getComparedIds();
+  const includeSoleCandidate = candidates.length === 1;
+  const rankedCandidates = candidates.filter(op => includeSoleCandidate || comparedIds.has(op.id));
+  const unranked = candidates.filter(op => !includeSoleCandidate && !comparedIds.has(op.id));
+  return {
+    results: sorter.getEvidenceRanking(rankedCandidates).slice(0, sorter.rankCount),
+    unranked
+  };
 }
 
 function startPinnedTopSort(normalResults, preSnapshot) {
@@ -1656,52 +1949,13 @@ function startPinnedTopSort(normalResults, preSnapshot) {
     '置顶干员最终排序 (' + pinnedOps.length + ' 名) — 点击选择你更喜欢的';
   updateSortUI();
   advanceSort();
-
-  sorter.select = function(leftIsBetter) {
-    const resultsLenBefore = this.results.length;
-    const result = _selectOrig.call(this, leftIsBetter);
-    const lastH = this.history[this.history.length - 1];
-    if (lastH) lastH._rlb = resultsLenBefore;
-    updateSortUI(); autoSave();
-    if (result) { updateSortPair(result); }
-    else {
-      _pendingNormalResults = null;
-      finalizeResults(normalResults, preSnapshot);
-    }
-    return result;
-  };
-
-  sorter.undo = function() {
-    const last = this.history[this.history.length - 1];
-    if (!last) return false;
-    const leftOp = last.winner.op;
-    const rightOp = last.loser.op;
-    // Rollback auto-locked results
-    const rlb = last._rlb;
-    if (typeof rlb === 'number' && this.results.length > rlb) {
-      while (this.results.length > rlb) { this.results.pop(); }
-      this.items = [last.winner];
-    }
-    if (!_undoOrig.call(this)) return false;
-    updateSortUI(); autoSave();
-    const wi = this.items.findIndex(it => it.op.id === leftOp.id);
-    const li = this.items.findIndex(it => it.op.id === rightOp.id);
-    if (wi >= 0 && li >= 0) {
-      this.currentPair = { i: wi, j: li };
-      updateSortPair({ left: this.items[wi].op, right: this.items[li].op });
-    } else {
-      const pair = this.getNextPair();
-      if (pair) updateSortPair(pair);
-    }
-    return true;
-  };
 }
 
 let _savedSorterSnapshot = null; // snapshot for "返回排序", survives page nav
 
 function finalizeResults(normalResults, preSnapshot) {
-  const pinnedFinal = (pinnedTop.length > 1 && sorter && sorter.results.length === pinnedTop.length)
-    ? [...sorter.results]
+  const pinnedFinal = (pinnedTop.length > 1 && sorter && _pendingNormalResults)
+    ? sorter.getEvidenceRanking(pinnedTop)
     : [...pinnedTop];
 
   rankingResults = mergeRankingResults(pinnedFinal, normalResults);
@@ -1722,11 +1976,9 @@ function getPinnedPreviewResults() {
   const out = [];
   const seen = new Set();
   function add(op) { if (op && !seen.has(op.id)) { seen.add(op.id); out.push(op); } }
-  // If in pinned sort phase, use sorter.results (partial) + original pinnedTop
+  // During the pinned phase, every order is provisional and evidence-based.
   if (sorter && _pendingNormalResults) {
-    sorter.results.forEach(add);
-    // Add remaining pinned ops not yet locked by the pinned sorter
-    pinnedTop.forEach(add);
+    sorter.getEvidenceRanking(pinnedTop).forEach(add);
     return out;
   }
   pinnedTop.forEach(add);
@@ -1738,7 +1990,6 @@ function finishSortEarly() {
 
   if (_pendingNormalResults) {
     const preSnapshot = snapshotSorter();
-    _unrankedTierOps = extractTreeIntoResults();
     rankingResults = mergeRankingResults(getPinnedPreviewResults(), _pendingNormalResults);
     _savedSorterSnapshot = preSnapshot;
     _pendingNormalResults = null;
@@ -1750,9 +2001,9 @@ function finishSortEarly() {
   }
 
   const preSnapshot = snapshotSorter();
-  _unrankedTierOps = extractTreeIntoResults();
-  const normalResults = [...sorter.results];
-  finalizeResults(normalResults, preSnapshot);
+  const provisional = buildEvidenceResults();
+  _unrankedTierOps = provisional.unranked;
+  finalizeResults(provisional.results, preSnapshot);
 }
 
 // ============================================================
@@ -2207,6 +2458,11 @@ function backToFilterClear() {
 }
 function backToSort() {
   if (!loadProgress()) { backToFilter(); return; }
+  // Returning after the suggested batch means the user wants more refinement.
+  if (sorter.isComparisonBudgetComplete() && sorter.items.length > 1) {
+    sorter.extendComparisonBudget();
+    autoSave();
+  }
   _continueSorting();
 }
 
