@@ -1,0 +1,55 @@
+name: Update operator data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 */6 * * *"
+  push:
+    branches:
+      - master
+    paths:
+      - "sync_operator_data.py"
+      - ".github/workflows/update-operators.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-operators
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync operator data and missing images
+        run: python sync_operator_data.py
+
+      - name: Rebuild gender metadata
+        run: python build_gender_data.py
+
+      - name: Commit updates
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             assets/ak/data/operators.json             assets/ak/data/operator_extra.json             assets/ak/avatar             assets/ak/portrait
+
+          if git diff --cached --quiet; then
+            echo "No operator updates."
+            exit 0
+          fi
+
+          git commit -m "chore: auto-update operator data"
+          git pull --rebase origin master
+          git push origin HEAD:master
