@@ -36,12 +36,18 @@ HEADERS = {
 }
 
 
-def fetch_bytes(url: str, *, retries: int = 3, allow_404: bool = False) -> bytes | None:
+def fetch_bytes(
+    url: str,
+    *,
+    retries: int = 3,
+    allow_404: bool = False,
+    timeout: int = 60,
+) -> bytes | None:
     last_error = None
     for attempt in range(retries):
         try:
             req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=60) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return resp.read()
         except urllib.error.HTTPError as exc:
             if exc.code == 404 and allow_404:
@@ -54,8 +60,8 @@ def fetch_bytes(url: str, *, retries: int = 3, allow_404: bool = False) -> bytes
     raise RuntimeError(f"Failed to fetch {url}: {last_error}")
 
 
-def fetch_json(url: str) -> dict:
-    raw = fetch_bytes(url)
+def fetch_json(url: str, *, retries: int = 3, timeout: int = 60) -> dict:
+    raw = fetch_bytes(url, retries=retries, timeout=timeout)
     if raw is None:
         raise RuntimeError(f"Unexpected empty response: {url}")
     return json.loads(raw.decode("utf-8"))
@@ -130,7 +136,7 @@ def fetch_prts_halfbody_index() -> tuple[dict[str, str], str]:
                 **continuation,
             }
             url = PRTS_API + "?" + urllib.parse.urlencode(params)
-            data = fetch_json(url)
+            data = fetch_json(url, retries=1, timeout=15)
             for item in ((data.get("query") or {}).get("allimages") or []):
                 name = item.get("name")
                 image_url = item.get("url")
@@ -260,6 +266,17 @@ for char_id, skins in released_skins_by_char.items():
 
 prts_images, prts_index_source = fetch_prts_halfbody_index()
 print(f"PRTS halfbody index: {len(prts_images)} files ({prts_index_source})")
+
+# Avoid hundreds of per-file timeouts if the PRTS media host is unreachable.
+if prts_images:
+    probe_url = next(iter(prts_images.values()))
+    try:
+        probe = fetch_bytes(probe_url, retries=1, timeout=10)
+        if not probe:
+            raise RuntimeError("empty response")
+    except Exception as exc:
+        print(f"PRTS media host unavailable; skin halfbodies will fall back to skin avatars: {exc}")
+        prts_images = {}
 
 old_skin_manifest = load_json_file(LATEST_SKINS_PATH, {})
 if not isinstance(old_skin_manifest, dict):
