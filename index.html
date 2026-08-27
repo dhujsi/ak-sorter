@@ -411,7 +411,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 </div><!-- .container -->
 
 <footer class="site-footer">
-  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.08.27-2</span></p>
+  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.08.27-3</span></p>
   <p>
     <a href="about.html">关于 / 声明 / 开源许可</a> &nbsp;·&nbsp;
     <a href="https://github.com/dhujsi/ak-sorter" target="_blank" rel="noopener">Source code</a> &nbsp;·&nbsp;
@@ -482,7 +482,7 @@ let _newOpMergeDone = 0;
 let selectedStars = new Set([4, 5, 6]);
 let selectedGenders = new Set(['male', 'female', 'unknown']);
 let selectedRank = 20;
-let imageMode = 'portrait'; // 'portrait' | 'avatar' | 'skin'
+let imageMode = 'portrait'; // 'portrait' | 'avatar' | 'skinPortrait' | 'skinAvatar'
 let mergeAlters = true;      // true = exclude alter operators
 
 const TIER_CONFIG = [
@@ -509,18 +509,28 @@ const GENDER_OPTIONS = [
 // UNIFIED IMAGE PATH
 // ============================================================
 function getOperatorImageCandidates(op, usage) {
-  // usage: 'portrait' (compare/result), 'avatar' (tier), 'auto' (follows imageMode)
+  // usage: 'avatar' is used by Tier cards; 'auto' follows the selected image mode.
   const baseAvatar = 'assets/ak/avatar/' + op.id + '.png';
   const basePortrait = 'assets/ak/portrait/' + op.id + '.png';
   const skinAvatar = 'assets/ak/skin-avatar/' + op.id + '.png';
   const skinPortrait = 'assets/ak/skin-portrait/' + op.id + '.png';
 
-  if (imageMode === 'skin') {
-    if (usage === 'avatar') return [skinAvatar, baseAvatar];
+  // Tier cards stay avatar-shaped, but honor whether the user selected latest-skin assets.
+  if (usage === 'avatar') {
+    return (imageMode === 'skinPortrait' || imageMode === 'skinAvatar')
+      ? [skinAvatar, baseAvatar]
+      : [baseAvatar];
+  }
+
+  if (usage === 'portrait') return [basePortrait, baseAvatar];
+
+  if (imageMode === 'skinPortrait') {
     return [skinPortrait, skinAvatar, basePortrait, baseAvatar];
   }
-  if (usage === 'avatar') return [baseAvatar];
-  if (usage === 'portrait' || (usage === 'auto' && imageMode === 'portrait')) {
+  if (imageMode === 'skinAvatar') {
+    return [skinAvatar, baseAvatar];
+  }
+  if (imageMode === 'portrait') {
     return [basePortrait, baseAvatar];
   }
   return [baseAvatar];
@@ -709,7 +719,7 @@ function loadSettings() {
       if (s.selectedStars) selectedStars = new Set(s.selectedStars);
       if (s.selectedGenders) selectedGenders = new Set(s.selectedGenders);
       if (s.selectedRank !== undefined) selectedRank = s.selectedRank;
-      if (s.imageMode) imageMode = s.imageMode;
+      if (s.imageMode) imageMode = (s.imageMode === 'skin' ? 'skinPortrait' : s.imageMode);
       if (s.mergeAlters !== undefined) mergeAlters = s.mergeAlters;
     }
   } catch(e) {}
@@ -1038,9 +1048,10 @@ function buildFilterPage() {
   const imgDiv = document.getElementById('imgModeFilters');
   imgDiv.innerHTML = '';
   [
-    { value: 'portrait', label: '半身图模式' },
-    { value: 'skin', label: '最新皮肤模式' },
-    { value: 'avatar', label: '头像模式 (更快)' }
+    { value: 'portrait', label: '原版半身图' },
+    { value: 'avatar', label: '原版头像' },
+    { value: 'skinPortrait', label: '最新皮肤半身' },
+    { value: 'skinAvatar', label: '最新皮肤头像' }
   ].forEach(m => {
     const label = document.createElement('label');
     if (imageMode === m.value) label.classList.add('checked');
