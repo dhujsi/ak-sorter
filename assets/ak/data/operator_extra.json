@@ -26,6 +26,9 @@
   "char_4188_confes": {
     "gender": "unknown"
   },
+  "char_4215_buddy": {
+    "gender": "unknown"
+  },
   "char_4227_gallus": {
     "gender": "unknown"
   },
@@ -349,6 +352,9 @@
   },
   "char_1036_fang2": {
     "gender": "female"
+  },
+  "char_1049_catap2": {
+    "gender": "unknown"
   },
   "char_106_franka": {
     "gender": "female"
@@ -812,6 +818,15 @@
   "char_422_aurora": {
     "gender": "female"
   },
+  "char_4234_pedro": {
+    "gender": "unknown"
+  },
+  "char_4236_tmslot": {
+    "gender": "unknown"
+  },
+  "char_4237_jcinta": {
+    "gender": "unknown"
+  },
   "char_431_ashlok": {
     "gender": "female"
   },
@@ -929,6 +944,9 @@
   "char_1014_nearl2": {
     "gender": "female"
   },
+  "char_1015_aglna2": {
+    "gender": "unknown"
+  },
   "char_1016_agoat2": {
     "gender": "female"
   },
@@ -997,6 +1015,9 @@
   },
   "char_1047_halo2": {
     "gender": "female"
+  },
+  "char_1048_orchd2": {
+    "gender": "unknown"
   },
   "char_1050_chen3": {
     "gender": "female"
@@ -1270,6 +1291,15 @@
   },
   "char_4228_closur": {
     "gender": "female"
+  },
+  "char_4229_aphris": {
+    "gender": "unknown"
+  },
+  "char_4230_mcnist": {
+    "gender": "unknown"
+  },
+  "char_4235_thumpy": {
+    "gender": "unknown"
   },
   "char_423_blemsh": {
     "gender": "female"

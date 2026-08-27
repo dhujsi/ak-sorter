@@ -72,6 +72,14 @@
     "subProfession": "pioneer"
   },
   {
+    "id": "char_4215_buddy",
+    "name": "罗德岛隐秘队",
+    "appellation": "Rhodes Island Recon",
+    "star": 1,
+    "profession": "PIONEER",
+    "subProfession": "tactician"
+  },
+  {
     "id": "char_4227_gallus",
     "name": "GALLUS²",
     "appellation": "GALLUS²",
@@ -934,6 +942,14 @@
     "star": 5,
     "profession": "PIONEER",
     "subProfession": "charger"
+  },
+  {
+    "id": "char_1049_catap2",
+    "name": "雷狼龙S空爆",
+    "appellation": "Zinogre S Catapult",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "mercenary"
   },
   {
     "id": "char_106_franka",
@@ -2168,6 +2184,30 @@
     "subProfession": "duelist"
   },
   {
+    "id": "char_4234_pedro",
+    "name": "佩德洛",
+    "appellation": "Pedro",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "supportiveranger"
+  },
+  {
+    "id": "char_4236_tmslot",
+    "name": "时隙",
+    "appellation": "Timeslot",
+    "star": 5,
+    "profession": "CASTER",
+    "subProfession": "funnel"
+  },
+  {
+    "id": "char_4237_jcinta",
+    "name": "嘉辛塔",
+    "appellation": "Jacinta",
+    "star": 5,
+    "profession": "PIONEER",
+    "subProfession": "bearer"
+  },
+  {
     "id": "char_431_ashlok",
     "name": "灰毫",
     "appellation": "Ashlock",
@@ -2480,6 +2520,14 @@
     "subProfession": "fearless"
   },
   {
+    "id": "char_1015_aglna2",
+    "name": "予愿安洁莉娜",
+    "appellation": "Angelina the Mellow Wish",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "skywalker"
+  },
+  {
     "id": "char_1016_agoat2",
     "name": "纯烬艾雅法拉",
     "appellation": "Eyjafjalla the Hvít Aska",
@@ -2662,6 +2710,14 @@
     "star": 6,
     "profession": "SUPPORT",
     "subProfession": "slower"
+  },
+  {
+    "id": "char_1048_orchd2",
+    "name": "焰狐龙梓兰",
+    "appellation": "Violet Mizutsune Orchid",
+    "star": 6,
+    "profession": "SNIPER",
+    "subProfession": "closerange"
   },
   {
     "id": "char_1050_chen3",
@@ -3390,6 +3446,30 @@
     "star": 6,
     "profession": "PIONEER",
     "subProfession": "tactician"
+  },
+  {
+    "id": "char_4229_aphris",
+    "name": "谬因",
+    "appellation": "Aphrissa",
+    "star": 6,
+    "profession": "CASTER",
+    "subProfession": "blastcaster"
+  },
+  {
+    "id": "char_4230_mcnist",
+    "name": "机械师",
+    "appellation": "Mechanist",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_4235_thumpy",
+    "name": "珊比",
+    "appellation": "Thumpy",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "primprotector"
   },
   {
     "id": "char_423_blemsh",
