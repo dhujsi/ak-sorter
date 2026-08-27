@@ -10,6 +10,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE, "assets", "ak", "data")
@@ -73,9 +74,20 @@ def download_if_missing(dest: str, candidates: list[str]) -> bool:
     return download_replace(dest, candidates)
 
 
-def download_replace(dest: str, candidates: list[str]) -> bool:
+def download_replace(
+    dest: str,
+    candidates: list[str],
+    *,
+    retries: int = 3,
+    timeout: int = 60,
+) -> bool:
     for url in candidates:
-        data = fetch_bytes(url, allow_404=True)
+        data = fetch_bytes(
+            url,
+            allow_404=True,
+            retries=retries,
+            timeout=timeout,
+        )
         if data is not None:
             tmp = dest + ".tmp"
             with open(tmp, "wb") as f:
@@ -290,6 +302,68 @@ skin_portrait_updates = 0
 skin_avatar_missing = 0
 skin_portrait_missing = 0
 
+
+def find_prts_halfbody(op: dict, skin: dict) -> tuple[str | None, str | None]:
+    skin_index = skin["skinIndex"]
+    for display_name in dict.fromkeys([op.get("name", ""), op.get("appellation", "")]):
+        if not display_name:
+            continue
+        candidate = f"半身像_{display_name}_skin{skin_index}.png"
+        if candidate in prts_images:
+            return candidate, prts_images[candidate]
+    return None, None
+
+
+# Resolve exact PRTS files first, then replace the old full-body images in parallel.
+prts_match_by_char: dict[str, tuple[str | None, str | None]] = {}
+prts_jobs: list[tuple[str, str, str]] = []
+
+for char_id in sorted(operator_ids):
+    skin = latest_by_char.get(char_id)
+    portrait_dest = os.path.join(SKIN_PORTRAIT_DIR, f"{char_id}.png")
+    if not skin:
+        remove_if_exists(portrait_dest)
+        continue
+
+    prts_file, prts_url = find_prts_halfbody(operator_by_id[char_id], skin)
+    prts_match_by_char[char_id] = (prts_file, prts_url)
+
+    old = old_skin_manifest.get(char_id) or {}
+    portrait_changed = (
+        old.get("skinId") != skin["skinId"]
+        or old.get("portraitSource") != "prts-halfbody"
+        or old.get("portraitFile") != prts_file
+    )
+
+    if not prts_url:
+        # Do not retain the old full-body image or an older skin halfbody.
+        remove_if_exists(portrait_dest)
+    elif portrait_changed or not os.path.exists(portrait_dest):
+        prts_jobs.append((char_id, portrait_dest, prts_url))
+
+
+def download_prts_job(job: tuple[str, str, str]) -> tuple[str, bool]:
+    char_id, dest, url = job
+    try:
+        ok = download_replace(dest, [url], retries=1, timeout=20)
+        if not ok:
+            remove_if_exists(dest)
+        return char_id, ok
+    except Exception as exc:
+        remove_if_exists(dest)
+        print(f"PRTS halfbody download failed for {char_id}: {exc}")
+        return char_id, False
+
+
+if prts_jobs:
+    print(f"Downloading {len(prts_jobs)} PRTS skin halfbodies with 12 workers")
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        futures = [pool.submit(download_prts_job, job) for job in prts_jobs]
+        for future in as_completed(futures):
+            _, ok = future.result()
+            if ok:
+                skin_portrait_updates += 1
+
 for char_id in sorted(operator_ids):
     skin = latest_by_char.get(char_id)
     avatar_dest = os.path.join(SKIN_AVATAR_DIR, f"{char_id}.png")
@@ -312,39 +386,10 @@ for char_id in sorted(operator_ids):
         else:
             remove_if_exists(avatar_dest)
 
-    # PRTS provides actual 180x360-style halfbody portraits.
-    # Require the exact chronological skin number so we never substitute an older skin.
-    op = operator_by_id[char_id]
-    skin_index = skin["skinIndex"]
-    prts_file = None
-    prts_url = None
-    for display_name in dict.fromkeys([op.get("name", ""), op.get("appellation", "")]):
-        if not display_name:
-            continue
-        candidate = f"半身像_{display_name}_skin{skin_index}.png"
-        if candidate in prts_images:
-            prts_file = candidate
-            prts_url = prts_images[candidate]
-            break
-
-    portrait_changed = (
-        skin_changed
-        or old.get("portraitSource") != "prts-halfbody"
-        or old.get("portraitFile") != prts_file
-    )
-
-    if prts_url:
-        if portrait_changed or not os.path.exists(portrait_dest):
-            if download_replace(portrait_dest, [prts_url]):
-                skin_portrait_updates += 1
-            else:
-                remove_if_exists(portrait_dest)
-    else:
-        # Important: do not keep the previous full-body/older-skin image.
-        remove_if_exists(portrait_dest)
-
+    prts_file, _ = prts_match_by_char.get(char_id, (None, None))
     has_avatar = os.path.exists(avatar_dest)
     has_portrait = os.path.exists(portrait_dest)
+
     if not has_avatar:
         skin_avatar_missing += 1
     if not has_portrait:
