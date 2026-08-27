@@ -469,6 +469,7 @@ let buriedBottom = [];     // [{ op }] — operators buried to bottom, in order
 let postponedPairs = {};   // { "idA|idB": count }
 let postponedQueue = [];   // [{ left, right }] — postponed pairs for later
 let _pendingNormalResults = null; // held across pinned-top sort phase
+let _pendingNormalSnapshot = null; // original sorter state while pinned operators are ordered
 let _unrankedTierOps = null;     // operators that were pending when Tier was generated
 
 // Session migration state: preserve old comparisons while merging operators added later.
@@ -1051,6 +1052,10 @@ function appendNewOpMergeState(state) {
   state.newOpInsertion = serializeNewOpInsertion();
   state.newOpMergeTotal = _newOpMergeTotal || 0;
   state.newOpMergeDone = _newOpMergeDone || 0;
+  if (_pendingNormalResults) {
+    state.pendingNormalResults = _pendingNormalResults.map(op => op.id);
+    state.pendingNormalSnapshot = _pendingNormalSnapshot || null;
+  }
   return state;
 }
 
@@ -1111,42 +1116,91 @@ function collectSessionOperatorIds() {
 
 function restoreNewOpMergeState(state) {
   _sessionFilter = state.sessionFilter || captureCurrentSessionFilter();
-  _newOpQueue = (state.newOpQueue || []).map(id => opMap[id]).filter(Boolean);
+  const pendingOps = (state.newOpQueue || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
   _newOpInsertion = null;
-  if (state.newOpInsertion && opMap[state.newOpInsertion.op]) {
-    const s = state.newOpInsertion;
-    _newOpInsertion = {
-      op: opMap[s.op],
-      lo: Number.isInteger(s.lo) ? s.lo : 0,
-      hi: Number.isInteger(s.hi) ? s.hi : sorter.results.length,
-      mid: Number.isInteger(s.mid) ? s.mid : null,
-      history: (s.history || []).map(h => ({
-        lo: h.lo, hi: h.hi, mid: h.mid
-      }))
-    };
+  // Older saves may have paused halfway through binary insertion into a locked
+  // prefix. Evidence sorting has no locked prefix, so preserve that operator by
+  // moving it back into the candidate queue. Completed insertion choices can be
+  // inferred from the saved bounds and are converted into comparison evidence.
+  if (state.newOpInsertion && state.newOpInsertion.op) {
+    const insertion = state.newOpInsertion;
+    const insertedOp = resolveSavedOperator(insertion.op, opMap);
+    pendingOps.unshift(insertedOp);
+
+    const lockedIds = state.sorter && Array.isArray(state.sorter.results)
+      ? state.sorter.results
+      : [];
+    const steps = insertion.history || [];
+    const states = [...steps, insertion];
+    steps.forEach((step, index) => {
+      const opponentId = lockedIds[step.mid];
+      const next = states[index + 1];
+      if (!opponentId || !next || !Number.isInteger(step.mid)) return;
+
+      const insertedWon = next.hi === step.mid;
+      const winnerOp = insertedWon ? insertedOp : resolveSavedOperator(opponentId, opMap);
+      const loserOp = insertedWon ? resolveSavedOperator(opponentId, opMap) : insertedOp;
+      sorter.ledger.add({ w: winnerOp.id, l: loserOp.id });
+      sorter.history.push({
+        winner: { op: winnerOp, children: [] },
+        loser: { op: loserOp, children: [] }
+      });
+    });
+    sorter.comparisons = Math.max(sorter.comparisons, sorter.ledger.records.length);
   }
+  const seen = new Set();
+  _newOpQueue = pendingOps.filter(op => op && !seen.has(op.id) && seen.add(op.id));
   _newOpMergeTotal = state.newOpMergeTotal || 0;
   _newOpMergeDone = state.newOpMergeDone || 0;
+}
+
+function restorePendingRankingState(state) {
+  _pendingNormalResults = (state.pendingNormalResults || [])
+    .map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
+  if (_pendingNormalResults.length === 0) _pendingNormalResults = null;
+  _pendingNormalSnapshot = state.pendingNormalSnapshot || null;
+}
+
+function addOperatorsToEvidencePool(operators) {
+  if (!sorter) return 0;
+  const existing = new Set(sorter.getAllOperators().map(op => op.id));
+  pinnedTop.forEach(op => { if (op) existing.add(op.id); });
+  buriedBottom.forEach(op => { if (op) existing.add(op.id); });
+
+  let added = 0;
+  (operators || []).forEach(op => {
+    if (!op || !op.id || existing.has(op.id)) return;
+    existing.add(op.id);
+    sorter.items.push({ op, children: [] });
+    added += 1;
+  });
+
+  if (added > 0) {
+    sorter.currentPair = null;
+    sorter.results = [];
+    const coverageBudget = sorter.comparisons + added * 2;
+    sorter.comparisonBudget = Math.max(
+      sorter.comparisonBudget || 0,
+      sorter.getBaseComparisonBudget(),
+      coverageBudget
+    );
+  }
+  return added;
 }
 
 function mergeNewDatabaseOperatorsIntoProgress() {
   if (!sorter) return 0;
 
-  if (!_newOpInsertion && _newOpQueue.length === 0 && _newOpMergeDone >= _newOpMergeTotal) {
-    _newOpMergeTotal = 0;
-    _newOpMergeDone = 0;
-  }
+  // First migrate any pending queue/insertion state exported by the previous
+  // locked-prefix sorter into ordinary evidence candidates.
+  const migratedCount = addOperatorsToEvidencePool(_newOpQueue);
+  _newOpQueue = [];
+  _newOpInsertion = null;
 
   const eligible = getOpsForSessionFilter(_sessionFilter);
   const represented = collectSessionOperatorIds();
-  const queuedIds = new Set((_newOpQueue || []).map(op => op.id));
-  if (_newOpInsertion && _newOpInsertion.op) queuedIds.add(_newOpInsertion.op.id);
-
-  const added = eligible.filter(op => !represented.has(op.id) && !queuedIds.has(op.id));
-  if (added.length > 0) {
-    _newOpQueue.push(...added);
-    _newOpMergeTotal += added.length;
-  }
+  const added = eligible.filter(op => !represented.has(op.id));
+  const addedCount = addOperatorsToEvidencePool(added);
 
   const configuredRank = _sessionFilter && _sessionFilter.selectedRank !== undefined
     ? _sessionFilter.selectedRank
@@ -1155,7 +1209,9 @@ function mergeNewDatabaseOperatorsIntoProgress() {
     ? eligible.length
     : Math.min(configuredRank, eligible.length);
 
-  return added.length;
+  _newOpMergeTotal = 0;
+  _newOpMergeDone = 0;
+  return migratedCount + addedCount;
 }
 
 function loadProgress() {
@@ -1172,7 +1228,10 @@ function loadProgress() {
     }).filter(Boolean);
     sorter = TournamentSorter.deserialize(state.sorter, opMap);
     restoreNewOpMergeState(state);
-    mergeNewDatabaseOperatorsIntoProgress();
+    restorePendingRankingState(state);
+    // A saved pinned-ordering phase uses a temporary sorter. New database
+    // operators are merged when the original snapshot is restored.
+    if (!_pendingNormalResults) mergeNewDatabaseOperatorsIntoProgress();
     return true;
   } catch(e) {
     console.error('Failed to restore progress:', e);
@@ -1188,6 +1247,7 @@ function clearProgress() {
   postponedPairs = {};
   postponedQueue = [];
   _pendingNormalResults = null;
+  _pendingNormalSnapshot = null;
   _savedSorterSnapshot = null;
   _sessionFilter = null;
   _newOpQueue = [];
@@ -1261,6 +1321,7 @@ function clearAllCache() {
   postponedPairs = {};
   postponedQueue = [];
   _pendingNormalResults = null;
+  _pendingNormalSnapshot = null;
   _savedSorterSnapshot = null;
   _sessionFilter = null;
   _newOpQueue = [];
@@ -1429,6 +1490,7 @@ function startSorting() {
   postponedPairs = {};
   postponedQueue = [];
   _pendingNormalResults = null;
+  _pendingNormalSnapshot = null;
 
   showSection('section-sort');
   updateSortUI();
@@ -1901,7 +1963,7 @@ function mergeRankingResults(pinnedResults, normalResults) {
 function finishSort() {
   if (!sorter) return;
   if (_pendingNormalResults) {
-    finalizeResults(_pendingNormalResults);
+    finalizeResults(_pendingNormalResults, _pendingNormalSnapshot);
     return;
   }
   // Snapshot before building a provisional view so "返回排序" restores the
@@ -1941,6 +2003,7 @@ function buildEvidenceResults() {
 
 function startPinnedTopSort(normalResults, preSnapshot) {
   _pendingNormalResults = normalResults;
+  _pendingNormalSnapshot = preSnapshot || snapshotSorter();
   const pinnedOps = [...pinnedTop];
   const pinnedSorter = new TournamentSorter(pinnedOps, pinnedOps.length);
 
@@ -1960,8 +2023,9 @@ function finalizeResults(normalResults, preSnapshot) {
 
   rankingResults = mergeRankingResults(pinnedFinal, normalResults);
   // Save pre-extraction snapshot for return-to-sort; keep sorter alive
-  _savedSorterSnapshot = preSnapshot || snapshotSorter();
+  _savedSorterSnapshot = preSnapshot || _pendingNormalSnapshot || snapshotSorter();
   _pendingNormalResults = null;
+  _pendingNormalSnapshot = null;
   document.getElementById('sortStatus').textContent = '';
   showSection('section-result');
   renderResults();
@@ -1989,10 +2053,11 @@ function finishSortEarly() {
   if (!sorter) return;
 
   if (_pendingNormalResults) {
-    const preSnapshot = snapshotSorter();
+    const preSnapshot = _pendingNormalSnapshot || snapshotSorter();
     rankingResults = mergeRankingResults(getPinnedPreviewResults(), _pendingNormalResults);
     _savedSorterSnapshot = preSnapshot;
     _pendingNormalResults = null;
+    _pendingNormalSnapshot = null;
     document.getElementById('sortStatus').textContent = '';
     showSection('section-result'); renderResults();
     document.getElementById('btnBackSort').style.display = _savedSorterSnapshot ? '' : 'none';
@@ -2471,7 +2536,15 @@ function _continueSorting() {
   updateSortUI();
 
   if (_newOpInsertion || _newOpQueue.length > 0) {
-    if (startNextNewOpInsertion()) return;
+    addOperatorsToEvidencePool([
+      ...(_newOpInsertion && _newOpInsertion.op ? [_newOpInsertion.op] : []),
+      ..._newOpQueue
+    ]);
+    _newOpInsertion = null;
+    _newOpQueue = [];
+    _newOpMergeTotal = 0;
+    _newOpMergeDone = 0;
+    autoSave();
   }
 
   setNewOpMergeControls(false);

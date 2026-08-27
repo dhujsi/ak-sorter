@@ -197,6 +197,7 @@ function __reset(ids, rankCount) {
   postponedPairs = {};
   postponedQueue = [];
   _pendingNormalResults = null;
+  _pendingNormalSnapshot = null;
   _unrankedTierOps = [];
   _savedSorterSnapshot = null;
   localStorage.__store = {};
@@ -306,7 +307,7 @@ function runSorterRegressionTests() {
     __assert(pair && dom.right === pair.right.id, 'right mismatch after postpone skip');
   }));
 
-  tests.push(__run('5. postpone A/B then bury A excludes A from rankingResults', function() {
+  tests.push(__run('5. postpone A/B then bury A keeps the remaining evidence pool', function() {
     __reset(['A', 'B', 'C'], 3);
     __setPair('A', 'B');
     postponePair();
@@ -314,10 +315,9 @@ function runSorterRegressionTests() {
     __setPair('A', 'C');
     buryOp(true);
 
-    __setResults(['B', 'C']);
-    sorter.items = [];
-    sorter.currentPair = null;
-    advanceSort();
+    __setPair('B', 'C');
+    sorter.select(true);
+    finishSortEarly();
 
     var ids = __ids(rankingResults);
     __assert(ids.indexOf('A') === -1, 'A should be excluded from final rankingResults');
@@ -639,7 +639,7 @@ function runSorterRegressionTests() {
     });
   }));
 
-  tests.push(__run('13. burying a tree parent preserves compared child subtree for current results', function() {
+  tests.push(__run('13. burying a compared candidate preserves remaining evidence candidates', function() {
     __reset(['A', 'B', 'C', 'D', 'E'], 5);
 
     __setPair('A', 'B');
@@ -661,6 +661,47 @@ function runSorterRegressionTests() {
     __assert(ids.indexOf('C') >= 0, 'compared child C should remain available for current results');
     __assert(ids.indexOf('D') >= 0, 'C child D should remain available for current results');
     __assert(ids.length >= 2, 'current results lost too much compared subtree after bury');
+  }));
+
+  tests.push(__run('14. legacy paused new-operator insertion migrates to evidence candidates', function() {
+    __reset(['A', 'B', 'C'], 3);
+    var state = {
+      sorter: { rankCount: 3, items: [], results: ['A', 'B'], comparisons: 2, history: [] },
+      sessionFilter: { selectedStars: [6], selectedGenders: ['female'], selectedRank: 3, mergeAlters: false },
+      newOpInsertion: {
+        op: 'C', lo: 1, hi: 1, mid: 0,
+        history: [{ lo: 0, hi: 2, mid: 1 }, { lo: 0, hi: 1, mid: 0 }]
+      }
+    };
+    sorter = TournamentSorter.deserialize(state.sorter, opMap);
+    restoreNewOpMergeState(state);
+    restorePendingRankingState(state);
+    mergeNewDatabaseOperatorsIntoProgress();
+    var ids = sorter.getAllOperators().map(function(op) { return op.id; }).sort();
+    __assert(ids.join(',') === 'A,B,C', 'legacy candidate migration failed: ' + ids.join(','));
+    __assert(sorter.ledger.records.length === 2, 'paused insertion evidence was lost');
+    __assert(sorter.ledger.records[0].w === 'C' && sorter.ledger.records[0].l === 'B', 'first inferred comparison is wrong');
+    __assert(sorter.ledger.records[1].w === 'A' && sorter.ledger.records[1].l === 'C', 'second inferred comparison is wrong');
+    __assert(!_newOpInsertion && _newOpQueue.length === 0, 'legacy insertion state was not cleared');
+  }));
+
+  tests.push(__run('15. pinned final-sort save/restore keeps the original normal snapshot', function() {
+    __reset(['A', 'B', 'C'], 3);
+    _sessionFilter = { selectedStars: [6], selectedGenders: ['female'], selectedRank: 3, mergeAlters: false };
+    var original = snapshotSorter();
+    pinnedTop = [opMap.A, opMap.B];
+    startPinnedTopSort([opMap.C], original);
+    saveProgress();
+    var saved = JSON.parse(localStorage.getItem(SAVE_KEY));
+    __assert(saved.pendingNormalResults.join(',') === 'C', 'pending normal results were not saved');
+    __assert(saved.pendingNormalSnapshot.sorter.items.length === 3, 'original sorter snapshot was not saved');
+    __assert(loadProgress(), 'saved pinned phase did not restore');
+    __assert(_pendingNormalResults.length === 1 && _pendingNormalResults[0].id === 'C', 'pending normal results were not restored');
+    __assert(sorter.getAllOperators().length === 2, 'normal pool was merged into the temporary pinned sorter');
+    __assert(!!sorter.getNextPair(), 'pinned pair was not restored');
+    sorter.select(true);
+    __assert(_savedSorterSnapshot.sorter.items.length === 3, 'original sorter snapshot was replaced by pinned sorter');
+    __assert(rankingResults.length === 3, 'final merged ranking lost an operator');
   }));
 
 
