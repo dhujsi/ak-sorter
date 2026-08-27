@@ -411,7 +411,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 </div><!-- .container -->
 
 <footer class="site-footer">
-  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.08.27-1</span></p>
+  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.08.27-2</span></p>
   <p>
     <a href="about.html">关于 / 声明 / 开源许可</a> &nbsp;·&nbsp;
     <a href="https://github.com/dhujsi/ak-sorter" target="_blank" rel="noopener">Source code</a> &nbsp;·&nbsp;
@@ -470,6 +470,13 @@ let postponedPairs = {};   // { "idA|idB": count }
 let postponedQueue = [];   // [{ left, right }] — postponed pairs for later
 let _pendingNormalResults = null; // held across pinned-top sort phase
 let _unrankedTierOps = null;     // operators that were pending when Tier was generated
+
+// Session migration state: preserve old comparisons while merging operators added later.
+let _sessionFilter = null;
+let _newOpQueue = [];
+let _newOpInsertion = null; // { op, lo, hi, mid, history:[{lo,hi,mid}] }
+let _newOpMergeTotal = 0;
+let _newOpMergeDone = 0;
 
 // Settings
 let selectedStars = new Set([4, 5, 6]);
@@ -708,23 +715,134 @@ function loadSettings() {
   } catch(e) {}
 }
 
+function captureCurrentSessionFilter() {
+  return {
+    selectedStars: [...selectedStars],
+    selectedGenders: [...selectedGenders],
+    selectedRank,
+    mergeAlters
+  };
+}
+
+function serializeNewOpInsertion() {
+  if (!_newOpInsertion || !_newOpInsertion.op) return null;
+  return {
+    op: _newOpInsertion.op.id,
+    lo: _newOpInsertion.lo,
+    hi: _newOpInsertion.hi,
+    mid: _newOpInsertion.mid,
+    history: (_newOpInsertion.history || []).map(h => ({
+      lo: h.lo, hi: h.hi, mid: h.mid
+    }))
+  };
+}
+
+function appendNewOpMergeState(state) {
+  state.sessionFilter = _sessionFilter || captureCurrentSessionFilter();
+  state.newOpQueue = (_newOpQueue || []).map(op => op.id);
+  state.newOpInsertion = serializeNewOpInsertion();
+  state.newOpMergeTotal = _newOpMergeTotal || 0;
+  state.newOpMergeDone = _newOpMergeDone || 0;
+  return state;
+}
+
 function saveProgress() {
   if (!sorter) return;
-  if (!sorter.items || sorter.items.length === 0) return; // just skip, don't delete
+  if ((!sorter.items || sorter.items.length === 0) && !_newOpInsertion && _newOpQueue.length === 0) return;
   try {
-    const state = {
+    const state = appendNewOpMergeState({
       sorter: sorter.serialize(),
       pinnedTop: pinnedTop.map(op => op.id),
       buriedBottom: buriedBottom.map(op => op.id),
       postponedPairs,
       postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
-    };
+    });
     localStorage.setItem(SAVE_KEY, JSON.stringify(state));
   } catch(e) {}
 }
 
 function hasSavedProgress() {
   try { return !!localStorage.getItem(SAVE_KEY); } catch(e) { return false; }
+}
+
+function getOpsForSessionFilter(filter) {
+  const f = filter || captureCurrentSessionFilter();
+  const stars = new Set(f.selectedStars || []);
+  const genders = new Set(f.selectedGenders || []);
+  let ops = allOperators.filter(op => stars.has(op.star));
+  ops = ops.filter(op => genders.has(op.gender || 'unknown'));
+  if (f.mergeAlters) ops = ops.filter(op => !op.isAlter);
+  return ops;
+}
+
+function collectSessionOperatorIds() {
+  const ids = new Set();
+  function addOp(op) { if (op && op.id) ids.add(op.id); }
+  function walk(items) {
+    (items || []).forEach(item => {
+      if (!item) return;
+      addOp(item.op);
+      walk(item.children);
+    });
+  }
+
+  if (sorter) {
+    walk(sorter.items);
+    (sorter.results || []).forEach(addOp);
+  }
+  pinnedTop.forEach(addOp);
+  buriedBottom.forEach(addOp);
+  (postponedQueue || []).forEach(p => {
+    if (!p) return;
+    addOp(p.left); addOp(p.right);
+  });
+  (_newOpQueue || []).forEach(addOp);
+  if (_newOpInsertion) addOp(_newOpInsertion.op);
+  return ids;
+}
+
+function restoreNewOpMergeState(state) {
+  _sessionFilter = state.sessionFilter || captureCurrentSessionFilter();
+  _newOpQueue = (state.newOpQueue || []).map(id => opMap[id]).filter(Boolean);
+  _newOpInsertion = null;
+  if (state.newOpInsertion && opMap[state.newOpInsertion.op]) {
+    const s = state.newOpInsertion;
+    _newOpInsertion = {
+      op: opMap[s.op],
+      lo: Number.isInteger(s.lo) ? s.lo : 0,
+      hi: Number.isInteger(s.hi) ? s.hi : sorter.results.length,
+      mid: Number.isInteger(s.mid) ? s.mid : null,
+      history: (s.history || []).map(h => ({
+        lo: h.lo, hi: h.hi, mid: h.mid
+      }))
+    };
+  }
+  _newOpMergeTotal = state.newOpMergeTotal || 0;
+  _newOpMergeDone = state.newOpMergeDone || 0;
+}
+
+function mergeNewDatabaseOperatorsIntoProgress() {
+  if (!sorter) return 0;
+
+  const eligible = getOpsForSessionFilter(_sessionFilter);
+  const represented = collectSessionOperatorIds();
+  const queuedIds = new Set((_newOpQueue || []).map(op => op.id));
+  if (_newOpInsertion && _newOpInsertion.op) queuedIds.add(_newOpInsertion.op.id);
+
+  const added = eligible.filter(op => !represented.has(op.id) && !queuedIds.has(op.id));
+  if (added.length > 0) {
+    _newOpQueue.push(...added);
+    _newOpMergeTotal += added.length;
+  }
+
+  const configuredRank = _sessionFilter && _sessionFilter.selectedRank !== undefined
+    ? _sessionFilter.selectedRank
+    : selectedRank;
+  sorter.rankCount = configuredRank === 0
+    ? eligible.length
+    : Math.min(configuredRank, eligible.length);
+
+  return added.length;
 }
 
 function loadProgress() {
@@ -740,8 +858,13 @@ function loadProgress() {
       return l && r ? { left: l, right: r } : null;
     }).filter(Boolean);
     sorter = TournamentSorter.deserialize(state.sorter, opMap);
+    restoreNewOpMergeState(state);
+    mergeNewDatabaseOperatorsIntoProgress();
     return true;
-  } catch(e) { return false; }
+  } catch(e) {
+    console.error('Failed to restore progress:', e);
+    return false;
+  }
 }
 
 function clearProgress() {
@@ -753,6 +876,11 @@ function clearProgress() {
   postponedQueue = [];
   _pendingNormalResults = null;
   _savedSorterSnapshot = null;
+  _sessionFilter = null;
+  _newOpQueue = [];
+  _newOpInsertion = null;
+  _newOpMergeTotal = 0;
+  _newOpMergeDone = 0;
   rankingResults = [];
   document.getElementById('resumeBar').style.display = 'none';
   document.getElementById('currentRankingTable').style.display = 'none';
@@ -821,6 +949,11 @@ function clearAllCache() {
   postponedQueue = [];
   _pendingNormalResults = null;
   _savedSorterSnapshot = null;
+  _sessionFilter = null;
+  _newOpQueue = [];
+  _newOpInsertion = null;
+  _newOpMergeTotal = 0;
+  _newOpMergeDone = 0;
   rankingResults = [];
   document.getElementById('resumeBar').style.display = 'none';
   document.getElementById('currentRankingTable').style.display = 'none';
@@ -930,12 +1063,7 @@ function buildFilterPage() {
 }
 
 function getFilteredOps() {
-  let ops = allOperators.filter(op => selectedStars.has(op.star));
-  ops = ops.filter(op => selectedGenders.has(op.gender || 'unknown'));
-  if (mergeAlters) {
-    ops = ops.filter(op => !op.isAlter);
-  }
-  return ops;
+  return getOpsForSessionFilter(captureCurrentSessionFilter());
 }
 
 function setMergeAlters(v) {
@@ -976,6 +1104,11 @@ function startSorting() {
   }
 
   sorter = new TournamentSorter(shuffled, rankCount);
+  _sessionFilter = captureCurrentSessionFilter();
+  _newOpQueue = [];
+  _newOpInsertion = null;
+  _newOpMergeTotal = 0;
+  _newOpMergeDone = 0;
   rankingResults = [];
   pinnedTop = [];
   buriedBottom = [];
@@ -1002,6 +1135,137 @@ function resumeSorting() {
 // ============================================================
 // SORT PAGE HELPERS
 // ============================================================
+function setNewOpMergeControls(active) {
+  document.querySelectorAll('.sort-side-actions button').forEach(btn => { btn.disabled = active; });
+  document.getElementById('btnPostpone').disabled = active;
+  document.getElementById('btnSkip').disabled = active;
+}
+
+function updateNewOpMergeStatus() {
+  if (!_newOpInsertion) return;
+  const total = Math.max(_newOpMergeTotal, _newOpMergeDone + _newOpQueue.length + 1);
+  const current = Math.min(total, _newOpMergeDone + 1);
+  document.getElementById('sortStatus').textContent =
+    '新增干员定位 ' + current + '/' + total + '：' + _newOpInsertion.op.name +
+    ' · 旧比较结果保持不变';
+}
+
+function showNewOpInsertionPair() {
+  if (!_newOpInsertion || !sorter) return false;
+
+  if (_newOpInsertion.lo >= _newOpInsertion.hi) {
+    finishNewOpInsertion(_newOpInsertion.lo);
+    return true;
+  }
+
+  const k = sorter.results.length;
+  if (k === 0) {
+    finishNewOpInsertion(0);
+    return true;
+  }
+
+  const mid = Math.floor((_newOpInsertion.lo + _newOpInsertion.hi) / 2);
+  _newOpInsertion.mid = mid;
+  setNewOpMergeControls(true);
+  updateNewOpMergeStatus();
+  updateSortPair({
+    left: _newOpInsertion.op,
+    right: sorter.results[mid]
+  });
+  updateSortUI();
+  autoSave();
+  return true;
+}
+
+function finishNewOpInsertion(position) {
+  if (!_newOpInsertion || !sorter) return;
+
+  const op = _newOpInsertion.op;
+  const lockedCount = sorter.results.length;
+
+  if (lockedCount === 0) {
+    sorter.items.push({ op, children: [] });
+  } else if (position < lockedCount) {
+    sorter.results.splice(position, 0, op);
+    if (sorter.results.length > sorter.rankCount) {
+      const demoted = sorter.results.pop();
+      if (demoted) sorter.items.push({ op: demoted, children: [] });
+    }
+  } else {
+    // It is below the exact locked prefix. Keep it in the remaining pool;
+    // if Top N is already full it stays available for Tier/unranked output
+    // without disturbing the established top ranks.
+    sorter.items.push({ op, children: [] });
+  }
+
+  _newOpInsertion = null;
+  _newOpMergeDone += 1;
+  autoSave();
+  startNextNewOpInsertion();
+}
+
+function startNextNewOpInsertion() {
+  if (!sorter) return false;
+
+  if (_newOpInsertion) return showNewOpInsertionPair();
+
+  if (_newOpQueue.length === 0) {
+    setNewOpMergeControls(false);
+    document.getElementById('sortStatus').textContent = '';
+    autoSave();
+    return false;
+  }
+
+  const op = _newOpQueue.shift();
+
+  // No locked prefix yet: adding a fresh leaf preserves all old tree structure.
+  if (!sorter.results || sorter.results.length === 0) {
+    sorter.items.push({ op, children: [] });
+    _newOpMergeDone += 1;
+    autoSave();
+    return startNextNewOpInsertion();
+  }
+
+  _newOpInsertion = {
+    op,
+    lo: 0,
+    hi: sorter.results.length,
+    mid: null,
+    history: []
+  };
+  return showNewOpInsertionPair();
+}
+
+function handleNewOpInsertionChoice(leftIsBetter) {
+  if (!_newOpInsertion || !sorter) return null;
+
+  const s = _newOpInsertion;
+  s.history.push({ lo: s.lo, hi: s.hi, mid: s.mid });
+
+  if (leftIsBetter) {
+    s.hi = s.mid;
+  } else {
+    s.lo = s.mid + 1;
+  }
+
+  sorter.comparisons += 1;
+  showNewOpInsertionPair();
+  return null;
+}
+
+function undoNewOpInsertion() {
+  if (!_newOpInsertion || !_newOpInsertion.history || _newOpInsertion.history.length === 0) {
+    return false;
+  }
+  const prev = _newOpInsertion.history.pop();
+  _newOpInsertion.lo = prev.lo;
+  _newOpInsertion.hi = prev.hi;
+  _newOpInsertion.mid = prev.mid;
+  sorter.comparisons = Math.max(0, sorter.comparisons - 1);
+  showNewOpInsertionPair();
+  return true;
+}
+
 function advanceSort() {
   // Process postponed queue when normal pool is exhausted
   const excludedIds = new Set([
@@ -1046,7 +1310,9 @@ function updateSortUI() {
     '第 ' + p.comparisons + ' 次比较 · 已锁定 ' + p.locked + ' 名';
   const pct = p.total > 0 ? Math.min(100, Math.round(p.locked / p.total * 100)) : 0;
   document.getElementById('sortProgressFill').style.width = pct + '%';
-  document.getElementById('btnUndo').disabled = sorter.history.length === 0;
+  document.getElementById('btnUndo').disabled = _newOpInsertion
+    ? (!_newOpInsertion.history || _newOpInsertion.history.length === 0)
+    : sorter.history.length === 0;
 }
 
 function toggleCurrentRanking() {
@@ -1110,6 +1376,7 @@ function toggleCurrentRanking() {
 // ============================================================
 const _selectOrig = TournamentSorter.prototype.select;
 TournamentSorter.prototype.select = function(leftIsBetter) {
+  if (_newOpInsertion) return handleNewOpInsertionChoice(leftIsBetter);
   if (!this.currentPair) return null;
   const resultsLenBefore = this.results.length;
   const result = _selectOrig.call(this, leftIsBetter);
@@ -1124,6 +1391,7 @@ TournamentSorter.prototype.select = function(leftIsBetter) {
 
 const _undoOrig = TournamentSorter.prototype.undo;
 TournamentSorter.prototype.undo = function() {
+  if (_newOpInsertion) return undoNewOpInsertion();
   const last = this.history[this.history.length - 1];
   if (!last) return false;
   const leftOp = last.winner.op;
@@ -1316,13 +1584,13 @@ function finishSort() {
 
 function snapshotSorter() {
   if (!sorter) return null;
-  return {
+  return appendNewOpMergeState({
     sorter: sorter.serialize(),
     pinnedTop: pinnedTop.map(op => op.id),
     buriedBottom: buriedBottom.map(op => op.id),
     postponedPairs: { ...postponedPairs },
     postponedQueue: postponedQueue.map(p => ({ l: p.left.id, r: p.right.id }))
-  };
+  });
 }
 
 // BFS-extract tree into sorter.results. Returns operators that were never compared.
@@ -1925,6 +2193,12 @@ function backToSort() {
 function _continueSorting() {
   showSection('section-sort');
   updateSortUI();
+
+  if (_newOpInsertion || _newOpQueue.length > 0) {
+    if (startNextNewOpInsertion()) return;
+  }
+
+  setNewOpMergeControls(false);
   if (!sorter.items || sorter.items.length === 0) {
     finishSort();
     return;
