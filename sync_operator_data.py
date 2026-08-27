@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Lightweight remote sync for Arknights operator data, base images, and latest skins."""
+"""Sync Arknights operators, base images, latest-skin avatars, and true PRTS halfbody portraits."""
 from __future__ import annotations
 
+import csv
 import json
 import os
 import time
 import urllib.error
-import urllib.request
 import urllib.parse
+import urllib.request
+from collections import defaultdict
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE, "assets", "ak", "data")
@@ -17,18 +19,21 @@ SKIN_AVATAR_DIR = os.path.join(BASE, "assets", "ak", "skin-avatar")
 SKIN_PORTRAIT_DIR = os.path.join(BASE, "assets", "ak", "skin-portrait")
 OPERATORS_PATH = os.path.join(DATA_DIR, "operators.json")
 LATEST_SKINS_PATH = os.path.join(DATA_DIR, "latest_skins.json")
+PRTS_MANIFEST_PATH = os.path.join(BASE, "prts_halfbody_manifest.csv")
 
 UPSTREAM = "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main"
 CHAR_TABLE_URL = f"{UPSTREAM}/gamedata/excel/character_table.json"
 SKIN_TABLE_URL = f"{UPSTREAM}/gamedata/excel/skin_table.json"
 AVATAR_URL = f"{UPSTREAM}/avatar"
 PORTRAIT_URL = f"{UPSTREAM}/portrait"
-SKIN_URL = f"{UPSTREAM}/skin"
+PRTS_API = "https://prts.wiki/api.php"
 
 for path in (DATA_DIR, AVATAR_DIR, PORTRAIT_DIR, SKIN_AVATAR_DIR, SKIN_PORTRAIT_DIR):
     os.makedirs(path, exist_ok=True)
 
-HEADERS = {"User-Agent": "ak-sorter-auto-sync/2.0"}
+HEADERS = {
+    "User-Agent": "ak-sorter-auto-sync/2.1 (+https://github.com/dhujsi/ak-sorter)"
+}
 
 
 def fetch_bytes(url: str, *, retries: int = 3, allow_404: bool = False) -> bytes | None:
@@ -93,6 +98,58 @@ def load_json_file(path: str, default):
         return default
 
 
+def load_prts_manifest_fallback() -> dict[str, str]:
+    """Load the committed PRTS manifest as a fallback if the live MediaWiki API is unavailable."""
+    images: dict[str, str] = {}
+    try:
+        with open(PRTS_MANIFEST_PATH, "r", encoding="utf-8-sig", newline="") as f:
+            for row in csv.DictReader(f):
+                name = row.get("name") or ""
+                url = row.get("url") or ""
+                if name.startswith("半身像_") and url:
+                    images[name] = url
+    except OSError:
+        pass
+    return images
+
+
+def fetch_prts_halfbody_index() -> tuple[dict[str, str], str]:
+    """Fetch all PRTS halfbody file names in a few paginated MediaWiki API requests."""
+    images: dict[str, str] = {}
+    continuation: dict[str, str] = {}
+    try:
+        while True:
+            params = {
+                "action": "query",
+                "format": "json",
+                "formatversion": "2",
+                "list": "allimages",
+                "aiprefix": "半身像_",
+                "ailimit": "500",
+                "aiprop": "url",
+                **continuation,
+            }
+            url = PRTS_API + "?" + urllib.parse.urlencode(params)
+            data = fetch_json(url)
+            for item in ((data.get("query") or {}).get("allimages") or []):
+                name = item.get("name")
+                image_url = item.get("url")
+                if name and image_url:
+                    images[name] = image_url
+
+            cont = data.get("continue")
+            if not cont:
+                break
+            continuation = {str(k): str(v) for k, v in cont.items()}
+
+        if images:
+            return images, "live"
+    except Exception as exc:
+        print(f"PRTS live index unavailable, using committed manifest: {exc}")
+
+    return load_prts_manifest_fallback(), "manifest"
+
+
 old_operators = load_json_file(OPERATORS_PATH, [])
 old_count = len(old_operators) if isinstance(old_operators, list) else 0
 
@@ -154,13 +211,15 @@ with open(OPERATORS_PATH, "w", encoding="utf-8") as f:
     json.dump(operators, f, ensure_ascii=False, indent=2)
     f.write("\n")
 
+# Determine each operator's latest skin and its chronological skin number.
 skin_table = fetch_json(SKIN_TABLE_URL)
 char_skins = skin_table.get("charSkins", {})
 if not isinstance(char_skins, dict):
     raise RuntimeError("skin_table.json has no charSkins mapping")
 
 now = int(time.time())
-latest_by_char: dict[str, dict] = {}
+released_skins_by_char: dict[str, list[dict]] = defaultdict(list)
+
 for skin in char_skins.values():
     if not isinstance(skin, dict):
         continue
@@ -170,44 +229,44 @@ for skin in char_skins.values():
     if not char_id or not skin_id or "@" not in skin_id or not isinstance(display, dict):
         continue
 
-    get_time = display.get("getTime", 0)
     try:
-        get_time = int(get_time or 0)
+        get_time = int(display.get("getTime", 0) or 0)
     except (TypeError, ValueError):
         get_time = 0
     if get_time <= 0 or get_time > now:
         continue
 
-    sort_id = display.get("sortId", 0)
     try:
-        sort_id = int(sort_id or 0)
+        sort_id = int(display.get("sortId", 0) or 0)
     except (TypeError, ValueError):
         sort_id = 0
 
-    candidate = {
-        "skinId": skin_id,
-        "assetId": skin_id.replace("@", "_"),
-        "getTime": get_time,
-        "sortId": sort_id,
-        "skinName": display.get("skinName") or "",
-    }
-    previous = latest_by_char.get(char_id)
-    if previous is None or (
-        candidate["getTime"],
-        candidate["sortId"],
-        candidate["skinId"],
-    ) > (
-        previous["getTime"],
-        previous["sortId"],
-        previous["skinId"],
-    ):
-        latest_by_char[char_id] = candidate
+    released_skins_by_char[char_id].append(
+        {
+            "skinId": skin_id,
+            "assetId": skin_id.replace("@", "_"),
+            "getTime": get_time,
+            "sortId": sort_id,
+            "skinName": display.get("skinName") or "",
+        }
+    )
+
+latest_by_char: dict[str, dict] = {}
+for char_id, skins in released_skins_by_char.items():
+    skins.sort(key=lambda s: (s["getTime"], s["sortId"], s["skinId"]))
+    for index, skin in enumerate(skins, start=1):
+        skin["skinIndex"] = index
+    latest_by_char[char_id] = skins[-1]
+
+prts_images, prts_index_source = fetch_prts_halfbody_index()
+print(f"PRTS halfbody index: {len(prts_images)} files ({prts_index_source})")
 
 old_skin_manifest = load_json_file(LATEST_SKINS_PATH, {})
 if not isinstance(old_skin_manifest, dict):
     old_skin_manifest = {}
 
-operator_ids = {op["id"] for op in operators}
+operator_by_id = {op["id"]: op for op in operators}
+operator_ids = set(operator_by_id)
 new_skin_manifest = {}
 skin_avatar_updates = 0
 skin_portrait_updates = 0
@@ -225,27 +284,47 @@ for char_id in sorted(operator_ids):
         continue
 
     old = old_skin_manifest.get(char_id) or {}
-    changed = old.get("skinId") != skin["skinId"]
+    skin_changed = old.get("skinId") != skin["skinId"]
     asset_id = skin["assetId"]
     asset_url_id = urllib.parse.quote(asset_id, safe="")
 
-    if changed or not os.path.exists(avatar_dest):
+    # Latest-skin avatar comes directly from the game resource.
+    if skin_changed or not os.path.exists(avatar_dest):
         if download_replace(avatar_dest, [f"{AVATAR_URL}/{asset_url_id}.png"]):
             skin_avatar_updates += 1
         else:
             remove_if_exists(avatar_dest)
 
-    if changed or not os.path.exists(portrait_dest):
-        if download_replace(
-            portrait_dest,
-            [
-                f"{SKIN_URL}/{asset_url_id}b.png",
-                f"{SKIN_URL}/{asset_url_id}_spb.png",
-            ],
-        ):
-            skin_portrait_updates += 1
-        else:
-            remove_if_exists(portrait_dest)
+    # PRTS provides actual 180x360-style halfbody portraits.
+    # Require the exact chronological skin number so we never substitute an older skin.
+    op = operator_by_id[char_id]
+    skin_index = skin["skinIndex"]
+    prts_file = None
+    prts_url = None
+    for display_name in dict.fromkeys([op.get("name", ""), op.get("appellation", "")]):
+        if not display_name:
+            continue
+        candidate = f"半身像_{display_name}_skin{skin_index}.png"
+        if candidate in prts_images:
+            prts_file = candidate
+            prts_url = prts_images[candidate]
+            break
+
+    portrait_changed = (
+        skin_changed
+        or old.get("portraitSource") != "prts-halfbody"
+        or old.get("portraitFile") != prts_file
+    )
+
+    if prts_url:
+        if portrait_changed or not os.path.exists(portrait_dest):
+            if download_replace(portrait_dest, [prts_url]):
+                skin_portrait_updates += 1
+            else:
+                remove_if_exists(portrait_dest)
+    else:
+        # Important: do not keep the previous full-body/older-skin image.
+        remove_if_exists(portrait_dest)
 
     has_avatar = os.path.exists(avatar_dest)
     has_portrait = os.path.exists(portrait_dest)
@@ -254,11 +333,15 @@ for char_id in sorted(operator_ids):
     if not has_portrait:
         skin_portrait_missing += 1
 
-    new_skin_manifest[char_id] = {
+    entry = {
         **skin,
         "avatar": has_avatar,
         "portrait": has_portrait,
     }
+    if has_portrait and prts_file:
+        entry["portraitSource"] = "prts-halfbody"
+        entry["portraitFile"] = prts_file
+    new_skin_manifest[char_id] = entry
 
 for directory in (SKIN_AVATAR_DIR, SKIN_PORTRAIT_DIR):
     for name in os.listdir(directory):
@@ -279,9 +362,9 @@ print(f"Missing base avatars: {len(missing_avatars)}")
 print(f"Missing base portraits: {len(missing_portraits)}")
 print(f"Released latest skins: {len(new_skin_manifest)}")
 print(f"Updated skin avatars: {skin_avatar_updates}")
-print(f"Updated skin portraits: {skin_portrait_updates}")
+print(f"Updated PRTS skin halfbodies: {skin_portrait_updates}")
 print(f"Latest skins without avatar: {skin_avatar_missing}")
-print(f"Latest skins without portrait: {skin_portrait_missing}")
+print(f"Latest skins without PRTS halfbody: {skin_portrait_missing}")
 
 if missing_avatars:
     print("Missing base avatar IDs:", ", ".join(missing_avatars[:20]))
