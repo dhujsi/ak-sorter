@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Sync operator data and missing images
+      - name: Sync operator data and images
         run: python sync_operator_data.py
 
       - name: Rebuild gender metadata
@@ -43,13 +43,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add             assets/ak/data/operators.json             assets/ak/data/operator_extra.json             assets/ak/avatar             assets/ak/portrait
+          git add             assets/ak/data/operators.json             assets/ak/data/operator_extra.json             assets/ak/data/latest_skins.json             assets/ak/avatar             assets/ak/portrait             assets/ak/skin-avatar             assets/ak/skin-portrait
 
           if git diff --cached --quiet; then
-            echo "No operator updates."
+            echo "No operator or skin updates."
             exit 0
           fi
 
-          git commit -m "chore: auto-update operator data"
+          git commit -m "chore: auto-update operator and skin data"
           git pull --rebase origin master
           git push origin HEAD:master
