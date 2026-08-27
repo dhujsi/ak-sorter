@@ -7,6 +7,7 @@ import os
 import time
 import urllib.error
 import urllib.request
+import urllib.parse
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE, "assets", "ak", "data")
@@ -226,9 +227,10 @@ for char_id in sorted(operator_ids):
     old = old_skin_manifest.get(char_id) or {}
     changed = old.get("skinId") != skin["skinId"]
     asset_id = skin["assetId"]
+    asset_url_id = urllib.parse.quote(asset_id, safe="")
 
     if changed or not os.path.exists(avatar_dest):
-        if download_replace(avatar_dest, [f"{AVATAR_URL}/{asset_id}.png"]):
+        if download_replace(avatar_dest, [f"{AVATAR_URL}/{asset_url_id}.png"]):
             skin_avatar_updates += 1
         else:
             remove_if_exists(avatar_dest)
@@ -237,8 +239,8 @@ for char_id in sorted(operator_ids):
         if download_replace(
             portrait_dest,
             [
-                f"{SKIN_URL}/{asset_id}b.png",
-                f"{SKIN_URL}/{asset_id}_spb.png",
+                f"{SKIN_URL}/{asset_url_id}b.png",
+                f"{SKIN_URL}/{asset_url_id}_spb.png",
             ],
         ):
             skin_portrait_updates += 1
