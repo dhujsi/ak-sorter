@@ -411,7 +411,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
 </div><!-- .container -->
 
 <footer class="site-footer">
-  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.05.14-6</span></p>
+  <p>非官方 fan-made project · 游戏素材版权归原权利方所有 · <span style="color:#444;">v2026.08.27-1</span></p>
   <p>
     <a href="about.html">关于 / 声明 / 开源许可</a> &nbsp;·&nbsp;
     <a href="https://github.com/dhujsi/ak-sorter" target="_blank" rel="noopener">Source code</a> &nbsp;·&nbsp;
@@ -475,7 +475,7 @@ let _unrankedTierOps = null;     // operators that were pending when Tier was ge
 let selectedStars = new Set([4, 5, 6]);
 let selectedGenders = new Set(['male', 'female', 'unknown']);
 let selectedRank = 20;
-let imageMode = 'portrait'; // 'portrait' | 'avatar'
+let imageMode = 'portrait'; // 'portrait' | 'avatar' | 'skin'
 let mergeAlters = true;      // true = exclude alter operators
 
 const TIER_CONFIG = [
@@ -501,22 +501,39 @@ const GENDER_OPTIONS = [
 // ============================================================
 // UNIFIED IMAGE PATH
 // ============================================================
-function getOperatorImage(op, usage) {
+function getOperatorImageCandidates(op, usage) {
   // usage: 'portrait' (compare/result), 'avatar' (tier), 'auto' (follows imageMode)
-  if (usage === 'avatar') return 'assets/ak/avatar/' + op.id + '.png';
-  if (usage === 'portrait' || (usage === 'auto' && imageMode === 'portrait')) {
-    return 'assets/ak/portrait/' + op.id + '.png';
+  const baseAvatar = 'assets/ak/avatar/' + op.id + '.png';
+  const basePortrait = 'assets/ak/portrait/' + op.id + '.png';
+  const skinAvatar = 'assets/ak/skin-avatar/' + op.id + '.png';
+  const skinPortrait = 'assets/ak/skin-portrait/' + op.id + '.png';
+
+  if (imageMode === 'skin') {
+    if (usage === 'avatar') return [skinAvatar, baseAvatar];
+    return [skinPortrait, skinAvatar, basePortrait, baseAvatar];
   }
-  return 'assets/ak/avatar/' + op.id + '.png';
+  if (usage === 'avatar') return [baseAvatar];
+  if (usage === 'portrait' || (usage === 'auto' && imageMode === 'portrait')) {
+    return [basePortrait, baseAvatar];
+  }
+  return [baseAvatar];
+}
+
+function getOperatorImage(op, usage) {
+  return getOperatorImageCandidates(op, usage)[0];
 }
 
 function setImgSrc(img, op, usage) {
-  img.src = getOperatorImage(op, usage);
+  const candidates = getOperatorImageCandidates(op, usage);
+  let idx = 0;
+  img.src = candidates[idx];
   img.onerror = function() {
-    if (usage !== 'avatar' && imageMode !== 'avatar') {
-      this.src = 'assets/ak/avatar/' + op.id + '.png';
+    idx += 1;
+    if (idx < candidates.length) {
+      this.src = candidates[idx];
+    } else {
+      this.onerror = null;
     }
-    this.onerror = null;
   };
   if (usage === 'lazy') {
     img.loading = 'lazy';
@@ -884,6 +901,7 @@ function buildFilterPage() {
   imgDiv.innerHTML = '';
   [
     { value: 'portrait', label: '半身图模式' },
+    { value: 'skin', label: '最新皮肤模式' },
     { value: 'avatar', label: '头像模式 (更快)' }
   ].forEach(m => {
     const label = document.createElement('label');
@@ -1693,9 +1711,13 @@ function createTierCard(op, tierId, index) {
   });
   card.addEventListener('dragend', function() { card.classList.remove('dragging'); tierClearDragState(); });
   const img = document.createElement('img');
-  img.src = 'assets/ak/avatar/' + op.id + '.png'; img.alt = '';
+  setImgSrc(img, op, 'avatar'); img.alt = '';
   img.loading = 'lazy'; img.decoding = 'async';
-  img.onerror = function() { this.style.background = '#333'; };
+  const prevOnError = img.onerror;
+  img.onerror = function() {
+    if (prevOnError) prevOnError.call(this);
+    else this.style.background = '#333';
+  };
   card.appendChild(img);
   return card;
 }
