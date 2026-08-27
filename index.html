@@ -1582,6 +1582,34 @@ function createResultCard(op, idx, sizeClass, pinnedCount, buriedCount, imageUsa
   return card;
 }
 
+function getSessionCandidateCount() {
+  const ids = new Set();
+  function addOp(op) { if (op && op.id) ids.add(op.id); }
+  function addOps(ops) { (ops || []).forEach(addOp); }
+  function addItems(items) {
+    (items || []).forEach(function(item) {
+      if (!item) return;
+      addOp(item.op);
+      addItems(item.children);
+    });
+  }
+
+  if (sorter) {
+    addItems(sorter.items);
+    addOps(sorter.results);
+  }
+  addOps(rankingResults);
+  addOps(pinnedTop);
+  addOps(buriedBottom);
+  addOps(_unrankedTierOps);
+  addOps(_pendingNormalResults);
+  (postponedQueue || []).forEach(function(pair) {
+    if (!pair) return;
+    addOp(pair.left); addOp(pair.right);
+  });
+  return ids.size || getFilteredOps().length;
+}
+
 function renderResults() {
   document.getElementById('resultTitle').textContent = '我的前 ' + rankingResults.length + ' 位干员排行';
 
@@ -1597,7 +1625,7 @@ function renderResults() {
   }
   document.getElementById('resultMeta').textContent = meta;
 
-  const totalCandidates = getFilteredOps().length;
+  const totalCandidates = getSessionCandidateCount();
   let summary = '当前排序范围共有 ' + totalCandidates + ' 名干员，本页展示前 ' + rankingResults.length + ' 名结果。';
   if (excludedCount > 0) summary += ' 已排除 ' + excludedCount + ' 名不参与排名。';
   document.getElementById('resultSummary').textContent = summary;
