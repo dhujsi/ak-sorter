@@ -294,6 +294,12 @@ button.small { padding: 5px 10px; font-size: 12px; }
   </div>
 
   <div class="filter-group">
+    <h3>排序模式</h3>
+    <div class="filter-gender" id="sortingModeFilters"></div>
+    <p class="loading-hint" id="sortingModeHint"></p>
+  </div>
+
+  <div class="filter-group">
     <h3>图片模式</h3>
     <div class="filter-img-mode" id="imgModeFilters"></div>
   </div>
@@ -485,6 +491,7 @@ let selectedGenders = new Set(['male', 'female', 'unknown']);
 let selectedRank = 20;
 let imageMode = 'portrait'; // 'portrait' | 'avatar' | 'skinPortrait' | 'skinAvatar'
 let mergeAlters = true;      // true = exclude alter operators
+let selectedSortingMode = 'reference';
 
 const TIER_CONFIG = [
   { id: "t0", name: "论外", color: "#ff7f7f" },
@@ -499,6 +506,18 @@ const TIER_CONFIG = [
   { id: "t9", name: "中杯下", color: "#ff7fff" }
 ];
 const RANK_OPTIONS = [10, 20, 30, 50, 100, 0];
+const SORTING_MODES = [
+  {
+    value: 'reference',
+    label: '参考排序',
+    hint: '按高效的 Top N 比较流程排序；适合偏好大体可传递的情况。'
+  },
+  {
+    value: 'layered',
+    label: '分层抽样',
+    hint: '跨前部、边界和后部抽样；保留下克上与非传递偏好。'
+  }
+];
 const STAR_OPTIONS = [1, 2, 3, 4, 5, 6];
 const GENDER_OPTIONS = [
   { value: 'male', label: '男' },
@@ -596,10 +615,29 @@ class ComparisonLedger {
   }
 
   static fromSerialized(data, history = []) {
-    if (data && Array.isArray(data.records)) {
-      return new ComparisonLedger(data.records);
-    }
-    return ComparisonLedger.fromHistory(history);
+    const historical = ComparisonLedger.fromHistory(history).records;
+    if (!data || !Array.isArray(data.records)) return new ComparisonLedger(historical);
+
+    // Some transitional exports contain a nearly empty `evidence.records`
+    // beside a much longer legacy `history`. Prefer the chronological history,
+    // then append only evidence occurrences that are genuinely absent there.
+    // Counting occurrences (instead of a Set) preserves intentional rematches.
+    const merged = historical.map(record => ({ ...record }));
+    const historyCounts = new Map();
+    const evidenceSeen = new Map();
+    const keyOf = record => [record.w, record.l, record.o === 'tie' ? 'tie' : 'win'].join('|');
+    merged.forEach(record => {
+      const key = keyOf(record);
+      historyCounts.set(key, (historyCounts.get(key) || 0) + 1);
+    });
+    const normalizedEvidence = new ComparisonLedger(data.records).records;
+    normalizedEvidence.forEach(record => {
+      const key = keyOf(record);
+      const occurrence = (evidenceSeen.get(key) || 0) + 1;
+      evidenceSeen.set(key, occurrence);
+      if (occurrence > (historyCounts.get(key) || 0)) merged.push({ ...record });
+    });
+    return new ComparisonLedger(merged);
   }
 
   add(record) {
@@ -635,94 +673,83 @@ class ComparisonLedger {
     return new ComparisonLedger(records);
   }
 
-  // A conservative evidence score for previews and future adaptive pairing.
-  // It is intentionally not called a lock/rank: it can change when new
-  // comparisons arrive, including when a non-transitive cycle is observed.
-  score(id) {
-    const wins = this.wins.get(id) || 0;
-    const losses = this.losses.get(id) || 0;
-    const ties = this.ties.get(id) || 0;
-    return (wins + ties * 0.5 + 1) / (wins + losses + ties + 2);
-  }
-
   getComparedIds() {
     const ids = new Set();
     this.records.forEach(record => { ids.add(record.w); ids.add(record.l); });
     return ids;
   }
 
-  // Bradley-Terry strengths fitted with an MM update and a weak neutral prior.
-  // The prior keeps disconnected/rarely seen operators comparable without
-  // pretending that the estimate is certain.
-  calculateScores(operators = []) {
-    const allIds = new Set(operators.filter(Boolean).map(op => op.id));
-    // Keep historical opponents in the fitted graph even when they have since
-    // been pinned or buried; otherwise their earlier comparisons would vanish.
-    this.records.forEach(record => { allIds.add(record.w); allIds.add(record.l); });
-    const ids = [...allIds];
+  analyzeDirectEvidence(operators = []) {
+    const ids = operators.filter(Boolean).map(op => op.id);
     const idSet = new Set(ids);
-    const strengths = new Map(ids.map(id => [id, 1]));
-    const effectiveWins = new Map(ids.map(id => [id, 0]));
-    const opponents = new Map(ids.map(id => [id, new Map()]));
+    const stats = new Map(ids.map(id => [id, {
+      id, wins: 0, losses: 0, ties: 0, opponents: 0, appearances: 0, score: 0
+    }]));
+    const pairs = new Map();
 
     this.records.forEach(record => {
       if (!idSet.has(record.w) || !idSet.has(record.l)) return;
-      const wOpp = opponents.get(record.w);
-      const lOpp = opponents.get(record.l);
-      wOpp.set(record.l, (wOpp.get(record.l) || 0) + 1);
-      lOpp.set(record.w, (lOpp.get(record.w) || 0) + 1);
-      if (record.o === 'tie') {
-        effectiveWins.set(record.w, effectiveWins.get(record.w) + 0.5);
-        effectiveWins.set(record.l, effectiveWins.get(record.l) + 0.5);
+      stats.get(record.w).appearances += 1;
+      stats.get(record.l).appearances += 1;
+      const a = record.w < record.l ? record.w : record.l;
+      const b = record.w < record.l ? record.l : record.w;
+      const key = a + '|' + b;
+      if (!pairs.has(key)) pairs.set(key, { key, a, b, aWins: 0, bWins: 0, ties: 0, total: 0 });
+      const pair = pairs.get(key);
+      pair.total += 1;
+      if (record.o === 'tie') pair.ties += 1;
+      else if (record.w === a) pair.aWins += 1;
+      else pair.bWins += 1;
+    });
+
+    pairs.forEach(pair => {
+      const aStats = stats.get(pair.a);
+      const bStats = stats.get(pair.b);
+      aStats.opponents += 1;
+      bStats.opponents += 1;
+      if (pair.aWins > pair.bWins) {
+        aStats.wins += 1;
+        bStats.losses += 1;
+        pair.majorityWinner = pair.a;
+      } else if (pair.bWins > pair.aWins) {
+        bStats.wins += 1;
+        aStats.losses += 1;
+        pair.majorityWinner = pair.b;
       } else {
-        effectiveWins.set(record.w, effectiveWins.get(record.w) + 1);
+        aStats.ties += 1;
+        bStats.ties += 1;
+        pair.majorityWinner = null;
       }
     });
 
-    const priorWins = 1;
-    const priorGames = 2;
-    for (let iteration = 0; iteration < 80; iteration++) {
-      const next = new Map();
-      let maxDelta = 0;
-      ids.forEach(id => {
-        const own = strengths.get(id);
-        let denominator = priorGames / (own + 1);
-        opponents.get(id).forEach((games, opponentId) => {
-          denominator += games / (own + strengths.get(opponentId));
-        });
-        const updated = (effectiveWins.get(id) + priorWins) / Math.max(denominator, 1e-12);
-        next.set(id, Math.max(updated, 1e-9));
-      });
-
-      // Keep the scale stable; only ratios have meaning in Bradley-Terry.
-      const logMean = ids.length
-        ? [...next.values()].reduce((sum, value) => sum + Math.log(value), 0) / ids.length
-        : 0;
-      const scale = Math.exp(logMean);
-      ids.forEach(id => {
-        const normalized = next.get(id) / scale;
-        maxDelta = Math.max(maxDelta, Math.abs(Math.log(normalized / strengths.get(id))));
-        strengths.set(id, normalized);
-      });
-      if (maxDelta < 1e-8) break;
-    }
-
-    return strengths;
+    // This score uses only distinct directly compared opponents. The +3
+    // denominator is confidence shrinkage: one upset cannot inherit the
+    // opponent's established position, while repeated direct evidence can.
+    stats.forEach(stat => {
+      stat.score = (stat.wins - stat.losses) / (stat.opponents + 3);
+    });
+    return { stats, pairs };
   }
 
-  rank(operators = []) {
-    const scores = this.calculateScores(operators);
+  rankDirect(operators = []) {
+    const analysis = this.analyzeDirectEvidence(operators);
+    const inputIndex = new Map(operators.map((op, index) => [op.id, index]));
     return [...operators].sort((a, b) => {
-      const delta = (scores.get(b.id) || 1) - (scores.get(a.id) || 1);
-      if (Math.abs(delta) > 1e-12) return delta;
-      return (a.name || a.id).localeCompare(b.name || b.id, 'zh-CN');
+      const aStats = analysis.stats.get(a.id);
+      const bStats = analysis.stats.get(b.id);
+      const scoreDelta = bStats.score - aStats.score;
+      if (Math.abs(scoreDelta) > 1e-12) return scoreDelta;
+      if (bStats.wins !== aStats.wins) return bStats.wins - aStats.wins;
+      if (bStats.opponents !== aStats.opponents) return bStats.opponents - aStats.opponents;
+      return inputIndex.get(a.id) - inputIndex.get(b.id);
     });
   }
 }
 
 class TournamentSorter {
-  constructor(operators, rankCount) {
+  constructor(operators, rankCount, sortingMode = 'reference') {
     this.rankCount = Math.min(rankCount, operators.length);
+    this.sortingMode = normalizeSortingMode(sortingMode);
     this.items = operators.map(op => ({ op, children: [] }));
     this.results = [];
     this.currentPair = null;
@@ -731,6 +758,8 @@ class TournamentSorter {
     this.ledger = new ComparisonLedger();
     this.comparisonBudget = this.getBaseComparisonBudget();
     this.avoidPairKey = null;
+    this.referenceState = null;
+    this.layeredState = null;
   }
 
   getBaseComparisonBudget() {
@@ -738,71 +767,329 @@ class TournamentSorter {
     if (n < 2) return 0;
     const maxUniquePairs = n * (n - 1) / 2;
     const target = Math.max(1, Math.min(this.rankCount, n));
-    return Math.min(maxUniquePairs, Math.max(n - 1, Math.ceil(n + target * 2)));
+    if (this.sortingMode === 'reference') {
+      // Truncated insertion: fill Top N, then screen every remaining item at
+      // the cutoff and only binary-insert challengers that win there.
+      const depth = Math.max(1, Math.ceil(Math.log2(target + 1)));
+      return Math.min(maxUniquePairs, Math.ceil(target * depth + Math.max(0, n - target) * (depth + 1)));
+    }
+    const anchors = Math.min(4, Math.max(0, n - 1));
+    const coverage = Math.ceil(n * anchors / 2);
+    const refinement = Math.max(20, target * 6);
+    return Math.min(maxUniquePairs, Math.max(n - 1, coverage + refinement));
   }
 
   extendComparisonBudget() {
     const n = this.items.length;
     const batch = Math.max(10, Math.min(n, this.rankCount || n));
     this.comparisonBudget = Math.max(this.comparisonBudget, this.comparisons) + batch;
+    if (this.sortingMode === 'layered' && this.layeredState) {
+      this.layeredState.unchangedComparisons = 0;
+    }
   }
 
   isComparisonBudgetComplete() {
-    return this.items.length < 2 || this.comparisons >= this.comparisonBudget;
+    if (this.sortingMode === 'reference') {
+      this.ensureReferenceState();
+      return !this.referenceState.insertion && this.referenceState.queue.length === 0;
+    }
+    if (this.items.length < 2) return true;
+    const coverage = this.getLayeredCoverage();
+    const coverageComplete = coverage.covered >= coverage.total;
+    if (!coverageComplete) return false;
+    const state = this.ensureLayeredState();
+    const stabilityWindow = Math.max(20, Math.min(80, this.rankCount * 2));
+    return state.unchangedComparisons >= stabilityWindow || this.comparisons >= this.comparisonBudget;
   }
 
   pairKey(a, b) {
     return a < b ? a + '|' + b : b + '|' + a;
   }
 
-  chooseAdaptivePair() {
+  cloneReferenceState() {
+    return this.referenceState ? JSON.parse(JSON.stringify(this.referenceState)) : null;
+  }
+
+  ensureReferenceState() {
+    const ids = this.items.map(item => item.op.id);
+    const idSet = new Set(ids);
+    const target = Math.max(1, Math.min(this.rankCount, ids.length || 1));
+    if (!this.referenceState || this.referenceState.target !== target) {
+      this.referenceState = {
+        version: 1,
+        target,
+        order: [],
+        queue: [...ids],
+        discarded: [],
+        insertion: null
+      };
+      this.comparisonBudget = Math.max(this.comparisons, this.getBaseComparisonBudget());
+      return this.referenceState;
+    }
+
+    const uniqueValid = list => {
+      const seen = new Set();
+      return (list || []).filter(id => idSet.has(id) && !seen.has(id) && seen.add(id));
+    };
+    this.referenceState.order = uniqueValid(this.referenceState.order).slice(0, target);
+    this.referenceState.queue = uniqueValid(this.referenceState.queue);
+    this.referenceState.discarded = uniqueValid(this.referenceState.discarded);
+    if (this.referenceState.insertion && !idSet.has(this.referenceState.insertion.id)) {
+      this.referenceState.insertion = null;
+    }
+
+    const represented = new Set([
+      ...this.referenceState.order,
+      ...this.referenceState.queue,
+      ...this.referenceState.discarded
+    ]);
+    if (this.referenceState.insertion) represented.add(this.referenceState.insertion.id);
+    ids.forEach(id => {
+      if (!represented.has(id)) this.referenceState.queue.push(id);
+    });
+    return this.referenceState;
+  }
+
+  getLatestDirectOutcome(leftId, rightId) {
+    for (let index = this.ledger.records.length - 1; index >= 0; index--) {
+      const record = this.ledger.records[index];
+      if (record.o === 'tie') continue;
+      if (record.w === leftId && record.l === rightId) return true;
+      if (record.w === rightId && record.l === leftId) return false;
+    }
+    return null;
+  }
+
+  applyReferenceOutcome(candidateWon) {
+    const state = this.ensureReferenceState();
+    const insertion = state.insertion;
+    if (!insertion) return;
+
+    if (insertion.phase === 'cutoff') {
+      if (!candidateWon) {
+        state.discarded.push(insertion.id);
+        state.insertion = null;
+        return;
+      }
+      insertion.phase = 'insert';
+      insertion.lo = 0;
+      insertion.hi = Math.max(0, state.order.length - 1);
+      insertion.mid = null;
+      return;
+    }
+
+    if (candidateWon) insertion.hi = insertion.mid;
+    else insertion.lo = insertion.mid + 1;
+    insertion.mid = null;
+  }
+
+  finishReferenceInsertion() {
+    const state = this.ensureReferenceState();
+    const insertion = state.insertion;
+    if (!insertion) return;
+    const index = Math.max(0, Math.min(insertion.lo || 0, state.order.length));
+    state.order.splice(index, 0, insertion.id);
+    if (state.order.length > state.target) {
+      const removed = state.order.pop();
+      if (removed && removed !== insertion.id) state.discarded.push(removed);
+      else if (removed) state.discarded.push(insertion.id);
+    }
+    state.insertion = null;
+  }
+
+  chooseReferencePair() {
+    const state = this.ensureReferenceState();
+    const indexById = new Map(this.items.map((item, index) => [item.op.id, index]));
+    const maxSteps = Math.max(
+      20,
+      this.items.length * (Math.ceil(Math.log2(state.target + 1)) + 3) + 10
+    );
+
+    for (let step = 0; step < maxSteps; step++) {
+      if (!state.insertion) {
+        const candidateId = state.queue.shift();
+        if (!candidateId) return null;
+        if (state.order.length === 0) {
+          state.order.push(candidateId);
+          continue;
+        }
+        if (state.order.length >= state.target) {
+          state.insertion = {
+            id: candidateId,
+            phase: 'cutoff',
+            lo: 0,
+            hi: Math.max(0, state.order.length - 1),
+            mid: state.order.length - 1
+          };
+        } else {
+          state.insertion = {
+            id: candidateId,
+            phase: 'insert',
+            lo: 0,
+            hi: state.order.length,
+            mid: null
+          };
+        }
+      }
+
+      const insertion = state.insertion;
+      if (insertion.phase === 'insert' && insertion.lo >= insertion.hi) {
+        this.finishReferenceInsertion();
+        continue;
+      }
+
+      const opponentPosition = insertion.phase === 'cutoff'
+        ? state.order.length - 1
+        : Math.floor((insertion.lo + insertion.hi) / 2);
+      insertion.mid = opponentPosition;
+      const opponentId = state.order[opponentPosition];
+      const known = this.getLatestDirectOutcome(insertion.id, opponentId);
+      if (known !== null) {
+        this.applyReferenceOutcome(known);
+        continue;
+      }
+
+      const candidateIndex = indexById.get(insertion.id);
+      const opponentIndex = indexById.get(opponentId);
+      if (candidateIndex === undefined || opponentIndex === undefined) {
+        state.insertion = null;
+        continue;
+      }
+      return Math.random() < 0.5
+        ? [candidateIndex, opponentIndex]
+        : [opponentIndex, candidateIndex];
+    }
+    return null;
+  }
+
+  deferReferenceInsertion() {
+    if (this.sortingMode !== 'reference') return;
+    const state = this.ensureReferenceState();
+    if (!state.insertion) return;
+    state.queue.push(state.insertion.id);
+    state.insertion = null;
+  }
+
+  getLayeredMinAnchors() {
+    return Math.min(4, Math.max(0, this.items.length - 1));
+  }
+
+  ensureLayeredState() {
+    const target = Math.max(1, Math.min(this.rankCount, this.items.length || 1));
+    const top = this.ledger.rankDirect(this.items.map(item => item.op))
+      .slice(0, target).map(op => op.id);
+    if (!this.layeredState || this.layeredState.target !== target) {
+      this.layeredState = {
+        version: 1,
+        target,
+        lastTop: top,
+        unchangedComparisons: 0
+      };
+    }
+    return this.layeredState;
+  }
+
+  updateLayeredStability() {
+    const state = this.ensureLayeredState();
+    const top = this.ledger.rankDirect(this.items.map(item => item.op))
+      .slice(0, state.target).map(op => op.id);
+    const unchanged = top.length === state.lastTop.length &&
+      top.every((id, index) => id === state.lastTop[index]);
+    state.unchangedComparisons = unchanged ? state.unchangedComparisons + 1 : 0;
+    state.lastTop = top;
+  }
+
+  getLayeredCoverage() {
+    const operators = this.items.map(item => item.op);
+    const analysis = this.ledger.analyzeDirectEvidence(operators);
+    const required = this.getLayeredMinAnchors();
+    let covered = 0;
+    operators.forEach(op => {
+      if ((analysis.stats.get(op.id).opponents || 0) >= required) covered += 1;
+    });
+    return { covered, total: operators.length, required, analysis };
+  }
+
+  chooseLayeredPair() {
     const operators = this.items.map(item => item.op);
     const indexById = new Map(operators.map((op, index) => [op.id, index]));
-    const appearances = new Map(operators.map(op => [op.id, 0]));
-    const pairCounts = new Map();
-    this.ledger.records.forEach(record => {
-      if (appearances.has(record.w)) appearances.set(record.w, appearances.get(record.w) + 1);
-      if (appearances.has(record.l)) appearances.set(record.l, appearances.get(record.l) + 1);
-      const key = this.pairKey(record.w, record.l);
-      pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
-    });
-
-    const strengths = this.ledger.calculateScores(operators);
-    const ranked = [...operators].sort((a, b) => (strengths.get(b.id) || 1) - (strengths.get(a.id) || 1));
+    if (operators.length < 2) return null;
+    const ranked = this.ledger.rankDirect(operators);
     const rankById = new Map(ranked.map((op, index) => [op.id, index]));
-    const exposureValues = operators.map(op => appearances.get(op.id));
-    const minExposure = Math.min(...exposureValues);
+    const analysis = this.ledger.analyzeDirectEvidence(operators);
+    const stats = analysis.stats;
+    const pairCounts = new Map([...analysis.pairs].map(([key, pair]) => [key, pair.total]));
+    const target = Math.max(1, Math.min(this.rankCount, ranked.length));
+    const targetIndex = target - 1;
+    const minAnchors = this.getLayeredMinAnchors();
     let chosen = null;
 
-    // Coverage phase: first make sure everyone is seen at least twice. Pair
-    // equally under-exposed operators and prefer an unseen matchup.
-    if (minExposure < 2) {
-      const primaryPool = operators
-        .map((op, index) => ({ op, index }))
-        .filter(entry => appearances.get(entry.op.id) === minExposure);
+    // Coverage phase: every item meets distinct opponents from four strata:
+    // front, Top-N boundary, middle and back. A loss at one stratum therefore
+    // never prevents a later challenge at another stratum.
+    const underCovered = operators.filter(op => stats.get(op.id).opponents < minAnchors);
+    if (underCovered.length > 0) {
+      const minimum = Math.min(...underCovered.map(op => stats.get(op.id).opponents));
+      const primaryPool = underCovered.filter(op => stats.get(op.id).opponents === minimum);
       const primary = primaryPool[Math.floor(Math.random() * primaryPool.length)];
+      const primaryStat = stats.get(primary.id);
+      const centers = [
+        0,
+        targetIndex,
+        Math.floor((targetIndex + ranked.length - 1) / 2),
+        ranked.length - 1
+      ];
+      const desiredCenter = centers[primaryStat.opponents % centers.length];
       let bestScore = -Infinity;
-      operators.forEach((op, index) => {
-        if (index === primary.index) return;
-        const key = this.pairKey(primary.op.id, op.id);
+      ranked.forEach(op => {
+        if (op.id === primary.id) return;
+        const key = this.pairKey(primary.id, op.id);
         if (key === this.avoidPairKey && operators.length > 2) return;
         const pairCount = pairCounts.get(key) || 0;
-        const logDistance = Math.abs(Math.log((strengths.get(primary.op.id) || 1) / (strengths.get(op.id) || 1)));
-        const score = (pairCount === 0 ? 100 : 0)
-          - appearances.get(op.id) * 8
-          - logDistance
+        const score = (pairCount === 0 ? 1000 : -pairCount * 100)
+          - Math.abs(rankById.get(op.id) - desiredCenter) * 3
+          - stats.get(op.id).appearances
           + Math.random() * 0.01;
-        if (score > bestScore) { bestScore = score; chosen = [primary.index, index]; }
+        if (score > bestScore) {
+          bestScore = score;
+          chosen = [indexById.get(primary.id), indexById.get(op.id)];
+        }
       });
     }
 
-    // Refinement phase: compare close scores, especially around the requested
-    // cutoff. Repeats are allowed but strongly deprioritized, which lets noisy
-    // or context-sensitive preferences correct earlier evidence.
+    // Exploration round: regularly bring a lower-ranked candidate back against
+    // the front/boundary. This is the explicit "upset" path and remains active
+    // after baseline coverage, so lower items are reduced rather than locked.
+    if (!chosen && this.comparisons % 5 === 0 && ranked.length > target) {
+      const lowerStart = Math.min(ranked.length - 1, Math.max(target, Math.floor(ranked.length * 0.45)));
+      const challengers = ranked.slice(lowerStart);
+      const front = ranked.slice(0, Math.min(ranked.length, target + Math.max(3, Math.ceil(target * 0.25))));
+      let bestScore = -Infinity;
+      challengers.forEach(challenger => {
+        front.forEach(opponent => {
+          if (challenger.id === opponent.id) return;
+          const key = this.pairKey(challenger.id, opponent.id);
+          if (key === this.avoidPairKey && operators.length > 2) return;
+          const pairCount = pairCounts.get(key) || 0;
+          const cutoffDistance = Math.abs(rankById.get(opponent.id) - targetIndex);
+          const score = (pairCount === 0 ? 500 : 20 / (1 + pairCount))
+            - stats.get(challenger.id).appearances * 1.5
+            - cutoffDistance * 0.5
+            + Math.random() * 0.01;
+          if (score > bestScore) {
+            bestScore = score;
+            chosen = [indexById.get(challenger.id), indexById.get(opponent.id)];
+          }
+        });
+      });
+    }
+
+    // Refinement phase: strong/front candidates and the Top-N boundary appear
+    // most often. Pair choice uses only direct evidence closeness and exposure;
+    // the opponent's rank never changes the value of a win.
     if (!chosen) {
-      const targetIndex = Math.max(0, Math.min(this.rankCount, ranked.length) - 1);
-      const focusLimit = this.rankCount < ranked.length
-        ? Math.min(ranked.length, this.rankCount + Math.max(12, Math.ceil(this.rankCount * 0.35)))
+      const focusLimit = target < ranked.length
+        ? Math.min(ranked.length, target + Math.max(12, Math.ceil(target * 0.5)))
         : ranked.length;
       let bestScore = -Infinity;
       const consider = (leftRank, rightRank) => {
@@ -811,12 +1098,14 @@ class TournamentSorter {
         const key = this.pairKey(left.id, right.id);
         if (key === this.avoidPairKey && operators.length > 2) return;
         const pairCount = pairCounts.get(key) || 0;
-        const logDistance = Math.abs(Math.log((strengths.get(left.id) || 1) / (strengths.get(right.id) || 1)));
+        const evidenceDistance = Math.abs(stats.get(left.id).score - stats.get(right.id).score);
         const cutoffDistance = Math.min(Math.abs(leftRank - targetIndex), Math.abs(rightRank - targetIndex));
-        const score = 4 / (1 + logDistance * 5)
-          + (pairCount === 0 ? 3 : 1 / (1 + pairCount * 3))
-          + 1.5 / (1 + cutoffDistance)
-          + 1 / (1 + Math.min(appearances.get(left.id), appearances.get(right.id)))
+        const topBonus = leftRank < target || rightRank < target ? 4 : 0;
+        const score = 5 / (1 + evidenceDistance * 8)
+          + (pairCount === 0 ? 5 : 1 / (1 + pairCount * 4))
+          + 4 / (1 + cutoffDistance)
+          + topBonus
+          + 1 / (1 + Math.min(stats.get(left.id).appearances, stats.get(right.id).appearances))
           + Math.random() * 0.01;
         if (score > bestScore) {
           bestScore = score;
@@ -825,11 +1114,10 @@ class TournamentSorter {
       };
 
       for (let i = 0; i < focusLimit; i++) {
-        for (let offset = 1; offset <= 6 && i + offset < ranked.length; offset++) {
+        for (let offset = 1; offset <= 5 && i + offset < ranked.length; offset++) {
           consider(i, i + offset);
         }
       }
-      // Always include a band crossing the top-N cutoff.
       for (let i = Math.max(0, targetIndex - 8); i <= targetIndex; i++) {
         for (let j = targetIndex + 1; j <= Math.min(ranked.length - 1, targetIndex + 8); j++) consider(i, j);
       }
@@ -853,8 +1141,17 @@ class TournamentSorter {
     if (this.currentPair) {
       return { left: this.items[this.currentPair.i].op, right: this.items[this.currentPair.j].op };
     }
+    if (this.sortingMode === 'reference') {
+      const chosen = this.chooseReferencePair();
+      if (!chosen) return null;
+      this.currentPair = { i: chosen[0], j: chosen[1] };
+      return {
+        left: this.items[this.currentPair.i].op,
+        right: this.items[this.currentPair.j].op
+      };
+    }
     if (this.isComparisonBudgetComplete()) return null;
-    const chosen = this.chooseAdaptivePair();
+    const chosen = this.chooseLayeredPair();
     if (!chosen) return null;
     this.currentPair = { i: chosen[0], j: chosen[1] };
     const chosenKey = this.pairKey(this.items[chosen[0]].op.id, this.items[chosen[1]].op.id);
@@ -871,14 +1168,34 @@ class TournamentSorter {
     const leftItem = this.items[i];
     const rightItem = this.items[j];
     const rollbackBase = this.results.length;
+    const referenceBefore = this.sortingMode === 'reference' ? this.cloneReferenceState() : null;
+    const layeredBefore = this.sortingMode === 'layered'
+      ? JSON.parse(JSON.stringify(this.ensureLayeredState()))
+      : null;
+    const referenceCandidateId = referenceBefore && referenceBefore.insertion
+      ? referenceBefore.insertion.id
+      : null;
 
     if (leftIsBetter) {
-      this.history.push({ winner: leftItem, loser: rightItem, _rlb: rollbackBase });
+      this.history.push({ winner: leftItem, loser: rightItem, _rlb: rollbackBase, _rsb: referenceBefore, _lsb: layeredBefore });
       this.ledger.add({ w: leftItem.op.id, l: rightItem.op.id });
     } else {
-      this.history.push({ winner: rightItem, loser: leftItem, _rlb: rollbackBase });
+      this.history.push({ winner: rightItem, loser: leftItem, _rlb: rollbackBase, _rsb: referenceBefore, _lsb: layeredBefore });
       this.ledger.add({ w: rightItem.op.id, l: leftItem.op.id });
     }
+
+    if (referenceCandidateId &&
+        (leftItem.op.id === referenceCandidateId || rightItem.op.id === referenceCandidateId)) {
+      const candidateWon = leftIsBetter
+        ? leftItem.op.id === referenceCandidateId
+        : rightItem.op.id === referenceCandidateId;
+      this.applyReferenceOutcome(candidateWon);
+    } else if (this.sortingMode === 'reference') {
+      // A manually restored legacy pair has no insertion cursor. Rebuild the
+      // scheduler from the shared evidence after recording it.
+      this.referenceState = null;
+    }
+    if (this.sortingMode === 'layered') this.updateLayeredStability();
 
     this.comparisons++;
     this.currentPair = null;
@@ -895,8 +1212,12 @@ class TournamentSorter {
       }
       this.items = [last.winner];
     }
-    const { winner, loser } = this.history.pop();
+    const { winner, loser, _rsb, _lsb } = this.history.pop();
     this.ledger = this.ledger.withoutLastMatch(winner.op.id, loser.op.id);
+    if (_rsb) this.referenceState = JSON.parse(JSON.stringify(_rsb));
+    else if (this.sortingMode === 'reference') this.referenceState = null;
+    if (_lsb) this.layeredState = JSON.parse(JSON.stringify(_lsb));
+    else if (this.sortingMode === 'layered') this.layeredState = null;
     this.comparisons--;
     this.currentPair = null;
     return true;
@@ -904,6 +1225,31 @@ class TournamentSorter {
 
   getProgress() {
     const candidates = this.getAllOperators();
+    if (this.sortingMode === 'reference') {
+      const state = this.ensureReferenceState();
+      const pending = state.queue.length + (state.insertion ? 1 : 0);
+      return {
+        comparisons: this.comparisons,
+        covered: Math.max(0, candidates.length - pending),
+        total: candidates.length,
+        target: this.rankCount,
+        budget: Math.max(this.comparisonBudget, this.comparisons)
+      };
+    }
+    if (this.sortingMode === 'layered') {
+      const coverage = this.getLayeredCoverage();
+      const state = this.ensureLayeredState();
+      const stabilityWindow = Math.max(20, Math.min(80, this.rankCount * 2));
+      return {
+        comparisons: this.comparisons,
+        covered: coverage.covered,
+        total: coverage.total,
+        target: this.rankCount,
+        budget: Math.max(this.comparisonBudget, this.comparisons),
+        stability: state.unchangedComparisons,
+        stabilityTarget: stabilityWindow
+      };
+    }
     const comparedIds = this.ledger.getComparedIds();
     const covered = candidates.reduce((count, op) => count + (comparedIds.has(op.id) ? 1 : 0), 0);
     return {
@@ -926,7 +1272,22 @@ class TournamentSorter {
   }
 
   getEvidenceRanking(operators = this.getAllOperators()) {
-    return this.ledger.rank(operators);
+    if (this.sortingMode === 'reference') {
+      const state = this.ensureReferenceState();
+      const allowed = new Set(operators.map(op => op.id));
+      const opById = new Map(this.items.map(item => [item.op.id, item.op]));
+      const ordered = state.order.filter(id => allowed.has(id)).map(id => opById.get(id)).filter(Boolean);
+      const seen = new Set(ordered.map(op => op.id));
+      operators.forEach(op => { if (op && !seen.has(op.id)) { seen.add(op.id); ordered.push(op); } });
+      return ordered;
+    }
+    return this.ledger.rankDirect(operators);
+  }
+
+  getReferenceTopOperators() {
+    const state = this.ensureReferenceState();
+    const opById = new Map(this.items.map(item => [item.op.id, item.op]));
+    return state.order.map(id => opById.get(id)).filter(Boolean).slice(0, this.rankCount);
   }
 
   // Serialize for localStorage — only IDs and structure, no base64 images
@@ -935,15 +1296,19 @@ class TournamentSorter {
       return { o: item.op.id, c: item.children.map(serializeItem) };
     }
     return {
-      schemaVersion: 3,
+      schemaVersion: 4,
+      sortingMode: this.sortingMode,
       rankCount: this.rankCount,
       items: this.items.map(item => ({ o: item.op.id, c: [] })),
       results: [],
       comparisons: this.comparisons,
       comparisonBudget: this.comparisonBudget,
+      referenceState: this.cloneReferenceState(),
+      layeredState: this.layeredState ? JSON.parse(JSON.stringify(this.layeredState)) : null,
       evidence: this.ledger.serialize(),
       history: this.history.map(h => ({
-        w: h.winner.op.id, l: h.loser.op.id, rlb: h._rlb
+        w: h.winner.op.id, l: h.loser.op.id, rlb: h._rlb,
+        rsb: h._rsb || null, lsb: h._lsb || null
       }))
     };
   }
@@ -971,7 +1336,9 @@ class TournamentSorter {
     }
     const totalItems = candidates.length;
     const rankCount = (data.rankCount > 0) ? Math.min(data.rankCount, totalItems) : Math.max(1, totalItems);
-    const s = new TournamentSorter(candidates, rankCount);
+    // Old exports predate selectable modes and keep their historical behavior
+    // under the reference strategy until the user explicitly switches modes.
+    const s = new TournamentSorter(candidates, rankCount, data.sortingMode);
     const itemById = new Map(s.items.map(item => [item.op.id, item]));
     s.results = [];
     s.comparisons = Number.isFinite(data.comparisons) ? data.comparisons : (data.history || []).length;
@@ -981,9 +1348,13 @@ class TournamentSorter {
       // re-exported even when the node is no longer reachable from `items`.
       const winner = itemById.get(h.w) || { op: resolveSavedOperator(h.w, opMap), children: [] };
       const loser = itemById.get(h.l) || { op: resolveSavedOperator(h.l, opMap), children: [] };
-      return { winner, loser, _rlb: h.rlb };
+      return { winner, loser, _rlb: h.rlb, _rsb: h.rsb || null, _lsb: h.lsb || null };
     });
     s.ledger = ComparisonLedger.fromSerialized(data.evidence, data.history || []);
+    s.referenceState = data.referenceState ? JSON.parse(JSON.stringify(data.referenceState)) : null;
+    s.layeredState = data.layeredState ? JSON.parse(JSON.stringify(data.layeredState)) : null;
+    if (s.sortingMode === 'reference') s.ensureReferenceState();
+    if (s.sortingMode === 'layered') s.ensureLayeredState();
     const baseBudget = s.getBaseComparisonBudget();
     s.comparisonBudget = Number.isFinite(data.comparisonBudget)
       ? Math.max(data.comparisonBudget, s.comparisons)
@@ -1004,6 +1375,7 @@ function saveSettings() {
     selectedStars: [...selectedStars],
     selectedGenders: [...selectedGenders],
     selectedRank,
+    selectedSortingMode,
     imageMode,
     mergeAlters
   };
@@ -1018,6 +1390,7 @@ function loadSettings() {
       if (s.selectedStars) selectedStars = new Set(s.selectedStars);
       if (s.selectedGenders) selectedGenders = new Set(s.selectedGenders);
       if (s.selectedRank !== undefined) selectedRank = s.selectedRank;
+      if (s.selectedSortingMode) selectedSortingMode = normalizeSortingMode(s.selectedSortingMode);
       if (s.imageMode) imageMode = (s.imageMode === 'skin' ? 'skinPortrait' : s.imageMode);
       if (s.mergeAlters !== undefined) mergeAlters = s.mergeAlters;
     }
@@ -1029,6 +1402,7 @@ function captureCurrentSessionFilter() {
     selectedStars: [...selectedStars],
     selectedGenders: [...selectedGenders],
     selectedRank,
+    sortingMode: selectedSortingMode,
     mergeAlters
   };
 }
@@ -1116,6 +1490,11 @@ function collectSessionOperatorIds() {
 
 function restoreNewOpMergeState(state) {
   _sessionFilter = state.sessionFilter || captureCurrentSessionFilter();
+  const restoredMode = state.sorter && state.sorter.sortingMode
+    ? state.sorter.sortingMode
+    : _sessionFilter.sortingMode;
+  selectedSortingMode = normalizeSortingMode(restoredMode);
+  _sessionFilter.sortingMode = selectedSortingMode;
   const pendingOps = (state.newOpQueue || []).map(id => resolveSavedOperator(id, opMap)).filter(Boolean);
   _newOpInsertion = null;
   // Older saves may have paused halfway through binary insertion into a locked
@@ -1227,6 +1606,7 @@ function loadProgress() {
       return l && r ? { left: l, right: r } : null;
     }).filter(Boolean);
     sorter = TournamentSorter.deserialize(state.sorter, opMap);
+    selectedSortingMode = sorter.sortingMode;
     restoreNewOpMergeState(state);
     restorePendingRankingState(state);
     // A saved pinned-ordering phase uses a temporary sorter. New database
@@ -1300,6 +1680,9 @@ function importState(event) {
         return l && r ? { left: l, right: r } : null;
       }).filter(Boolean);
       sorter = TournamentSorter.deserialize(data.sorter, opMap);
+      selectedSortingMode = sorter.sortingMode;
+      saveSettings();
+      syncSortingModeControls();
       _savedSorterSnapshot = data;
       localStorage.setItem(SAVE_KEY, JSON.stringify(data));
       updateResumeBar();
@@ -1334,6 +1717,7 @@ function clearAllCache() {
   selectedStars = new Set([4, 5, 6]);
   selectedGenders = new Set(['male', 'female', 'unknown']);
   selectedRank = 20;
+  selectedSortingMode = 'reference';
   imageMode = 'portrait';
   mergeAlters = true;
   buildFilterPage();
@@ -1403,6 +1787,25 @@ function buildFilterPage() {
     rankDiv.appendChild(label);
   });
 
+  // Sorting strategy. Both strategies share the same evidence ledger; this
+  // control only changes how the next comparison will be selected.
+  const modeDiv = document.getElementById('sortingModeFilters');
+  modeDiv.innerHTML = '';
+  SORTING_MODES.forEach(mode => {
+    const label = document.createElement('label');
+    if (selectedSortingMode === mode.value) label.classList.add('checked');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'sortingmode';
+    input.value = mode.value;
+    input.checked = selectedSortingMode === mode.value;
+    input.addEventListener('change', () => setSortingMode(mode.value));
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(mode.label));
+    modeDiv.appendChild(label);
+  });
+  syncSortingModeControls();
+
   // Image mode
   const imgDiv = document.getElementById('imgModeFilters');
   imgDiv.innerHTML = '';
@@ -1449,6 +1852,64 @@ function setMergeAlters(v) {
   saveSettings();
 }
 
+function normalizeSortingMode(mode) {
+  return mode === 'layered' ? 'layered' : 'reference';
+}
+
+function syncSortingModeControls() {
+  const mode = normalizeSortingMode(selectedSortingMode);
+  document.querySelectorAll('#sortingModeFilters label').forEach((label, index) => {
+    const config = SORTING_MODES[index];
+    label.classList.toggle('checked', !!config && config.value === mode);
+    const input = label.querySelector('input');
+    if (input) input.checked = !!config && config.value === mode;
+  });
+  const hint = document.getElementById('sortingModeHint');
+  const config = SORTING_MODES.find(item => item.value === mode);
+  if (hint && config) hint.textContent = config.hint;
+}
+
+function setSortingMode(mode) {
+  selectedSortingMode = normalizeSortingMode(mode);
+  if (_sessionFilter) _sessionFilter.sortingMode = selectedSortingMode;
+  if (sorter) {
+    sorter.sortingMode = selectedSortingMode;
+    // A cached pair was chosen by the old strategy. Re-select it later without
+    // touching comparison evidence or undo history.
+    sorter.currentPair = null;
+    if (selectedSortingMode === 'reference') sorter.ensureReferenceState();
+    if (selectedSortingMode === 'layered') sorter.ensureLayeredState();
+  }
+  syncSortingModeControls();
+  saveSettings();
+  if (sorter) {
+    if (_pendingNormalSnapshot && _pendingNormalSnapshot.sorter) {
+      _pendingNormalSnapshot.sorter.sortingMode = selectedSortingMode;
+      if (_pendingNormalSnapshot.sessionFilter) {
+        _pendingNormalSnapshot.sessionFilter.sortingMode = selectedSortingMode;
+      }
+    }
+    saveProgress();
+  } else {
+    // Allow a mode to be chosen for an imported/saved progress file before the
+    // user presses "继续上次". Only strategy metadata changes; evidence
+    // content stays untouched.
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) {
+        const state = JSON.parse(raw);
+        if (state.sorter) state.sorter.sortingMode = selectedSortingMode;
+        state.sessionFilter = state.sessionFilter || {};
+        state.sessionFilter.sortingMode = selectedSortingMode;
+        if (state.pendingNormalSnapshot && state.pendingNormalSnapshot.sorter) {
+          state.pendingNormalSnapshot.sorter.sortingMode = selectedSortingMode;
+        }
+        localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+      }
+    } catch(e) {}
+  }
+}
+
 function updateOpCount() {
   const filtered = getFilteredOps();
   document.getElementById('opCount').textContent = '共 ' + filtered.length + ' 名干员';
@@ -1478,7 +1939,7 @@ function startSorting() {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  sorter = new TournamentSorter(shuffled, rankCount);
+  sorter = new TournamentSorter(shuffled, rankCount, selectedSortingMode);
   _sessionFilter = captureCurrentSessionFilter();
   _newOpQueue = [];
   _newOpInsertion = null;
@@ -1689,8 +2150,11 @@ function updateSortUI() {
   }
   const p = sorter.getProgress();
   document.getElementById('sortProgress').textContent =
-    '第 ' + p.comparisons + ' 次比较 · 已覆盖 ' + p.covered + ' / ' + p.total
-    + ' 名 · 本轮建议 ' + p.budget + ' 次';
+    '第 ' + p.comparisons + ' 次比较 · '
+    + (sorter.sortingMode === 'layered' ? '已完成分层覆盖 ' : '已覆盖 ')
+    + p.covered + ' / ' + p.total
+    + ' 名 · 本轮建议 ' + p.budget + ' 次'
+    + (p.stabilityTarget ? ' · Top ' + p.target + ' 稳定 ' + p.stability + ' / ' + p.stabilityTarget : '');
   const pct = p.budget > 0 ? Math.min(100, Math.round(p.comparisons / p.budget * 100)) : 100;
   document.getElementById('sortProgressFill').style.width = pct + '%';
   document.getElementById('btnUndo').disabled = _newOpInsertion
@@ -1878,7 +2342,7 @@ function rebuildSorterState() {
     [remainingOps[i], remainingOps[j]] = [remainingOps[j], remainingOps[i]];
   }
 
-  const newSorter = new TournamentSorter(remainingOps, newRankCount);
+  const newSorter = new TournamentSorter(remainingOps, newRankCount, sorter.sortingMode);
   newSorter.history = keepHistory;
   newSorter.ledger = preservedLedger;
   newSorter.comparisons = preservedLedger.records.length;
@@ -1911,6 +2375,7 @@ function postponePair() {
 
   // Adaptive pairing can simply avoid this pair once and choose another.
   sorter.avoidPairKey = key;
+  sorter.deferReferenceInsertion();
   sorter.currentPair = null;
   updateSortUI();
   autoSave();
@@ -1991,6 +2456,14 @@ function snapshotSorter() {
 // This never drains the tree and never writes a hard lock into `sorter.results`.
 function buildEvidenceResults() {
   const candidates = sorter.getAllOperators();
+  if (sorter.sortingMode === 'reference') {
+    const results = sorter.getReferenceTopOperators();
+    const resultIds = new Set(results.map(op => op.id));
+    return {
+      results,
+      unranked: candidates.filter(op => !resultIds.has(op.id))
+    };
+  }
   const comparedIds = sorter.ledger.getComparedIds();
   const includeSoleCandidate = candidates.length === 1;
   const rankedCandidates = candidates.filter(op => includeSoleCandidate || comparedIds.has(op.id));
@@ -2005,7 +2478,11 @@ function startPinnedTopSort(normalResults, preSnapshot) {
   _pendingNormalResults = normalResults;
   _pendingNormalSnapshot = preSnapshot || snapshotSorter();
   const pinnedOps = [...pinnedTop];
-  const pinnedSorter = new TournamentSorter(pinnedOps, pinnedOps.length);
+  const pinnedSorter = new TournamentSorter(
+    pinnedOps,
+    pinnedOps.length,
+    sorter ? sorter.sortingMode : selectedSortingMode
+  );
 
   sorter = pinnedSorter;
   document.getElementById('sortStatus').textContent =

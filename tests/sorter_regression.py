@@ -466,6 +466,10 @@ function runSorterRegressionTests() {
     var buriedActionOrder = [];
 
     __reset(ids, ids.length);
+    // This legacy stress test exercises the adaptive evidence path. Reference
+    // mode has focused Top-N state-machine coverage in tests 18-20 below.
+    sorter.sortingMode = 'layered';
+    sorter.comparisonBudget = sorter.items.length * 3;
     setDeterministicMathRandom(987654321);
     advanceSort();
 
@@ -641,6 +645,7 @@ function runSorterRegressionTests() {
 
   tests.push(__run('13. burying a compared candidate preserves remaining evidence candidates', function() {
     __reset(['A', 'B', 'C', 'D', 'E'], 5);
+    sorter.sortingMode = 'layered';
 
     __setPair('A', 'B');
     sorter.select(true);   // A > B
@@ -702,6 +707,186 @@ function runSorterRegressionTests() {
     sorter.select(true);
     __assert(_savedSorterSnapshot.sorter.items.length === 3, 'original sorter snapshot was replaced by pinned sorter');
     __assert(rankingResults.length === 3, 'final merged ranking lost an operator');
+  }));
+
+  tests.push(__run('16. sorting modes share evidence and survive serialization', function() {
+    __reset(['A', 'B', 'C'], 2);
+    __setPair('A', 'B');
+    sorter.select(true);
+    var evidenceBefore = JSON.stringify(sorter.ledger.serialize());
+    setSortingMode('layered');
+    __assert(sorter.sortingMode === 'layered', 'active sorter mode did not switch');
+    __assert(JSON.stringify(sorter.ledger.serialize()) === evidenceBefore, 'mode switch mutated evidence');
+    var restored = TournamentSorter.deserialize(sorter.serialize(), opMap);
+    __assert(restored.sortingMode === 'layered', 'sorting mode did not survive serialization');
+    __assert(JSON.stringify(restored.ledger.serialize()) === evidenceBefore, 'restored mode lost evidence');
+  }));
+
+  tests.push(__run('17. legacy exports default to reference mode without losing history', function() {
+    __reset(['A', 'B'], 2);
+    var legacy = {
+      rankCount: 2,
+      items: [{ o: 'A', c: [] }, { o: 'B', c: [] }],
+      comparisons: 1,
+      history: [{ w: 'A', l: 'B' }]
+    };
+    var restored = TournamentSorter.deserialize(legacy, opMap);
+    __assert(restored.sortingMode === 'reference', 'legacy export did not use reference mode');
+    __assert(restored.ledger.records.length === 1, 'legacy history was not migrated');
+    __assert(restored.ledger.records[0].w === 'A' && restored.ledger.records[0].l === 'B', 'legacy evidence changed');
+  }));
+
+  tests.push(__run('18. reference mode finds Top N by cutoff screening and binary insertion', function() {
+    __reset(['A', 'B', 'C', 'D', 'E', 'F'], 3);
+    sorter.sortingMode = 'reference';
+    sorter.referenceState = null;
+    var rank = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5 };
+    var guard = 0;
+    var pair;
+    while ((pair = sorter.getNextPair()) && guard++ < 100) {
+      var current = getCurrentPairOps();
+      sorter.select(rank[current.left.id] < rank[current.right.id]);
+    }
+    __assert(guard < 100, 'reference scheduler did not terminate');
+    __assert(sorter.isComparisonBudgetComplete(), 'reference scheduler did not complete');
+    __assert(__ids(sorter.getReferenceTopOperators()).join(',') === 'A,B,C', 'reference Top 3 is wrong');
+    __assert(sorter.comparisons < 15, 'reference Top 3 used too many comparisons: ' + sorter.comparisons);
+  }));
+
+  tests.push(__run('19. reference mode reuses direct history without Bradley-Terry scoring', function() {
+    __reset(['A', 'B', 'C'], 2);
+    sorter.sortingMode = 'layered';
+    __setPair('A', 'B'); sorter.select(true);
+    __setPair('A', 'C'); sorter.select(true);
+    __setPair('B', 'C'); sorter.select(true);
+    var comparisonsBefore = sorter.comparisons;
+    sorter.sortingMode = 'reference';
+    sorter.referenceState = null;
+    __assert(typeof sorter.ledger.calculateScores === 'undefined', 'Bradley-Terry method still exists');
+    var next = sorter.getNextPair();
+    __assert(next === null, 'known direct history should finish reference Top 2 without a new question');
+    __assert(__ids(sorter.getReferenceTopOperators()).join(',') === 'A,B', 'direct history seeded the wrong Top 2');
+    __assert(sorter.comparisons === comparisonsBefore, 'reused history counted as new comparisons');
+  }));
+
+  tests.push(__run('20. reference undo restores the insertion cursor and evidence', function() {
+    __reset(['A', 'B', 'C'], 2);
+    sorter.sortingMode = 'reference';
+    sorter.referenceState = null;
+    var pair = sorter.getNextPair();
+    __assert(!!pair, 'reference mode did not produce a pair');
+    var before = JSON.stringify(sorter.referenceState);
+    sorter.select(true);
+    __assert(sorter.undo(), 'reference undo failed');
+    __assert(JSON.stringify(sorter.referenceState) === before, 'reference insertion cursor was not restored');
+    __assert(sorter.ledger.records.length === 0, 'reference undo left comparison evidence behind');
+  }));
+
+  tests.push(__run('21. partial transitional evidence merges with legacy history without duplicates', function() {
+    __reset(['A', 'B', 'C'], 3);
+    var history = [
+      { w: 'A', l: 'B' },
+      { w: 'B', l: 'C' },
+      { w: 'A', l: 'B' }
+    ];
+    var ledger = ComparisonLedger.fromSerialized({
+      records: [
+        { w: 'A', l: 'B', o: 'win' },
+        { w: 'C', l: 'A', o: 'win' }
+      ]
+    }, history);
+    __assert(ledger.records.length === 4, 'partial evidence/history merge count is wrong');
+    __assert(ledger.records[0].w === 'A' && ledger.records[1].w === 'B' && ledger.records[2].w === 'A', 'legacy history order changed');
+    __assert(ledger.records[3].w === 'C' && ledger.records[3].l === 'A', 'new-only evidence was not appended');
+  }));
+
+  tests.push(__run('22. direct evidence preserves a non-transitive cycle without propagation', function() {
+    __reset(['A', 'B', 'C'], 3);
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    sorter.ledger.add({ w: 'B', l: 'C' });
+    sorter.ledger.add({ w: 'C', l: 'A' });
+    var analysis = sorter.ledger.analyzeDirectEvidence(allOperators);
+    __assert(analysis.pairs.get('A|B').majorityWinner === 'A', 'A>B edge was lost');
+    __assert(analysis.pairs.get('B|C').majorityWinner === 'B', 'B>C edge was lost');
+    __assert(analysis.pairs.get('A|C').majorityWinner === 'C', 'C>A edge was lost');
+    ['A', 'B', 'C'].forEach(function(id) {
+      __assert(analysis.stats.get(id).score === 0, 'cycle was falsely propagated into a strength score');
+    });
+  }));
+
+  tests.push(__run('23. one upset does not inherit the established opponent position', function() {
+    __reset(['B', 'A', 'C', 'D', 'X'], 5);
+    sorter.ledger.add({ w: 'B', l: 'A' });
+    sorter.ledger.add({ w: 'B', l: 'C' });
+    sorter.ledger.add({ w: 'B', l: 'D' });
+    sorter.ledger.add({ w: 'X', l: 'B' });
+    var ranked = sorter.ledger.rankDirect(allOperators).map(function(op) { return op.id; });
+    __assert(ranked.indexOf('B') < ranked.indexOf('X'), 'X inherited B position from one upset');
+    var pair = sorter.ledger.analyzeDirectEvidence(allOperators).pairs.get('B|X');
+    __assert(pair.majorityWinner === 'X', 'the direct X>B upset itself was not preserved');
+  }));
+
+  tests.push(__run('24. layered refinement keeps recurring lower-to-front challenges', function() {
+    var ids = [];
+    for (var i = 0; i < 20; i++) ids.push(String.fromCharCode(65 + i));
+    __reset(ids, 5);
+    sorter.sortingMode = 'layered';
+    sorter.referenceState = null;
+    // Give every item four distinct direct opponents so the test starts in
+    // refinement rather than baseline coverage.
+    for (var j = 0; j < ids.length; j++) {
+      sorter.ledger.add({ w: ids[j], l: ids[(j + 1) % ids.length] });
+      sorter.ledger.add({ w: ids[j], l: ids[(j + 2) % ids.length] });
+    }
+    sorter.comparisons = sorter.ledger.records.length;
+    sorter.comparisonBudget = sorter.comparisons + 100;
+    sorter.layeredState = null;
+    var crossLayer = 0;
+    for (var step = 0; step < 25; step++) {
+      var rankedBefore = sorter.ledger.rankDirect(allOperators);
+      var rankById = {};
+      rankedBefore.forEach(function(op, index) { rankById[op.id] = index; });
+      var next = sorter.getNextPair();
+      __assert(!!next, 'layered refinement stopped too early');
+      var current = getCurrentPairOps();
+      var leftRank = rankById[current.left.id];
+      var rightRank = rankById[current.right.id];
+      if ((leftRank < 5 && rightRank >= 9) || (rightRank < 5 && leftRank >= 9)) crossLayer += 1;
+      sorter.select(current.left.id < current.right.id);
+    }
+    __assert(crossLayer >= 5, 'lower candidates did not receive recurring front challenges: ' + crossLayer);
+  }));
+
+  tests.push(__run('25. layered state survives serialization and undo', function() {
+    __reset(['A', 'B', 'C', 'D', 'E', 'F'], 3);
+    sorter.sortingMode = 'layered';
+    sorter.layeredState = null;
+    var pair = sorter.getNextPair();
+    __assert(!!pair, 'layered mode did not produce a pair');
+    var stateBefore = JSON.stringify(sorter.ensureLayeredState());
+    sorter.select(true);
+    __assert(sorter.undo(), 'layered undo failed');
+    __assert(JSON.stringify(sorter.layeredState) === stateBefore, 'layered stability state was not restored');
+    var restored = TournamentSorter.deserialize(sorter.serialize(), opMap);
+    __assert(restored.sortingMode === 'layered', 'layered mode was not serialized');
+    __assert(JSON.stringify(restored.layeredState) === stateBefore, 'layered state was not serialized');
+  }));
+
+  tests.push(__run('26. mode switch configures saved progress before resume without touching evidence', function() {
+    __reset(['A', 'B', 'C'], 2);
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    var saved = {
+      sorter: sorter.serialize(),
+      sessionFilter: { selectedRank: 2, sortingMode: 'reference' }
+    };
+    var evidenceBefore = JSON.stringify(saved.sorter.evidence);
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
+    sorter = null;
+    setSortingMode('layered');
+    var updated = JSON.parse(localStorage.getItem(SAVE_KEY));
+    __assert(updated.sorter.sortingMode === 'layered', 'saved sorter mode did not change before resume');
+    __assert(updated.sessionFilter.sortingMode === 'layered', 'saved session mode did not change before resume');
+    __assert(JSON.stringify(updated.sorter.evidence) === evidenceBefore, 'saved evidence changed while switching mode');
   }));
 
 
