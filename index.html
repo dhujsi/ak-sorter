@@ -367,7 +367,7 @@ button.small { padding: 5px 10px; font-size: 12px; }
     <button id="btnUndo" disabled onclick="sorter.undo()">撤销</button>
     <button id="btnPostpone" onclick="postponePair()">搁置这一组</button>
     <button id="btnViewRank" onclick="toggleCurrentRanking()">查看当前排名</button>
-    <button id="btnSkip" onclick="finishSortEarly()">看看当前结果</button>
+    <button id="btnSkip" onclick="finishSortEarly()">提前查看结果</button>
   </div>
   <div class="sort-status" id="sortStatus"></div>
   <div id="currentRankingTable" style="display:none;margin-top:16px;text-align:left;max-width:500px;margin-left:auto;margin-right:auto;"></div>
@@ -509,8 +509,8 @@ const RANK_OPTIONS = [10, 20, 30, 50, 100, 0];
 const SORTING_MODES = [
   {
     value: 'reference',
-    label: '参考排序',
-    hint: '按高效的 Top N 比较流程排序；适合偏好大体可传递的情况。'
+    label: '经典角色归并排序',
+    hint: '照搬成熟角色 Sorter 的完整手动归并流程；全部角色完成后生成排名。'
   },
   {
     value: 'layered',
@@ -768,10 +768,17 @@ class TournamentSorter {
     const maxUniquePairs = n * (n - 1) / 2;
     const target = Math.max(1, Math.min(this.rankCount, n));
     if (this.sortingMode === 'reference') {
-      // Truncated insertion: fill Top N, then screen every remaining item at
-      // the cutoff and only binary-insert challengers that win there.
-      const depth = Math.max(1, Math.ceil(Math.log2(target + 1)));
-      return Math.min(maxUniquePairs, Math.ceil(target * depth + Math.max(0, n - target) * (depth + 1)));
+      // execfera/charasort uses a top-down merge sort whose worst-case number
+      // of manual comparisons is computed recursively. rankCount only limits
+      // how many completed results are displayed; it does not truncate the
+      // sort or discard candidates at a cutoff.
+      const mergeWorstCase = size => {
+        if (size < 2) return 0;
+        const left = Math.ceil(size / 2);
+        const right = size - left;
+        return mergeWorstCase(left) + mergeWorstCase(right) + size - 1;
+      };
+      return mergeWorstCase(n);
     }
     const anchors = Math.min(4, Math.max(0, n - 1));
     const coverage = Math.ceil(n * anchors / 2);
@@ -780,6 +787,7 @@ class TournamentSorter {
   }
 
   extendComparisonBudget() {
+    if (this.sortingMode === 'reference') return;
     const n = this.items.length;
     const batch = Math.max(10, Math.min(n, this.rankCount || n));
     this.comparisonBudget = Math.max(this.comparisonBudget, this.comparisons) + batch;
@@ -790,8 +798,7 @@ class TournamentSorter {
 
   isComparisonBudgetComplete() {
     if (this.sortingMode === 'reference') {
-      this.ensureReferenceState();
-      return !this.referenceState.insertion && this.referenceState.queue.length === 0;
+      return this.ensureReferenceState().completed;
     }
     if (this.items.length < 2) return true;
     const coverage = this.getLayeredCoverage();
@@ -813,40 +820,56 @@ class TournamentSorter {
   ensureReferenceState() {
     const ids = this.items.map(item => item.op.id);
     const idSet = new Set(ids);
-    const target = Math.max(1, Math.min(this.rankCount, ids.length || 1));
-    if (!this.referenceState || this.referenceState.target !== target) {
+    const savedIds = this.referenceState && Array.isArray(this.referenceState.initialOrder)
+      ? this.referenceState.initialOrder
+      : [];
+    const validSavedState = this.referenceState &&
+      this.referenceState.version === 2 &&
+      this.referenceState.algorithm === 'manual-merge-sort' &&
+      savedIds.length === ids.length &&
+      savedIds.every(id => idSet.has(id));
+
+    if (!validSavedState) {
+      const lists = [ids.slice()];
+      const parents = [-1];
+      let totalMoves = 0;
+      let marker = 1;
+
+      // This intentionally mirrors execfera/charasort's initialization:
+      // split every list in half, remember its parent, then merge sibling
+      // lists from the tail back into list 0.
+      for (let index = 0; index < lists.length; index++) {
+        if (lists[index].length < 2) continue;
+        const midpoint = Math.ceil(lists[index].length / 2);
+        const left = lists[index].slice(0, midpoint);
+        const right = lists[index].slice(midpoint);
+        lists[marker] = left;
+        parents[marker] = index;
+        marker += 1;
+        lists[marker] = right;
+        parents[marker] = index;
+        marker += 1;
+        totalMoves += left.length + right.length;
+      }
+
       this.referenceState = {
-        version: 1,
-        target,
-        order: [],
-        queue: [...ids],
-        discarded: [],
-        insertion: null
+        version: 2,
+        algorithm: 'manual-merge-sort',
+        initialOrder: ids.slice(),
+        lists,
+        parents,
+        leftListIndex: ids.length > 1 ? lists.length - 2 : -1,
+        rightListIndex: ids.length > 1 ? lists.length - 1 : -1,
+        leftInnerIndex: 0,
+        rightInnerIndex: 0,
+        record: [],
+        completedMoves: 0,
+        totalMoves,
+        completed: ids.length < 2,
+        order: ids.length < 2 ? ids.slice() : []
       };
       this.comparisonBudget = Math.max(this.comparisons, this.getBaseComparisonBudget());
-      return this.referenceState;
     }
-
-    const uniqueValid = list => {
-      const seen = new Set();
-      return (list || []).filter(id => idSet.has(id) && !seen.has(id) && seen.add(id));
-    };
-    this.referenceState.order = uniqueValid(this.referenceState.order).slice(0, target);
-    this.referenceState.queue = uniqueValid(this.referenceState.queue);
-    this.referenceState.discarded = uniqueValid(this.referenceState.discarded);
-    if (this.referenceState.insertion && !idSet.has(this.referenceState.insertion.id)) {
-      this.referenceState.insertion = null;
-    }
-
-    const represented = new Set([
-      ...this.referenceState.order,
-      ...this.referenceState.queue,
-      ...this.referenceState.discarded
-    ]);
-    if (this.referenceState.insertion) represented.add(this.referenceState.insertion.id);
-    ids.forEach(id => {
-      if (!represented.has(id)) this.referenceState.queue.push(id);
-    });
     return this.referenceState;
   }
 
@@ -860,114 +883,96 @@ class TournamentSorter {
     return null;
   }
 
-  applyReferenceOutcome(candidateWon) {
-    const state = this.ensureReferenceState();
-    const insertion = state.insertion;
-    if (!insertion) return;
-
-    if (insertion.phase === 'cutoff') {
-      if (!candidateWon) {
-        state.discarded.push(insertion.id);
-        state.insertion = null;
-        return;
-      }
-      insertion.phase = 'insert';
-      insertion.lo = 0;
-      insertion.hi = Math.max(0, state.order.length - 1);
-      insertion.mid = null;
-      return;
-    }
-
-    if (candidateWon) insertion.hi = insertion.mid;
-    else insertion.lo = insertion.mid + 1;
-    insertion.mid = null;
+  recordReferenceSide(state, side) {
+    const listIndex = side === 'left' ? state.leftListIndex : state.rightListIndex;
+    const innerKey = side === 'left' ? 'leftInnerIndex' : 'rightInnerIndex';
+    const source = state.lists[listIndex] || [];
+    if (state[innerKey] >= source.length) return false;
+    state.record.push(source[state[innerKey]]);
+    state[innerKey] += 1;
+    state.completedMoves += 1;
+    return true;
   }
 
-  finishReferenceInsertion() {
-    const state = this.ensureReferenceState();
-    const insertion = state.insertion;
-    if (!insertion) return;
-    const index = Math.max(0, Math.min(insertion.lo || 0, state.order.length));
-    state.order.splice(index, 0, insertion.id);
-    if (state.order.length > state.target) {
-      const removed = state.order.pop();
-      if (removed && removed !== insertion.id) state.discarded.push(removed);
-      else if (removed) state.discarded.push(insertion.id);
+  settleReferenceMerge(state) {
+    const left = state.lists[state.leftListIndex] || [];
+    const right = state.lists[state.rightListIndex] || [];
+
+    if (state.leftInnerIndex >= left.length) {
+      while (state.rightInnerIndex < right.length) this.recordReferenceSide(state, 'right');
+    } else if (state.rightInnerIndex >= right.length) {
+      while (state.leftInnerIndex < left.length) this.recordReferenceSide(state, 'left');
     }
-    state.insertion = null;
+
+    if (state.leftInnerIndex < left.length || state.rightInnerIndex < right.length) return;
+
+    const parentIndex = state.parents[state.leftListIndex];
+    state.lists[parentIndex] = state.record.slice();
+    state.lists.pop();
+    state.lists.pop();
+    state.parents.pop();
+    state.parents.pop();
+    state.leftListIndex -= 2;
+    state.rightListIndex -= 2;
+    state.leftInnerIndex = 0;
+    state.rightInnerIndex = 0;
+    state.record = [];
+
+    if (state.leftListIndex < 0) {
+      state.completed = true;
+      state.order = (state.lists[0] || []).slice();
+    }
+  }
+
+  applyReferenceOutcome(winnerId) {
+    const state = this.ensureReferenceState();
+    if (state.completed) return false;
+    const left = state.lists[state.leftListIndex] || [];
+    const right = state.lists[state.rightListIndex] || [];
+    const leftId = left[state.leftInnerIndex];
+    const rightId = right[state.rightInnerIndex];
+    if (winnerId !== leftId && winnerId !== rightId) return false;
+    this.recordReferenceSide(state, winnerId === leftId ? 'left' : 'right');
+    this.settleReferenceMerge(state);
+    return true;
   }
 
   chooseReferencePair() {
     const state = this.ensureReferenceState();
     const indexById = new Map(this.items.map((item, index) => [item.op.id, index]));
-    const maxSteps = Math.max(
-      20,
-      this.items.length * (Math.ceil(Math.log2(state.target + 1)) + 3) + 10
-    );
+    const maxSteps = Math.max(20, state.totalMoves + 10);
 
     for (let step = 0; step < maxSteps; step++) {
-      if (!state.insertion) {
-        const candidateId = state.queue.shift();
-        if (!candidateId) return null;
-        if (state.order.length === 0) {
-          state.order.push(candidateId);
-          continue;
-        }
-        if (state.order.length >= state.target) {
-          state.insertion = {
-            id: candidateId,
-            phase: 'cutoff',
-            lo: 0,
-            hi: Math.max(0, state.order.length - 1),
-            mid: state.order.length - 1
-          };
-        } else {
-          state.insertion = {
-            id: candidateId,
-            phase: 'insert',
-            lo: 0,
-            hi: state.order.length,
-            mid: null
-          };
-        }
-      }
-
-      const insertion = state.insertion;
-      if (insertion.phase === 'insert' && insertion.lo >= insertion.hi) {
-        this.finishReferenceInsertion();
+      if (state.completed) return null;
+      const left = state.lists[state.leftListIndex] || [];
+      const right = state.lists[state.rightListIndex] || [];
+      const leftId = left[state.leftInnerIndex];
+      const rightId = right[state.rightInnerIndex];
+      if (!leftId || !rightId) {
+        this.settleReferenceMerge(state);
         continue;
       }
 
-      const opponentPosition = insertion.phase === 'cutoff'
-        ? state.order.length - 1
-        : Math.floor((insertion.lo + insertion.hi) / 2);
-      insertion.mid = opponentPosition;
-      const opponentId = state.order[opponentPosition];
-      const known = this.getLatestDirectOutcome(insertion.id, opponentId);
+      const known = this.getLatestDirectOutcome(leftId, rightId);
       if (known !== null) {
-        this.applyReferenceOutcome(known);
+        this.applyReferenceOutcome(known ? leftId : rightId);
         continue;
       }
 
-      const candidateIndex = indexById.get(insertion.id);
-      const opponentIndex = indexById.get(opponentId);
-      if (candidateIndex === undefined || opponentIndex === undefined) {
-        state.insertion = null;
-        continue;
-      }
+      const leftIndex = indexById.get(leftId);
+      const rightIndex = indexById.get(rightId);
+      if (leftIndex === undefined || rightIndex === undefined) return null;
       return Math.random() < 0.5
-        ? [candidateIndex, opponentIndex]
-        : [opponentIndex, candidateIndex];
+        ? [leftIndex, rightIndex]
+        : [rightIndex, leftIndex];
     }
     return null;
   }
 
   deferReferenceInsertion() {
-    if (this.sortingMode !== 'reference') return;
-    const state = this.ensureReferenceState();
-    if (!state.insertion) return;
-    state.queue.push(state.insertion.id);
-    state.insertion = null;
+    // A merge cannot advance until the two active sorted runs are resolved.
+    // The classic character sorter therefore has no "skip this pair" path.
+    return this.sortingMode !== 'reference';
   }
 
   getLayeredMinAnchors() {
@@ -1168,13 +1173,14 @@ class TournamentSorter {
     const leftItem = this.items[i];
     const rightItem = this.items[j];
     const rollbackBase = this.results.length;
-    const referenceBefore = this.sortingMode === 'reference' ? this.cloneReferenceState() : null;
+    // Merge-sort progress can be reconstructed deterministically from the
+    // initial order plus the direct comparison ledger. Avoid copying the full
+    // O(n log n) state into every history entry.
+    const referenceBefore = null;
     const layeredBefore = this.sortingMode === 'layered'
       ? JSON.parse(JSON.stringify(this.ensureLayeredState()))
       : null;
-    const referenceCandidateId = referenceBefore && referenceBefore.insertion
-      ? referenceBefore.insertion.id
-      : null;
+    const winnerId = leftIsBetter ? leftItem.op.id : rightItem.op.id;
 
     if (leftIsBetter) {
       this.history.push({ winner: leftItem, loser: rightItem, _rlb: rollbackBase, _rsb: referenceBefore, _lsb: layeredBefore });
@@ -1184,15 +1190,9 @@ class TournamentSorter {
       this.ledger.add({ w: rightItem.op.id, l: leftItem.op.id });
     }
 
-    if (referenceCandidateId &&
-        (leftItem.op.id === referenceCandidateId || rightItem.op.id === referenceCandidateId)) {
-      const candidateWon = leftIsBetter
-        ? leftItem.op.id === referenceCandidateId
-        : rightItem.op.id === referenceCandidateId;
-      this.applyReferenceOutcome(candidateWon);
-    } else if (this.sortingMode === 'reference') {
-      // A manually restored legacy pair has no insertion cursor. Rebuild the
-      // scheduler from the shared evidence after recording it.
+    if (this.sortingMode === 'reference' && !this.applyReferenceOutcome(winnerId)) {
+      // Manually restored legacy pairs may not be the active merge pair. The
+      // direct result is still valid evidence; rebuild and replay the ledger.
       this.referenceState = null;
     }
     if (this.sortingMode === 'layered') this.updateLayeredStability();
@@ -1214,8 +1214,13 @@ class TournamentSorter {
     }
     const { winner, loser, _rsb, _lsb } = this.history.pop();
     this.ledger = this.ledger.withoutLastMatch(winner.op.id, loser.op.id);
-    if (_rsb) this.referenceState = JSON.parse(JSON.stringify(_rsb));
-    else if (this.sortingMode === 'reference') this.referenceState = null;
+    if (_rsb && _rsb.version === 2 && _rsb.algorithm === 'manual-merge-sort') {
+      this.referenceState = JSON.parse(JSON.stringify(_rsb));
+    } else if (this.sortingMode === 'reference') {
+      // Replaying the remaining direct ledger restores the previous merge
+      // cursor without serializing a complete state snapshot per comparison.
+      this.referenceState = null;
+    }
     if (_lsb) this.layeredState = JSON.parse(JSON.stringify(_lsb));
     else if (this.sortingMode === 'layered') this.layeredState = null;
     this.comparisons--;
@@ -1227,13 +1232,14 @@ class TournamentSorter {
     const candidates = this.getAllOperators();
     if (this.sortingMode === 'reference') {
       const state = this.ensureReferenceState();
-      const pending = state.queue.length + (state.insertion ? 1 : 0);
       return {
         comparisons: this.comparisons,
-        covered: Math.max(0, candidates.length - pending),
-        total: candidates.length,
+        covered: state.completedMoves,
+        total: state.totalMoves,
         target: this.rankCount,
-        budget: Math.max(this.comparisonBudget, this.comparisons)
+        budget: Math.max(this.comparisonBudget, this.comparisons),
+        progressKind: 'merge',
+        completed: state.completed
       };
     }
     if (this.sortingMode === 'layered') {
@@ -1276,7 +1282,8 @@ class TournamentSorter {
       const state = this.ensureReferenceState();
       const allowed = new Set(operators.map(op => op.id));
       const opById = new Map(this.items.map(item => [item.op.id, item.op]));
-      const ordered = state.order.filter(id => allowed.has(id)).map(id => opById.get(id)).filter(Boolean);
+      const source = state.completed ? state.order : state.initialOrder;
+      const ordered = source.filter(id => allowed.has(id)).map(id => opById.get(id)).filter(Boolean);
       const seen = new Set(ordered.map(op => op.id));
       operators.forEach(op => { if (op && !seen.has(op.id)) { seen.add(op.id); ordered.push(op); } });
       return ordered;
@@ -1286,6 +1293,7 @@ class TournamentSorter {
 
   getReferenceTopOperators() {
     const state = this.ensureReferenceState();
+    if (!state.completed) return [];
     const opById = new Map(this.items.map(item => [item.op.id, item.op]));
     return state.order.map(id => opById.get(id)).filter(Boolean).slice(0, this.rankCount);
   }
@@ -1296,7 +1304,7 @@ class TournamentSorter {
       return { o: item.op.id, c: item.children.map(serializeItem) };
     }
     return {
-      schemaVersion: 4,
+      schemaVersion: 5,
       sortingMode: this.sortingMode,
       rankCount: this.rankCount,
       items: this.items.map(item => ({ o: item.op.id, c: [] })),
@@ -1329,11 +1337,16 @@ class TournamentSorter {
     const seen = new Set();
     const add = op => { if (op && !seen.has(op.id)) { seen.add(op.id); candidates.push(op); } };
     const walk = items => items.forEach(item => { add(item.op); walk(item.children || []); });
-    walk(treeItems);
+    // Legacy tournament exports stored their accumulated ranking in results
+    // and the unresolved remainder in the tree. Use that order as the merge
+    // sort's deterministic input seed, then append every remaining candidate.
     (data.results || []).forEach(id => add(resolveSavedOperator(id, opMap)));
-    if (candidates.length === 0) {
-      (data.history || []).forEach(h => { add(resolveSavedOperator(h.w, opMap)); add(resolveSavedOperator(h.l, opMap)); });
-    }
+    walk(treeItems);
+    // Some very old/transitional files only mention an operator in history.
+    (data.history || []).forEach(h => {
+      add(resolveSavedOperator(h.w, opMap));
+      add(resolveSavedOperator(h.l, opMap));
+    });
     const totalItems = candidates.length;
     const rankCount = (data.rankCount > 0) ? Math.min(data.rankCount, totalItems) : Math.max(1, totalItems);
     // Old exports predate selectable modes and keep their historical behavior
@@ -1351,7 +1364,11 @@ class TournamentSorter {
       return { winner, loser, _rlb: h.rlb, _rsb: h.rsb || null, _lsb: h.lsb || null };
     });
     s.ledger = ComparisonLedger.fromSerialized(data.evidence, data.history || []);
-    s.referenceState = data.referenceState ? JSON.parse(JSON.stringify(data.referenceState)) : null;
+    s.referenceState = data.referenceState &&
+      data.referenceState.version === 2 &&
+      data.referenceState.algorithm === 'manual-merge-sort'
+      ? JSON.parse(JSON.stringify(data.referenceState))
+      : null;
     s.layeredState = data.layeredState ? JSON.parse(JSON.stringify(data.layeredState)) : null;
     if (s.sortingMode === 'reference') s.ensureReferenceState();
     if (s.sortingMode === 'layered') s.ensureLayeredState();
@@ -1557,18 +1574,35 @@ function addOperatorsToEvidencePool(operators) {
   if (added > 0) {
     sorter.currentPair = null;
     sorter.results = [];
-    const coverageBudget = sorter.comparisons + added * 2;
-    sorter.comparisonBudget = Math.max(
-      sorter.comparisonBudget || 0,
-      sorter.getBaseComparisonBudget(),
-      coverageBudget
-    );
+    // A full merge sort has a fixed dependency tree. Adding a new leaf cannot
+    // be represented by appending to the old cursor; rebuild that cursor and
+    // replay all reusable direct evidence instead.
+    if (sorter.sortingMode === 'reference') {
+      sorter.referenceState = null;
+      sorter.comparisonBudget = Math.max(sorter.comparisons, sorter.getBaseComparisonBudget());
+    } else {
+      const coverageBudget = sorter.comparisons + added * 2;
+      sorter.comparisonBudget = Math.max(
+        sorter.comparisonBudget || 0,
+        sorter.getBaseComparisonBudget(),
+        coverageBudget
+      );
+    }
   }
   return added;
 }
 
 function mergeNewDatabaseOperatorsIntoProgress() {
   if (!sorter) return 0;
+
+  // The classic merge sorter has no postponed-pair queue: an unresolved
+  // comparison is a dependency of the current merge and must be answered.
+  // Discard postponement metadata from legacy saves so it cannot resurrect an
+  // obsolete pair after migration.
+  if (sorter.sortingMode === 'reference') {
+    postponedPairs = {};
+    postponedQueue = [];
+  }
 
   // First migrate any pending queue/insertion state exported by the previous
   // locked-prefix sorter into ordinary evidence candidates.
@@ -1873,12 +1907,21 @@ function setSortingMode(mode) {
   selectedSortingMode = normalizeSortingMode(mode);
   if (_sessionFilter) _sessionFilter.sortingMode = selectedSortingMode;
   if (sorter) {
+    const previousMode = sorter.sortingMode;
     sorter.sortingMode = selectedSortingMode;
-    // A cached pair was chosen by the old strategy. Re-select it later without
-    // touching comparison evidence or undo history.
+    // A mode switch keeps the shared ledger, but each strategy must rebuild its
+    // own cursor. In particular, layered comparisons may have been added after
+    // a merge state was serialized, so reusing that old merge cursor would skip
+    // the new evidence.
     sorter.currentPair = null;
-    if (selectedSortingMode === 'reference') sorter.ensureReferenceState();
-    if (selectedSortingMode === 'layered') sorter.ensureLayeredState();
+    if (selectedSortingMode === 'reference') {
+      if (previousMode !== 'reference') sorter.referenceState = null;
+      sorter.ensureReferenceState();
+    }
+    if (selectedSortingMode === 'layered') {
+      if (previousMode !== 'layered') sorter.layeredState = null;
+      sorter.ensureLayeredState();
+    }
   }
   syncSortingModeControls();
   saveSettings();
@@ -2046,6 +2089,25 @@ function finishNewOpInsertion(position) {
 function startNextNewOpInsertion() {
   if (!sorter) return false;
 
+  // The old locked-prefix insertion UI is retained only as an import format.
+  // In classic character-sort mode every pending operator becomes a leaf in
+  // the same merge sort and is never binary-inserted into a pseudo-locked list.
+  if (sorter.sortingMode === 'reference') {
+    const pending = [
+      ...(_newOpInsertion && _newOpInsertion.op ? [_newOpInsertion.op] : []),
+      ..._newOpQueue
+    ];
+    _newOpQueue = [];
+    _newOpInsertion = null;
+    if (pending.length > 0) addOperatorsToEvidencePool(pending);
+    _newOpMergeTotal = 0;
+    _newOpMergeDone = 0;
+    setNewOpMergeControls(false);
+    document.getElementById('sortStatus').textContent = '';
+    autoSave();
+    return false;
+  }
+
   if (_newOpInsertion) return showNewOpInsertionPair();
 
   if (_newOpQueue.length === 0) {
@@ -2149,17 +2211,23 @@ function updateSortUI() {
     rankingPreview.style.display = 'none';
   }
   const p = sorter.getProgress();
-  document.getElementById('sortProgress').textContent =
-    '第 ' + p.comparisons + ' 次比较 · '
-    + (sorter.sortingMode === 'layered' ? '已完成分层覆盖 ' : '已覆盖 ')
-    + p.covered + ' / ' + p.total
-    + ' 名 · 本轮建议 ' + p.budget + ' 次'
-    + (p.stabilityTarget ? ' · Top ' + p.target + ' 稳定 ' + p.stability + ' / ' + p.stabilityTarget : '');
-  const pct = p.budget > 0 ? Math.min(100, Math.round(p.comparisons / p.budget * 100)) : 100;
+  const isMerge = p.progressKind === 'merge';
+  document.getElementById('sortProgress').textContent = isMerge
+    ? '第 ' + p.comparisons + ' 次选择 · 归并进度 ' + p.covered + ' / ' + p.total + ' 个位置'
+      + (p.completed ? ' · 已完成' : ' · 完成全部比较后生成排名')
+    : '第 ' + p.comparisons + ' 次比较 · 已完成分层覆盖 '
+      + p.covered + ' / ' + p.total
+      + ' 名 · 本轮建议 ' + p.budget + ' 次'
+      + (p.stabilityTarget ? ' · Top ' + p.target + ' 稳定 ' + p.stability + ' / ' + p.stabilityTarget : '');
+  const pct = isMerge
+    ? (p.total > 0 ? Math.min(100, Math.round(p.covered / p.total * 100)) : 100)
+    : (p.budget > 0 ? Math.min(100, Math.round(p.comparisons / p.budget * 100)) : 100);
   document.getElementById('sortProgressFill').style.width = pct + '%';
   document.getElementById('btnUndo').disabled = _newOpInsertion
     ? (!_newOpInsertion.history || _newOpInsertion.history.length === 0)
     : sorter.history.length === 0;
+  document.getElementById('btnPostpone').disabled = !!_newOpInsertion || isMerge;
+  document.getElementById('btnSkip').disabled = !!_newOpInsertion || (isMerge && !p.completed);
 }
 
 function toggleCurrentRanking() {
@@ -2179,14 +2247,20 @@ function toggleCurrentRanking() {
 
   if (sorter) {
     const candidates = sorter.getAllOperators();
-    const comparedIds = sorter.ledger.getComparedIds();
-    const provisional = sorter.getEvidenceRanking(candidates)
-      .filter(op => comparedIds.has(op.id))
-      .slice(0, sorter.rankCount);
-    provisional.forEach(op => {
-      lines.push({ r: rank++, name: op.name, app: op.appellation, source: '暂定' });
-    });
-    pendingCount = candidates.reduce((count, op) => count + (comparedIds.has(op.id) ? 0 : 1), 0);
+    if (sorter.sortingMode === 'reference' && !sorter.isComparisonBudgetComplete()) {
+      pendingCount = candidates.length;
+    } else {
+      const comparedIds = sorter.ledger.getComparedIds();
+      const provisional = sorter.getEvidenceRanking(candidates)
+        .filter(op => sorter.sortingMode === 'reference' || comparedIds.has(op.id))
+        .slice(0, sorter.rankCount);
+      provisional.forEach(op => {
+        lines.push({ r: rank++, name: op.name, app: op.appellation, source: sorter.sortingMode === 'reference' ? '已完成' : '暂定' });
+      });
+      pendingCount = sorter.sortingMode === 'reference'
+        ? Math.max(0, candidates.length - provisional.length)
+        : candidates.reduce((count, op) => count + (comparedIds.has(op.id) ? 0 : 1), 0);
+    }
   }
 
 
@@ -2210,7 +2284,11 @@ function toggleCurrentRanking() {
     html += '<p style="margin-top:8px;font-size:12px;color:#996;">已排除 ' + buriedBottom.length + ' 名：' +
       buriedBottom.map(op => escapeHTML(op.name)).join('、') + '</p>';
   }
-  html += '<p style="margin-top:6px;font-size:12px;color:#777;">暂定排名会随之后的选择继续变化，不代表已锁定。</p>';
+  html += '<p style="margin-top:6px;font-size:12px;color:#777;">'
+    + (sorter && sorter.sortingMode === 'reference'
+      ? '经典归并排序不会在完成前生成排名。'
+      : '暂定排名会随之后的选择继续变化，不代表已锁定。')
+    + '</p>';
   div.innerHTML = html;
   div.style.display = 'block';
 }
@@ -2360,6 +2438,10 @@ function rebuildSorterState() {
 
 function postponePair() {
   if (!sorter || !sorter.currentPair) return;
+  if (sorter.sortingMode === 'reference') {
+    alert('经典归并排序必须回答当前比较，不能搁置。');
+    return;
+  }
   const ops = getCurrentPairOps();
   if (!ops) return;
 
@@ -2457,6 +2539,9 @@ function snapshotSorter() {
 function buildEvidenceResults() {
   const candidates = sorter.getAllOperators();
   if (sorter.sortingMode === 'reference') {
+    if (!sorter.isComparisonBudgetComplete()) {
+      return { results: [], unranked: candidates };
+    }
     const results = sorter.getReferenceTopOperators();
     const resultIds = new Set(results.map(op => op.id));
     return {
@@ -2528,6 +2613,11 @@ function getPinnedPreviewResults() {
 
 function finishSortEarly() {
   if (!sorter) return;
+
+  if (sorter.sortingMode === 'reference' && !sorter.isComparisonBudgetComplete()) {
+    alert('经典归并排序需要完成全部比较后才能生成结果。');
+    return;
+  }
 
   if (_pendingNormalResults) {
     const preSnapshot = _pendingNormalSnapshot || snapshotSorter();

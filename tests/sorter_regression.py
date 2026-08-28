@@ -343,25 +343,25 @@ function runSorterRegressionTests() {
     __assert(__countId(ids, 'A') === 1, 'A appears more than once');
   }));
 
-  tests.push(__run('7. one pinned operator still appears after finishSortEarly', function() {
+  tests.push(__run('7. classic merge mode refuses an incomplete early result without losing a pinned operator', function() {
     __reset(['A', 'B', 'C'], 3);
     __setPair('A', 'B');
     pinTop(true);
     finishSortEarly();
     var ids = __ids(rankingResults);
-    __assert(ids.indexOf('A') >= 0, 'pinned operator A is missing from results');
-    __assert(__countId(ids, 'A') === 1, 'pinned operator A is duplicated');
+    __assert(ids.length === 0, 'incomplete classic merge unexpectedly produced a result');
+    __assert(__ids(pinnedTop).indexOf('A') >= 0, 'pinned operator A was lost');
   }));
 
-  tests.push(__run('8. unfinished pinned-top final sort preview keeps every pinned operator', function() {
+  tests.push(__run('8. classic merge mode refuses an unfinished pinned-top preview', function() {
     __reset(['A', 'B', 'C', 'D'], 4);
     pinnedTop = [opMap.A, opMap.B, opMap.C];
     startPinnedTopSort([opMap.D]);
     finishSortEarly();
     var ids = __ids(rankingResults);
     ['A', 'B', 'C'].forEach(function(id) {
-      __assert(ids.indexOf(id) >= 0, id + ' is missing from pinned preview');
-      __assert(__countId(ids, id) === 1, id + ' is duplicated in pinned preview');
+      __assert(ids.indexOf(id) === -1, id + ' unexpectedly appeared in an incomplete result');
+      __assert(__ids(pinnedTop).indexOf(id) >= 0, id + ' was lost from pinnedTop');
     });
   }));
 
@@ -736,7 +736,7 @@ function runSorterRegressionTests() {
     __assert(restored.ledger.records[0].w === 'A' && restored.ledger.records[0].l === 'B', 'legacy evidence changed');
   }));
 
-  tests.push(__run('18. reference mode finds Top N by cutoff screening and binary insertion', function() {
+  tests.push(__run('18. reference mode fully merge-sorts every candidate before returning Top N', function() {
     __reset(['A', 'B', 'C', 'D', 'E', 'F'], 3);
     sorter.sortingMode = 'reference';
     sorter.referenceState = null;
@@ -750,7 +750,9 @@ function runSorterRegressionTests() {
     __assert(guard < 100, 'reference scheduler did not terminate');
     __assert(sorter.isComparisonBudgetComplete(), 'reference scheduler did not complete');
     __assert(__ids(sorter.getReferenceTopOperators()).join(',') === 'A,B,C', 'reference Top 3 is wrong');
-    __assert(sorter.comparisons < 15, 'reference Top 3 used too many comparisons: ' + sorter.comparisons);
+    __assert(__ids(sorter.getEvidenceRanking()).join(',') === 'A,B,C,D,E,F', 'full merge result is wrong');
+    __assert(sorter.referenceState.algorithm === 'manual-merge-sort', 'reference mode is not using manual merge sort');
+    __assert(sorter.comparisons <= sorter.getBaseComparisonBudget(), 'merge sort exceeded its worst-case comparisons');
   }));
 
   tests.push(__run('19. reference mode reuses direct history without Bradley-Terry scoring', function() {
@@ -769,17 +771,20 @@ function runSorterRegressionTests() {
     __assert(sorter.comparisons === comparisonsBefore, 'reused history counted as new comparisons');
   }));
 
-  tests.push(__run('20. reference undo restores the insertion cursor and evidence', function() {
+  tests.push(__run('20. reference undo reconstructs the same merge pair and removes evidence', function() {
     __reset(['A', 'B', 'C'], 2);
     sorter.sortingMode = 'reference';
     sorter.referenceState = null;
     var pair = sorter.getNextPair();
     __assert(!!pair, 'reference mode did not produce a pair');
-    var before = JSON.stringify(sorter.referenceState);
+    var beforeIds = [pair.left.id, pair.right.id].sort().join('|');
     sorter.select(true);
     __assert(sorter.undo(), 'reference undo failed');
-    __assert(JSON.stringify(sorter.referenceState) === before, 'reference insertion cursor was not restored');
     __assert(sorter.ledger.records.length === 0, 'reference undo left comparison evidence behind');
+    sorter.currentPair = null;
+    var replayed = sorter.getNextPair();
+    __assert(!!replayed, 'reference undo did not reconstruct a merge pair');
+    __assert([replayed.left.id, replayed.right.id].sort().join('|') === beforeIds, 'reference undo reconstructed a different merge pair');
   }));
 
   tests.push(__run('21. partial transitional evidence merges with legacy history without duplicates', function() {
@@ -887,6 +892,149 @@ function runSorterRegressionTests() {
     __assert(updated.sorter.sortingMode === 'layered', 'saved sorter mode did not change before resume');
     __assert(updated.sessionFilter.sortingMode === 'layered', 'saved session mode did not change before resume');
     __assert(JSON.stringify(updated.sorter.evidence) === evidenceBefore, 'saved evidence changed while switching mode');
+  }));
+
+  tests.push(__run('27. manual merge state survives serialization at an exact comparison boundary', function() {
+    __reset(['A', 'B', 'C', 'D', 'E'], 3);
+    var rank = { A: 0, B: 1, C: 2, D: 3, E: 4 };
+    for (var i = 0; i < 3; i++) {
+      var pair = sorter.getNextPair();
+      __assert(!!pair, 'merge sorter ended before the save boundary');
+      sorter.select(rank[pair.left.id] < rank[pair.right.id]);
+    }
+    var saved = sorter.serialize();
+    __assert(saved.schemaVersion === 5, 'merge sorter schema version was not bumped');
+    var expected = sorter.getNextPair();
+    var restored = TournamentSorter.deserialize(saved, opMap);
+    var actual = restored.getNextPair();
+    __assert(!!expected && !!actual, 'saved merge boundary did not restore a pair');
+    __assert(
+      [expected.left.id, expected.right.id].sort().join('|') === [actual.left.id, actual.right.id].sort().join('|'),
+      'saved merge boundary restored a different pair'
+    );
+  }));
+
+  tests.push(__run('28. legacy ranked results seed migration and obsolete cutoff state is discarded', function() {
+    __reset(['A', 'B', 'C', 'D'], 2);
+    var legacy = {
+      rankCount: 2,
+      results: ['C', 'A'],
+      items: [{ o: 'B', c: [{ o: 'D', c: [] }] }],
+      history: [{ w: 'C', l: 'A' }],
+      referenceState: {
+        version: 1,
+        target: 2,
+        order: ['C', 'A'],
+        queue: ['B'],
+        discarded: ['D'],
+        insertion: null
+      }
+    };
+    var restored = TournamentSorter.deserialize(legacy, opMap);
+    var state = restored.ensureReferenceState();
+    __assert(state.version === 2 && state.algorithm === 'manual-merge-sort', 'legacy cutoff state was not migrated');
+    __assert(state.initialOrder.join(',') === 'C,A,B,D', 'legacy result order was not used as the migration seed');
+    __assert(restored.getAllOperators().length === 4, 'legacy migration lost a candidate');
+    __assert(restored.ledger.records.length === 1, 'legacy migration lost direct history');
+  }));
+
+  tests.push(__run('29. manual merge sort keeps every member of a non-transitive cycle', function() {
+    __reset(['A', 'B', 'C'], 3);
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    sorter.ledger.add({ w: 'B', l: 'C' });
+    sorter.ledger.add({ w: 'C', l: 'A' });
+    var next = sorter.getNextPair();
+    __assert(next === null, 'known cycle should replay without a new comparison');
+    var ids = __ids(sorter.getEvidenceRanking());
+    __assert(ids.length === 3, 'non-transitive merge result lost a candidate');
+    ['A', 'B', 'C'].forEach(function(id) {
+      __assert(ids.indexOf(id) >= 0, id + ' disappeared from the merge result');
+    });
+  }));
+
+  tests.push(__run('32. a newly added operator restarts the merge cursor and keeps old evidence', function() {
+    __seedOps(['A', 'B', 'C', 'D']);
+    sorter = new TournamentSorter([opMap.A, opMap.B, opMap.C], 3, 'reference');
+    var rank = { A: 0, B: 1, C: 2, D: 3 };
+    var pair;
+    var guard = 0;
+    while ((pair = sorter.getNextPair()) && guard++ < 100) {
+      sorter.select(rank[pair.left.id] < rank[pair.right.id]);
+    }
+    __assert(sorter.isComparisonBudgetComplete(), 'initial merge did not complete');
+    var oldEvidence = sorter.ledger.records.length;
+    __assert(addOperatorsToEvidencePool([opMap.D]) === 1, 'new operator was not added');
+    __assert(sorter.ledger.records.length === oldEvidence, 'adding an operator changed old evidence');
+    __assert(!sorter.ensureReferenceState().completed, 'new operator kept a falsely completed merge state');
+
+    guard = 0;
+    while ((pair = sorter.getNextPair()) && guard++ < 200) {
+      sorter.select(rank[pair.left.id] < rank[pair.right.id]);
+    }
+    __assert(guard < 200, 'merge with a newly added operator did not terminate');
+    __assert(sorter.isComparisonBudgetComplete(), 'merge with a newly added operator did not complete');
+    __assert(__ids(sorter.getEvidenceRanking()).join(',') === 'A,B,C,D', 'new operator changed the established order incorrectly');
+    __assert(sorter.ledger.records.length >= oldEvidence, 'new operator merge lost comparison history');
+  }));
+
+  tests.push(__run('33. switching back to classic mode rebuilds an obsolete cursor from shared evidence', function() {
+    __reset(['A', 'B', 'C', 'D'], 3);
+    sorter.sortingMode = 'layered';
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    sorter.ledger.add({ w: 'B', l: 'C' });
+    sorter.comparisons = sorter.ledger.records.length;
+    setSortingMode('reference');
+    var state = sorter.ensureReferenceState();
+    __assert(state.version === 2 && state.algorithm === 'manual-merge-sort', 'classic cursor was not rebuilt');
+    __assert(!state.discarded && !state.queue && !state.insertion, 'obsolete cutoff fields leaked into classic state');
+    __assert(sorter.ledger.records.length === 2, 'mode switch changed shared evidence');
+    var pair = sorter.getNextPair();
+    __assert(!!pair, 'rebuilt classic cursor did not produce a pair');
+  }));
+
+  tests.push(__run('30. switching away from and back to classic mode rebuilds stale merge state', function() {
+    __reset(['A', 'B', 'C'], 3);
+    var first = sorter.getNextPair();
+    __assert(!!first, 'classic mode did not initialize a merge pair');
+    var oldState = sorter.referenceState;
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    setSortingMode('layered');
+    setSortingMode('reference');
+    __assert(sorter.referenceState !== oldState, 'mode switch reused stale merge state');
+    __assert(sorter.referenceState.version === 2, 'mode switch did not restore merge state');
+    __assert(sorter.referenceState.algorithm === 'manual-merge-sort', 'mode switch restored the wrong algorithm');
+  }));
+
+  tests.push(__run('31. newly eligible operators rejoin classic merge sort as fresh leaves', function() {
+    __reset(['A', 'B', 'C'], 3);
+    _sessionFilter = {
+      selectedStars: [6],
+      selectedGenders: ['female'],
+      selectedRank: 3,
+      sortingMode: 'reference',
+      mergeAlters: false
+    };
+    var d = { id: 'D', name: 'D', appellation: 'D', star: 6, gender: 'female' };
+    allOperators = allOperators.concat([d]);
+    opMap.D = d;
+    sorter.ledger.add({ w: 'A', l: 'B' });
+    sorter.comparisons = 1;
+    sorter.ensureReferenceState();
+    var added = mergeNewDatabaseOperatorsIntoProgress();
+    __assert(added === 1, 'new eligible operator was not added');
+    var state = sorter.ensureReferenceState();
+    __assert(state.initialOrder.indexOf('D') >= 0, 'new operator was not put into merge input');
+    __assert(state.completed === false, 'adding a new operator left the old completion flag active');
+
+    var rank = { A: 0, B: 1, C: 2, D: 3 };
+    var guard = 0;
+    var pair;
+    while ((pair = sorter.getNextPair()) && guard++ < 100) {
+      sorter.select(rank[pair.left.id] < rank[pair.right.id]);
+    }
+    __assert(guard < 100, 'new operator merge did not terminate');
+    __assert(sorter.isComparisonBudgetComplete(), 'new operator merge did not complete');
+    __assert(__ids(sorter.getEvidenceRanking()).join(',') === 'A,B,C,D', 'new operator changed the merge result incorrectly');
   }));
 
 
