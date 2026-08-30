@@ -17,9 +17,7 @@
     "skinName": "时遗",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_凯尔希_skin2.png"
+    "portrait": false
   },
   "char_010_chen": {
     "skinId": "char_010_chen@sale#10",
@@ -29,9 +27,7 @@
     "skinName": "初晴",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_陈_skin2.png"
+    "portrait": false
   },
   "char_017_huang": {
     "skinId": "char_017_huang@witch#5",
@@ -41,9 +37,7 @@
     "skinName": "易爆蓝焰",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_煌_skin2.png"
+    "portrait": false
   },
   "char_1011_lava2": {
     "skinId": "char_1011_lava2@whirlwind#9",
@@ -53,9 +47,7 @@
     "skinName": "镇邪焱",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_炎狱炎熔_skin2.png"
+    "portrait": false
   },
   "char_1012_skadi2": {
     "skinId": "char_1012_skadi2@iteration#2",
@@ -65,9 +57,7 @@
     "skinName": "红女爵",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_浊心斯卡蒂_skin2.png"
+    "portrait": false
   },
   "char_1013_chen2": {
     "skinId": "char_1013_chen2@summer#20",
@@ -77,9 +67,7 @@
     "skinName": "悠然假日 HD79",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_假日威龙陈_skin2.png"
+    "portrait": false
   },
   "char_1014_nearl2": {
     "skinId": "char_1014_nearl2@epoque#17",
@@ -89,9 +77,7 @@
     "skinName": "复现荣光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_耀骑士临光_skin1.png"
+    "portrait": false
   },
   "char_1016_agoat2": {
     "skinId": "char_1016_agoat2@epoque#57",
@@ -101,9 +87,7 @@
     "skinName": "后来的故事",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_纯烬艾雅法拉_skin2.png"
+    "portrait": false
   },
   "char_1019_siege2": {
     "skinId": "char_1019_siege2@epoque#50",
@@ -113,9 +97,7 @@
     "skinName": "光耀之途",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_维娜·维多利亚_skin1.png"
+    "portrait": false
   },
   "char_101_sora": {
     "skinId": "char_101_sora@epoque#17",
@@ -125,9 +107,7 @@
     "skinName": "如歌",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_空_skin2.png"
+    "portrait": false
   },
   "char_1020_reed2": {
     "skinId": "char_1020_reed2@snow#8",
@@ -137,9 +117,7 @@
     "skinName": "闪焰之夜",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_焰影苇草_skin3.png"
+    "portrait": false
   },
   "char_1021_kroos2": {
     "skinId": "char_1021_kroos2@game#3",
@@ -149,9 +127,7 @@
     "skinName": "新手光环",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_寒芒克洛丝_skin2.png"
+    "portrait": false
   },
   "char_1023_ghost2": {
     "skinId": "char_1023_ghost2@boc#6",
@@ -161,9 +137,7 @@
     "skinName": "生而为一",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_归溟幽灵鲨_skin1.png"
+    "portrait": false
   },
   "char_1024_hbisc2": {
     "skinId": "char_1024_hbisc2@unveiling#2",
@@ -173,9 +147,7 @@
     "skinName": "浪漫满厢",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_濯尘芙蓉_skin1.png"
+    "portrait": false
   },
   "char_1026_gvial2": {
     "skinId": "char_1026_gvial2@summer#12",
@@ -185,9 +157,7 @@
     "skinName": "悠然假日 HD26",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_百炼嘉维尔_skin1.png"
+    "portrait": false
   },
   "char_1027_greyy2": {
     "skinId": "char_1027_greyy2@breaker#1",
@@ -197,9 +167,7 @@
     "skinName": "生化沉溺",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_承曦格雷伊_skin2.png"
+    "portrait": false
   },
   "char_1028_texas2": {
     "skinId": "char_1028_texas2@epoque#36",
@@ -209,9 +177,7 @@
     "skinName": "幽兰秘辛",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_缄默德克萨斯_skin2.png"
+    "portrait": false
   },
   "char_102_texas": {
     "skinId": "char_102_texas@epoque#7",
@@ -221,9 +187,7 @@
     "skinName": "意志",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_德克萨斯_skin2.png"
+    "portrait": false
   },
   "char_1031_slent2": {
     "skinId": "char_1031_slent2@epoque#32",
@@ -233,9 +197,7 @@
     "skinName": "栖息",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_淬羽赫默_skin1.png"
+    "portrait": false
   },
   "char_1032_excu2": {
     "skinId": "char_1032_excu2@sanrio#2",
@@ -245,9 +207,7 @@
     "skinName": "蒸汽寻踪者",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_圣约送葬人_skin2.png"
+    "portrait": false
   },
   "char_1033_swire2": {
     "skinId": "char_1033_swire2@ambienceSynesthesia#4",
@@ -257,9 +217,7 @@
     "skinName": "律动方格",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_琳琅诗怀雅_skin1.png"
+    "portrait": false
   },
   "char_1034_jesca2": {
     "skinId": "char_1034_jesca2@cfa#1",
@@ -269,9 +227,7 @@
     "skinName": "《上任达维镇》",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_涤火杰西卡_skin1.png"
+    "portrait": false
   },
   "char_1035_wisdel": {
     "skinId": "char_1035_wisdel@game#9",
@@ -281,9 +237,7 @@
     "skinName": "绝对主角",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_维什戴尔_skin2.png"
+    "portrait": false
   },
   "char_1036_fang2": {
     "skinId": "char_1036_fang2@snow#8",
@@ -293,9 +247,7 @@
     "skinName": "纯净乐段",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_历阵锐枪芬_skin1.png"
+    "portrait": false
   },
   "char_1038_whitw2": {
     "skinId": "char_1038_whitw2@sale#15",
@@ -305,9 +257,7 @@
     "skinName": "无序的谦卑",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_荒芜拉普兰德_skin1.png"
+    "portrait": false
   },
   "char_1039_thorn2": {
     "skinId": "char_1039_thorn2@marthe#9",
@@ -317,9 +267,7 @@
     "skinName": "无际之帆",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_引星棘刺_skin1.png"
+    "portrait": false
   },
   "char_103_angel": {
     "skinId": "char_103_angel@sale#8",
@@ -329,9 +277,7 @@
     "skinName": "午夜邮差",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_能天使_skin3.png"
+    "portrait": false
   },
   "char_1040_blaze2": {
     "skinId": "char_1040_blaze2@winter#5",
@@ -341,9 +287,7 @@
     "skinName": "夜归人",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_烛煌_skin1.png"
+    "portrait": false
   },
   "char_1041_angel2": {
     "skinId": "char_1041_angel2@iteration#6",
@@ -353,9 +297,7 @@
     "skinName": "寻翼之歌",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_新约能天使_skin1.png"
+    "portrait": false
   },
   "char_1043_leizi2": {
     "skinId": "char_1043_leizi2@game#8",
@@ -365,9 +307,7 @@
     "skinName": "血翼蔷薇",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_司霆惊蛰_skin1.png"
+    "portrait": false
   },
   "char_1044_hsgma2": {
     "skinId": "char_1044_hsgma2@whirlwind#11",
@@ -377,9 +317,7 @@
     "skinName": "一闪极意",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_斩业星熊_skin1.png"
+    "portrait": false
   },
   "char_1046_sbell2": {
     "skinId": "char_1046_sbell2@ambienceSynesthesia#8",
@@ -389,9 +327,7 @@
     "skinName": "曙光祝颂",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_圣聆初雪_skin1.png"
+    "portrait": false
   },
   "char_106_franka": {
     "skinId": "char_106_franka@ncg#1",
@@ -401,9 +337,7 @@
     "skinName": "林虹之间",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_芙兰卡_skin1.png"
+    "portrait": false
   },
   "char_107_liskam": {
     "skinId": "char_107_liskam@striker#1",
@@ -413,9 +347,7 @@
     "skinName": "超载",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_雷蛇_skin2.png"
+    "portrait": false
   },
   "char_108_silent": {
     "skinId": "char_108_silent@winter#2",
@@ -425,9 +357,7 @@
     "skinName": "霜息",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_赫默_skin2.png"
+    "portrait": false
   },
   "char_109_fmout": {
     "skinId": "char_109_fmout@epoque#2",
@@ -437,9 +367,7 @@
     "skinName": "未知的旅行",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_远山_skin1.png"
+    "portrait": false
   },
   "char_110_deepcl": {
     "skinId": "char_110_deepcl@winter#3",
@@ -449,9 +377,7 @@
     "skinName": "绘声绘影",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_深海色_skin1.png"
+    "portrait": false
   },
   "char_112_siege": {
     "skinId": "char_112_siege@striker#2",
@@ -461,9 +387,7 @@
     "skinName": "摧城",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_推进之王_skin2.png"
+    "portrait": false
   },
   "char_113_cqbw": {
     "skinId": "char_113_cqbw@epoque#7",
@@ -473,9 +397,7 @@
     "skinName": "恍惚",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_W_skin1.png"
+    "portrait": false
   },
   "char_115_headbr": {
     "skinId": "char_115_headbr@it#1",
@@ -485,9 +407,7 @@
     "skinName": "乌萨斯IO79",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_凛冬_skin2.png"
+    "portrait": false
   },
   "char_117_myrrh": {
     "skinId": "char_117_myrrh@wild#1",
@@ -497,9 +417,7 @@
     "skinName": "辛味",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_末药_skin1.png"
+    "portrait": false
   },
   "char_118_yuki": {
     "skinId": "char_118_yuki@boc#2",
@@ -509,9 +427,7 @@
     "skinName": "曲刃晴风",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_白雪_skin1.png"
+    "portrait": false
   },
   "char_120_hibisc": {
     "skinId": "char_120_hibisc@nian#1",
@@ -521,9 +437,7 @@
     "skinName": "守岁人",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_芙蓉_skin1.png"
+    "portrait": false
   },
   "char_121_lava": {
     "skinId": "char_121_lava@sale#9",
@@ -533,9 +447,7 @@
     "skinName": "一束阳光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_炎熔_skin1.png"
+    "portrait": false
   },
   "char_122_beagle": {
     "skinId": "char_122_beagle@boc#1",
@@ -545,9 +457,7 @@
     "skinName": "无畏",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_米格鲁_skin1.png"
+    "portrait": false
   },
   "char_123_fang": {
     "skinId": "char_123_fang@winter#1",
@@ -557,9 +467,7 @@
     "skinName": "十字郡",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_芬_skin1.png"
+    "portrait": false
   },
   "char_124_kroos": {
     "skinId": "char_124_kroos@sale#14",
@@ -569,9 +477,7 @@
     "skinName": "星月漂流记",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_克洛丝_skin2.png"
+    "portrait": false
   },
   "char_126_shotst": {
     "skinId": "char_126_shotst@epoque#28",
@@ -581,9 +487,7 @@
     "skinName": "星橼林",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_流星_skin2.png"
+    "portrait": false
   },
   "char_127_estell": {
     "skinId": "char_127_estell@epoque#50",
@@ -593,9 +497,7 @@
     "skinName": "花冕圆舞曲",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_艾丝黛尔_skin1.png"
+    "portrait": false
   },
   "char_128_plosis": {
     "skinId": "char_128_plosis@yun#4",
@@ -605,9 +507,7 @@
     "skinName": "抚云间",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_白面鸮_skin2.png"
+    "portrait": false
   },
   "char_129_bluep": {
     "skinId": "char_129_bluep@iteration#2",
@@ -617,9 +517,7 @@
     "skinName": "哀律西昂夜曲",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蓝毒_skin2.png"
+    "portrait": false
   },
   "char_130_doberm": {
     "skinId": "char_130_doberm@epoque#7",
@@ -629,9 +527,7 @@
     "skinName": "少尉",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_杜宾_skin1.png"
+    "portrait": false
   },
   "char_131_flameb": {
     "skinId": "char_131_flameb@whirlwind#6",
@@ -641,9 +537,7 @@
     "skinName": "单刀",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_炎客_skin2.png"
+    "portrait": false
   },
   "char_133_mm": {
     "skinId": "char_133_mm@summer#20",
@@ -653,9 +547,7 @@
     "skinName": "夏卉 FA054",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_梅_skin1.png"
+    "portrait": false
   },
   "char_134_ifrit": {
     "skinId": "char_134_ifrit@rilakkuma#1",
@@ -665,9 +557,7 @@
     "skinName": "轻松旅途",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_伊芙利特_skin3.png"
+    "portrait": false
   },
   "char_135_halo": {
     "skinId": "char_135_halo@epoque#25",
@@ -677,9 +567,7 @@
     "skinName": "所愿",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_星源_skin1.png"
+    "portrait": false
   },
   "char_136_hsguma": {
     "skinId": "char_136_hsguma@summer#16",
@@ -689,9 +577,7 @@
     "skinName": "探寻者 SK97",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_星熊_skin2.png"
+    "portrait": false
   },
   "char_137_brownb": {
     "skinId": "char_137_brownb@kitchen#1",
@@ -701,9 +587,7 @@
     "skinName": "掠蜜能手",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_猎蜂_skin1.png"
+    "portrait": false
   },
   "char_140_whitew": {
     "skinId": "char_140_whitew@boc#1",
@@ -713,9 +597,7 @@
     "skinName": "典雅噩兆",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_拉普兰德_skin1.png"
+    "portrait": false
   },
   "char_141_nights": {
     "skinId": "char_141_nights@breaker#1",
@@ -725,9 +607,7 @@
     "skinName": "疗养地怪谈",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夜烟_skin1.png"
+    "portrait": false
   },
   "char_143_ghost": {
     "skinId": "char_143_ghost@winter#1",
@@ -737,9 +617,7 @@
     "skinName": "暗流",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_幽灵鲨_skin1.png"
+    "portrait": false
   },
   "char_144_red": {
     "skinId": "char_144_red@summer#6",
@@ -749,9 +627,7 @@
     "skinName": "轻风 LB01",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_红_skin1.png"
+    "portrait": false
   },
   "char_145_prove": {
     "skinId": "char_145_prove@wild#5",
@@ -761,9 +637,7 @@
     "skinName": "荒原行者",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_普罗旺斯_skin2.png"
+    "portrait": false
   },
   "char_147_shining": {
     "skinId": "char_147_shining@summer#1",
@@ -773,9 +647,7 @@
     "skinName": "静谧午夜 DN02",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_闪灵_skin1.png"
+    "portrait": false
   },
   "char_148_nearl": {
     "skinId": "char_148_nearl@summer#2",
@@ -785,9 +657,7 @@
     "skinName": "灿阳朝露 SD01",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_临光_skin1.png"
+    "portrait": false
   },
   "char_149_scave": {
     "skinId": "char_149_scave@striker#2",
@@ -797,9 +667,7 @@
     "skinName": "生存",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_清道夫_skin1.png"
+    "portrait": false
   },
   "char_1502_crosly": {
     "skinId": "char_1502_crosly@iteration#5",
@@ -809,9 +677,7 @@
     "skinName": "夜之终局",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_弑君者_skin1.png"
+    "portrait": false
   },
   "char_150_snakek": {
     "skinId": "char_150_snakek@yun#7",
@@ -821,9 +687,7 @@
     "skinName": "与荷",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蛇屠箱_skin2.png"
+    "portrait": false
   },
   "char_151_myrtle": {
     "skinId": "char_151_myrtle@taiko#1",
@@ -833,9 +697,7 @@
     "skinName": "繁闹祭典",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_桃金娘_skin3.png"
+    "portrait": false
   },
   "char_154_morgan": {
     "skinId": "char_154_morgan@epoque#47",
@@ -845,9 +707,7 @@
     "skinName": "字里行间",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_摩根_skin1.png"
+    "portrait": false
   },
   "char_155_tiger": {
     "skinId": "char_155_tiger@striker#2",
@@ -857,9 +717,7 @@
     "skinName": "悍将",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_因陀罗_skin1.png"
+    "portrait": false
   },
   "char_158_milu": {
     "skinId": "char_158_milu@snow#2",
@@ -869,9 +727,7 @@
     "skinName": "覆雪",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_守林人_skin2.png"
+    "portrait": false
   },
   "char_159_peacok": {
     "skinId": "char_159_peacok@game#1",
@@ -881,9 +737,7 @@
     "skinName": "超级断罪朋友",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_断罪者_skin1.png"
+    "portrait": false
   },
   "char_163_hpsts": {
     "skinId": "char_163_hpsts@boc#10",
@@ -893,9 +747,7 @@
     "skinName": "火种",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_火神_skin1.png"
+    "portrait": false
   },
   "char_164_nightm": {
     "skinId": "char_164_nightm@unveiling#2",
@@ -905,9 +757,7 @@
     "skinName": "湖畔的少女",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夜魔_skin2.png"
+    "portrait": false
   },
   "char_166_skfire": {
     "skinId": "char_166_skfire@summer#1",
@@ -917,9 +767,7 @@
     "skinName": "温差 RT.RX01",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_天火_skin1.png"
+    "portrait": false
   },
   "char_171_bldsk": {
     "skinId": "char_171_bldsk@summer#7",
@@ -929,9 +777,7 @@
     "skinName": "悠然假日 HD31",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_华法琳_skin2.png"
+    "portrait": false
   },
   "char_172_svrash": {
     "skinId": "char_172_svrash@ambienceSynesthesia#4",
@@ -941,9 +787,7 @@
     "skinName": "不融冰",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_银灰_skin3.png"
+    "portrait": false
   },
   "char_173_slchan": {
     "skinId": "char_173_slchan@wwf#1",
@@ -953,9 +797,7 @@
     "skinName": "高原访客",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_崖心_skin2.png"
+    "portrait": false
   },
   "char_174_slbell": {
     "skinId": "char_174_slbell@snow#1",
@@ -965,9 +807,7 @@
     "skinName": "开斯特之霜",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_初雪_skin1.png"
+    "portrait": false
   },
   "char_179_cgbird": {
     "skinId": "char_179_cgbird@sightseer#1",
@@ -977,9 +817,7 @@
     "skinName": "流辉",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夜莺_skin2.png"
+    "portrait": false
   },
   "char_180_amgoat": {
     "skinId": "char_180_amgoat@sanrio#2",
@@ -989,9 +827,7 @@
     "skinName": "绵绒小魔女",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_艾雅法拉_skin2.png"
+    "portrait": false
   },
   "char_181_flower": {
     "skinId": "char_181_flower@epoque#9",
@@ -1001,9 +837,7 @@
     "skinName": "闲适午后",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_调香师_skin2.png"
+    "portrait": false
   },
   "char_183_skgoat": {
     "skinId": "char_183_skgoat@epoque#30",
@@ -1013,9 +847,7 @@
     "skinName": "主修领域",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_地灵_skin1.png"
+    "portrait": false
   },
   "char_185_frncat": {
     "skinId": "char_185_frncat@marthe#12",
@@ -1025,9 +857,7 @@
     "skinName": "补水时间",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_慕斯_skin2.png"
+    "portrait": false
   },
   "char_187_ccheal": {
     "skinId": "char_187_ccheal@epoque#2",
@@ -1037,9 +867,7 @@
     "skinName": "战医",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_嘉维尔_skin1.png"
+    "portrait": false
   },
   "char_188_helage": {
     "skinId": "char_188_helage@boc#2",
@@ -1049,9 +877,7 @@
     "skinName": "歧路幻影",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_赫拉格_skin1.png"
+    "portrait": false
   },
   "char_190_clour": {
     "skinId": "char_190_clour@epoque#43",
@@ -1061,9 +887,7 @@
     "skinName": "玩伴",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_红云_skin1.png"
+    "portrait": false
   },
   "char_192_falco": {
     "skinId": "char_192_falco@marthe#6",
@@ -1073,9 +897,7 @@
     "skinName": "从容时刻",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_翎羽_skin1.png"
+    "portrait": false
   },
   "char_193_frostl": {
     "skinId": "char_193_frostl@boc#4",
@@ -1085,9 +907,7 @@
     "skinName": "破冰",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_霜叶_skin1.png"
+    "portrait": false
   },
   "char_195_glassb": {
     "skinId": "char_195_glassb@kitchen#1",
@@ -1097,9 +917,7 @@
     "skinName": "书味",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_真理_skin1.png"
+    "portrait": false
   },
   "char_196_sunbr": {
     "skinId": "char_196_sunbr@summer#1",
@@ -1109,9 +927,7 @@
     "skinName": "夏卉 FA011",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_古米_skin1.png"
+    "portrait": false
   },
   "char_197_poca": {
     "skinId": "char_197_poca@rilakkuma#1",
@@ -1121,9 +937,7 @@
     "skinName": "常伴我身",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_早露_skin2.png"
+    "portrait": false
   },
   "char_198_blackd": {
     "skinId": "char_198_blackd@as#1",
@@ -1133,9 +947,7 @@
     "skinName": "无言狂响",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_讯使_skin2.png"
+    "portrait": false
   },
   "char_199_yak": {
     "skinId": "char_199_yak@summer#1",
@@ -1145,9 +957,7 @@
     "skinName": "沙滩护卫 GT.001",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_角峰_skin1.png"
+    "portrait": false
   },
   "char_2012_typhon": {
     "skinId": "char_2012_typhon@summer#17",
@@ -1157,9 +967,7 @@
     "skinName": "温差 RT.RX07",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_提丰_skin2.png"
+    "portrait": false
   },
   "char_2013_cerber": {
     "skinId": "char_2013_cerber@whirlwind#2",
@@ -1169,9 +977,7 @@
     "skinName": "无拘无束",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_刻俄柏_skin2.png"
+    "portrait": false
   },
   "char_2014_nian": {
     "skinId": "char_2014_nian@cfa#1",
@@ -1181,9 +987,7 @@
     "skinName": "霹雳导演",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_年_skin2.png"
+    "portrait": false
   },
   "char_2015_dusk": {
     "skinId": "char_2015_dusk@nian#12",
@@ -1193,9 +997,7 @@
     "skinName": "青玉砚",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夕_skin2.png"
+    "portrait": false
   },
   "char_201_moeshd": {
     "skinId": "char_201_moeshd@summer#4",
@@ -1205,9 +1007,7 @@
     "skinName": "探寻者 SK03",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_可颂_skin2.png"
+    "portrait": false
   },
   "char_2023_ling": {
     "skinId": "char_2023_ling@nian#12",
@@ -1217,9 +1017,7 @@
     "skinName": "方遒卷",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_令_skin3.png"
+    "portrait": false
   },
   "char_2024_chyue": {
     "skinId": "char_2024_chyue@cfa#1",
@@ -1229,9 +1027,7 @@
     "skinName": "全能演员",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_重岳_skin2.png"
+    "portrait": false
   },
   "char_2025_shu": {
     "skinId": "char_2025_shu@nian#11",
@@ -1241,9 +1037,7 @@
     "skinName": "春日宴",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_黍_skin1.png"
+    "portrait": false
   },
   "char_2026_yu": {
     "skinId": "char_2026_yu@nian#12",
@@ -1253,9 +1047,7 @@
     "skinName": "愿清晓",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_余_skin1.png"
+    "portrait": false
   },
   "char_202_demkni": {
     "skinId": "char_202_demkni@ambienceSynesthesia#7",
@@ -1265,9 +1057,7 @@
     "skinName": "黑白冷峻",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_塞雷娅_skin3.png"
+    "portrait": false
   },
   "char_204_platnm": {
     "skinId": "char_204_platnm@summer#3",
@@ -1277,9 +1067,7 @@
     "skinName": "灿阳朝露 SD05",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_白金_skin1.png"
+    "portrait": false
   },
   "char_206_gnosis": {
     "skinId": "char_206_gnosis@boc#4",
@@ -1289,9 +1077,7 @@
     "skinName": "先驱",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_灵知_skin1.png"
+    "portrait": false
   },
   "char_208_melan": {
     "skinId": "char_208_melan@epoque#1",
@@ -1301,9 +1087,7 @@
     "skinName": "威塞克斯的信件",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_玫兰莎_skin1.png"
+    "portrait": false
   },
   "char_209_ardign": {
     "skinId": "char_209_ardign@epoque#26",
@@ -1313,9 +1097,7 @@
     "skinName": "晴日",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_卡缇_skin2.png"
+    "portrait": false
   },
   "char_210_stward": {
     "skinId": "char_210_stward@sale#6",
@@ -1325,9 +1107,7 @@
     "skinName": "风雪邀请",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_史都华德_skin1.png"
+    "portrait": false
   },
   "char_211_adnach": {
     "skinId": "char_211_adnach@sale#5",
@@ -1337,9 +1117,7 @@
     "skinName": "无痕行者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_安德切尔_skin1.png"
+    "portrait": false
   },
   "char_212_ansel": {
     "skinId": "char_212_ansel@epoque#29",
@@ -1349,9 +1127,7 @@
     "skinName": "晚间咖啡店",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_安赛尔_skin2.png"
+    "portrait": false
   },
   "char_213_mostma": {
     "skinId": "char_213_mostma@ambienceSynesthesia#6",
@@ -1361,9 +1137,7 @@
     "skinName": "幻语乐痕",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_莫斯提马_skin2.png"
+    "portrait": false
   },
   "char_214_kafka": {
     "skinId": "char_214_kafka@snow#3",
@@ -1373,9 +1147,7 @@
     "skinName": "纸板仙子",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_卡夫卡_skin1.png"
+    "portrait": false
   },
   "char_215_mantic": {
     "skinId": "char_215_mantic@epoque#19",
@@ -1385,9 +1157,7 @@
     "skinName": "面纱之下",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_狮蝎_skin2.png"
+    "portrait": false
   },
   "char_218_cuttle": {
     "skinId": "char_218_cuttle@epoque#12",
@@ -1397,9 +1167,7 @@
     "skinName": "暗矢",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_安哲拉_skin1.png"
+    "portrait": false
   },
   "char_219_meteo": {
     "skinId": "char_219_meteo@summer#22",
@@ -1409,9 +1177,7 @@
     "skinName": "夏卉 FA240",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_陨星_skin2.png"
+    "portrait": false
   },
   "char_220_grani": {
     "skinId": "char_220_grani@epoque#6",
@@ -1421,9 +1187,7 @@
     "skinName": "美妙时光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_格拉尼_skin1.png"
+    "portrait": false
   },
   "char_222_bpipe": {
     "skinId": "char_222_bpipe@epoque#40",
@@ -1433,9 +1197,7 @@
     "skinName": "风笛声声",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_风笛_skin3.png"
+    "portrait": false
   },
   "char_225_haak": {
     "skinId": "char_225_haak@nian#5",
@@ -1445,9 +1207,7 @@
     "skinName": "妙手玄心",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_阿_skin2.png"
+    "portrait": false
   },
   "char_226_hmau": {
     "skinId": "char_226_hmau@nian#4",
@@ -1457,9 +1217,7 @@
     "skinName": "一介车夫",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_吽_skin1.png"
+    "portrait": false
   },
   "char_230_savage": {
     "skinId": "char_230_savage@sale#17",
@@ -1469,9 +1227,7 @@
     "skinName": "又一年秋季",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_暴行_skin3.png"
+    "portrait": false
   },
   "char_235_jesica": {
     "skinId": "char_235_jesica@nian#2",
@@ -1481,9 +1237,7 @@
     "skinName": "君子兰",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_杰西卡_skin3.png"
+    "portrait": false
   },
   "char_236_rope": {
     "skinId": "char_236_rope@summer#2",
@@ -1493,9 +1247,7 @@
     "skinName": "夏卉 FA008",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_暗索_skin2.png"
+    "portrait": false
   },
   "char_237_gravel": {
     "skinId": "char_237_gravel@winter#2",
@@ -1505,9 +1257,7 @@
     "skinName": "模特之夜",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_砾_skin1.png"
+    "portrait": false
   },
   "char_240_wyvern": {
     "skinId": "char_240_wyvern@game#4",
@@ -1517,9 +1267,7 @@
     "skinName": "平原驯虫士",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_香草_skin1.png"
+    "portrait": false
   },
   "char_241_panda": {
     "skinId": "char_241_panda@nian#7",
@@ -1529,9 +1277,7 @@
     "skinName": "且试箸",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_食铁兽_skin2.png"
+    "portrait": false
   },
   "char_242_otter": {
     "skinId": "char_242_otter@ghost#1",
@@ -1541,9 +1287,7 @@
     "skinName": "庭院寻梦尖兵",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_梅尔_skin1.png"
+    "portrait": false
   },
   "char_243_waaifu": {
     "skinId": "char_243_waaifu@whirlwind#2",
@@ -1553,9 +1297,7 @@
     "skinName": "街道狂花",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_槐琥_skin1.png"
+    "portrait": false
   },
   "char_245_cello": {
     "skinId": "char_245_cello@sale#12",
@@ -1565,9 +1307,7 @@
     "skinName": "无我唯识",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_塑心_skin1.png"
+    "portrait": false
   },
   "char_248_mgllan": {
     "skinId": "char_248_mgllan@kitchen#1",
@@ -1577,9 +1317,7 @@
     "skinName": "回味冰霜雪",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_麦哲伦_skin1.png"
+    "portrait": false
   },
   "char_249_mlyss": {
     "skinId": "char_249_mlyss@ambienceSynesthesia#6",
@@ -1589,9 +1327,7 @@
     "skinName": "漫步于黄金之梦",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_缪尔赛思_skin2.png"
+    "portrait": false
   },
   "char_250_phatom": {
     "skinId": "char_250_phatom@sale#4",
@@ -1601,9 +1337,7 @@
     "skinName": "焦点",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_傀影_skin2.png"
+    "portrait": false
   },
   "char_252_bibeak": {
     "skinId": "char_252_bibeak@winter#2",
@@ -1613,9 +1347,7 @@
     "skinName": "软绒",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_柏喙_skin1.png"
+    "portrait": false
   },
   "char_253_greyy": {
     "skinId": "char_253_greyy@epoque#515",
@@ -1625,9 +1357,7 @@
     "skinName": "都会送报员",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_格雷伊_skin2.png"
+    "portrait": false
   },
   "char_254_vodfox": {
     "skinId": "char_254_vodfox@yun#8",
@@ -1637,9 +1367,7 @@
     "skinName": "绣云鹤",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_巫恋_skin2.png"
+    "portrait": false
   },
   "char_258_podego": {
     "skinId": "char_258_podego@epoque#9",
@@ -1649,9 +1377,7 @@
     "skinName": "小憩初醒",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_波登可_skin1.png"
+    "portrait": false
   },
   "char_260_durnar": {
     "skinId": "char_260_durnar@epoque#42",
@@ -1661,9 +1387,7 @@
     "skinName": "绒布蛋糕",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_坚雷_skin1.png"
+    "portrait": false
   },
   "char_261_sddrag": {
     "skinId": "char_261_sddrag@ambienceSynesthesia#2",
@@ -1673,9 +1397,7 @@
     "skinName": "翡翠假日",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_苇草_skin1.png"
+    "portrait": false
   },
   "char_263_skadi": {
     "skinId": "char_263_skadi@marthe#5",
@@ -1685,9 +1407,7 @@
     "skinName": "下一顿午茶",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_斯卡蒂_skin2.png"
+    "portrait": false
   },
   "char_264_f12yin": {
     "skinId": "char_264_f12yin@marthe#13",
@@ -1697,9 +1417,7 @@
     "skinName": "硬派速度",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_山_skin3.png"
+    "portrait": false
   },
   "char_265_sophia": {
     "skinId": "char_265_sophia@epoque#11",
@@ -1709,9 +1427,7 @@
     "skinName": "荣耀之紫",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_鞭刃_skin1.png"
+    "portrait": false
   },
   "char_271_spikes": {
     "skinId": "char_271_spikes@unveiling#1",
@@ -1721,9 +1437,7 @@
     "skinName": "危险邀约",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_芳汀_skin2.png"
+    "portrait": false
   },
   "char_272_strong": {
     "skinId": "char_272_strong@summer#6",
@@ -1733,9 +1447,7 @@
     "skinName": "沙滩护卫 GT002",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_孑_skin1.png"
+    "portrait": false
   },
   "char_274_astesi": {
     "skinId": "char_274_astesi@epoque#23",
@@ -1745,9 +1457,7 @@
     "skinName": "奇工妙想",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_星极_skin3.png"
+    "portrait": false
   },
   "char_275_breeze": {
     "skinId": "char_275_breeze@unveiling#4",
@@ -1757,9 +1467,7 @@
     "skinName": "半甜草莓",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_微风_skin1.png"
+    "portrait": false
   },
   "char_277_sqrrel": {
     "skinId": "char_277_sqrrel@ghost#1",
@@ -1769,9 +1477,7 @@
     "skinName": "古堡清洁专家",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_阿消_skin1.png"
+    "portrait": false
   },
   "char_278_orchid": {
     "skinId": "char_278_orchid@boc#6",
@@ -1781,9 +1487,7 @@
     "skinName": "衣缕往昔",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_梓兰_skin1.png"
+    "portrait": false
   },
   "char_279_excu": {
     "skinId": "char_279_excu@boc#1",
@@ -1793,9 +1497,7 @@
     "skinName": "无题密令",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_送葬人_skin1.png"
+    "portrait": false
   },
   "char_281_popka": {
     "skinId": "char_281_popka@sale#18",
@@ -1805,9 +1507,7 @@
     "skinName": "幽然灵竹",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_泡普卡_skin2.png"
+    "portrait": false
   },
   "char_282_catap": {
     "skinId": "char_282_catap@summer#17",
@@ -1817,9 +1517,7 @@
     "skinName": "悠然假日 HD66",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_空爆_skin1.png"
+    "portrait": false
   },
   "char_283_midn": {
     "skinId": "char_283_midn@boc#1",
@@ -1829,9 +1527,7 @@
     "skinName": "第七夜苏醒魔君",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_月见夜_skin1.png"
+    "portrait": false
   },
   "char_284_spot": {
     "skinId": "char_284_spot@boc#3",
@@ -1841,9 +1537,7 @@
     "skinName": "专业人士",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_斑点_skin1.png"
+    "portrait": false
   },
   "char_285_medic2": {
     "skinId": "char_285_medic2@boc#4",
@@ -1853,9 +1547,7 @@
     "skinName": "海岸救援改装",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_Lancet-2_skin1.png"
+    "portrait": false
   },
   "char_286_cast3": {
     "skinId": "char_286_cast3@summer#1",
@@ -1865,9 +1557,7 @@
     "skinName": "SUM019.ver",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_Castle-3_skin1.png"
+    "portrait": false
   },
   "char_289_gyuki": {
     "skinId": "char_289_gyuki@epoque#40",
@@ -1877,9 +1567,7 @@
     "skinName": "繁霜满阶",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_缠丸_skin1.png"
+    "portrait": false
   },
   "char_290_vigna": {
     "skinId": "char_290_vigna@as#1",
@@ -1889,9 +1577,7 @@
     "skinName": "漆黑热浪",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_红豆_skin2.png"
+    "portrait": false
   },
   "char_291_aglina": {
     "skinId": "char_291_aglina@summer#5",
@@ -1901,9 +1587,7 @@
     "skinName": "夏卉 FA017",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_安洁莉娜_skin2.png"
+    "portrait": false
   },
   "char_293_thorns": {
     "skinId": "char_293_thorns@boc#8",
@@ -1913,9 +1597,7 @@
     "skinName": "锋潮",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_棘刺_skin2.png"
+    "portrait": false
   },
   "char_294_ayer": {
     "skinId": "char_294_ayer@boc#3",
@@ -1925,9 +1607,7 @@
     "skinName": "受验者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_断崖_skin1.png"
+    "portrait": false
   },
   "char_297_hamoni": {
     "skinId": "char_297_hamoni@unveiling#1",
@@ -1937,9 +1617,7 @@
     "skinName": "装点",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_和弦_skin2.png"
+    "portrait": false
   },
   "char_298_susuro": {
     "skinId": "char_298_susuro@winter#4",
@@ -1949,9 +1627,7 @@
     "skinName": "随意而行",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_苏苏洛_skin2.png"
+    "portrait": false
   },
   "char_300_phenxi": {
     "skinId": "char_300_phenxi@boc#9",
@@ -1961,9 +1637,7 @@
     "skinName": "审判日",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_菲亚梅塔_skin2.png"
+    "portrait": false
   },
   "char_301_cutter": {
     "skinId": "char_301_cutter@marthe#8",
@@ -1973,9 +1647,7 @@
     "skinName": "拭刀",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_刻刀_skin1.png"
+    "portrait": false
   },
   "char_302_glaze": {
     "skinId": "char_302_glaze@summer#11",
@@ -1985,9 +1657,7 @@
     "skinName": "悠然假日 HD29",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_安比尔_skin1.png"
+    "portrait": false
   },
   "char_304_zebra": {
     "skinId": "char_304_zebra@wild#6",
@@ -1997,9 +1667,7 @@
     "skinName": "幽苔",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_暴雨_skin1.png"
+    "portrait": false
   },
   "char_306_leizi": {
     "skinId": "char_306_leizi@game#3",
@@ -2009,9 +1677,7 @@
     "skinName": "遗迹游学者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_惊蛰_skin1.png"
+    "portrait": false
   },
   "char_308_swire": {
     "skinId": "char_308_swire@nian#2",
@@ -2021,9 +1687,7 @@
     "skinName": "富贵荣华",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_诗怀雅_skin1.png"
+    "portrait": false
   },
   "char_311_mudrok": {
     "skinId": "char_311_mudrok@wild#10",
@@ -2033,9 +1697,7 @@
     "skinName": "砾瓦",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_泥岩_skin3.png"
+    "portrait": false
   },
   "char_322_lmlee": {
     "skinId": "char_322_lmlee@whirlwind#10",
@@ -2045,9 +1707,7 @@
     "skinName": "鉴浮生",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_老鲤_skin3.png"
+    "portrait": false
   },
   "char_325_bison": {
     "skinId": "char_325_bison@yun#7",
@@ -2057,9 +1717,7 @@
     "skinName": "凌云意",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_拜松_skin1.png"
+    "portrait": false
   },
   "char_326_glacus": {
     "skinId": "char_326_glacus@ghost#1",
@@ -2069,9 +1727,7 @@
     "skinName": "广场扫荡客",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_格劳克斯_skin1.png"
+    "portrait": false
   },
   "char_328_cammou": {
     "skinId": "char_328_cammou@summer#22",
@@ -2081,9 +1737,7 @@
     "skinName": "悠然假日 HD59",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_卡达_skin2.png"
+    "portrait": false
   },
   "char_332_archet": {
     "skinId": "char_332_archet@sale#14",
@@ -2093,9 +1747,7 @@
     "skinName": "至虔者荣光",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_空弦_skin2.png"
+    "portrait": false
   },
   "char_333_sidero": {
     "skinId": "char_333_sidero@summer#6",
@@ -2105,9 +1757,7 @@
     "skinName": "轻风 LB03",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_铸铁_skin1.png"
+    "portrait": false
   },
   "char_336_folivo": {
     "skinId": "char_336_folivo@wild#11",
@@ -2117,9 +1767,7 @@
     "skinName": "新地形",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_稀音_skin2.png"
+    "portrait": false
   },
   "char_337_utage": {
     "skinId": "char_337_utage@epoque#15",
@@ -2129,9 +1777,7 @@
     "skinName": "伪装",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_宴_skin2.png"
+    "portrait": false
   },
   "char_338_iris": {
     "skinId": "char_338_iris@witch#3",
@@ -2141,9 +1787,7 @@
     "skinName": "镜中来访",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_爱丽丝_skin1.png"
+    "portrait": false
   },
   "char_340_shwaz": {
     "skinId": "char_340_shwaz@striker#1",
@@ -2153,9 +1797,7 @@
     "skinName": "天际线",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_黑_skin2.png"
+    "portrait": false
   },
   "char_341_sntlla": {
     "skinId": "char_341_sntlla@summer#15",
@@ -2165,9 +1807,7 @@
     "skinName": "悠然假日 HD71",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_寒檀_skin1.png"
+    "portrait": false
   },
   "char_343_tknogi": {
     "skinId": "char_343_tknogi@snow#6",
@@ -2177,9 +1817,7 @@
     "skinName": "舞",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_月禾_skin2.png"
+    "portrait": false
   },
   "char_344_beewax": {
     "skinId": "char_344_beewax@summer#11",
@@ -2189,9 +1827,7 @@
     "skinName": "悠然假日 HD61",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蜜蜡_skin2.png"
+    "portrait": false
   },
   "char_345_folnic": {
     "skinId": "char_345_folnic@wild#4",
@@ -2201,9 +1837,7 @@
     "skinName": "残葛",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_亚叶_skin1.png"
+    "portrait": false
   },
   "char_346_aosta": {
     "skinId": "char_346_aosta@game#2",
@@ -2213,9 +1847,7 @@
     "skinName": "光铳调试员",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_奥斯塔_skin1.png"
+    "portrait": false
   },
   "char_347_jaksel": {
     "skinId": "char_347_jaksel@whirlwind#2",
@@ -2225,9 +1857,7 @@
     "skinName": "纵身一跃",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_杰克_skin1.png"
+    "portrait": false
   },
   "char_348_ceylon": {
     "skinId": "char_348_ceylon@summer#13",
@@ -2237,9 +1867,7 @@
     "skinName": "悠然假日 HD49",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_锡兰_skin1.png"
+    "portrait": false
   },
   "char_349_chiave": {
     "skinId": "char_349_chiave@race#2",
@@ -2249,9 +1877,7 @@
     "skinName": "一人车队",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_贾维_skin1.png"
+    "portrait": false
   },
   "char_350_surtr": {
     "skinId": "char_350_surtr@ambienceSynesthesia#6",
@@ -2261,9 +1887,7 @@
     "skinName": "超然序曲",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_史尔特尔_skin3.png"
+    "portrait": false
   },
   "char_355_ethan": {
     "skinId": "char_355_ethan@epoque#7",
@@ -2273,9 +1897,7 @@
     "skinName": "渗透",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_伊桑_skin1.png"
+    "portrait": false
   },
   "char_356_broca": {
     "skinId": "char_356_broca@marthe#4",
@@ -2285,9 +1907,7 @@
     "skinName": "组间休息",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_布洛卡_skin1.png"
+    "portrait": false
   },
   "char_358_lisa": {
     "skinId": "char_358_lisa@epoque#22",
@@ -2297,9 +1917,7 @@
     "skinName": "雪霁",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_铃兰_skin3.png"
+    "portrait": false
   },
   "char_362_saga": {
     "skinId": "char_362_saga@sale#9",
@@ -2309,9 +1927,7 @@
     "skinName": "彼有",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_嵯峨_skin1.png"
+    "portrait": false
   },
   "char_365_aprl": {
     "skinId": "char_365_aprl@wild#3",
@@ -2321,9 +1937,7 @@
     "skinName": "远望",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_四月_skin1.png"
+    "portrait": false
   },
   "char_366_acdrop": {
     "skinId": "char_366_acdrop@summer#21",
@@ -2333,9 +1947,7 @@
     "skinName": "悠然假日 HD75",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_酸糖_skin2.png"
+    "portrait": false
   },
   "char_367_swllow": {
     "skinId": "char_367_swllow@boc#1",
@@ -2345,9 +1957,7 @@
     "skinName": "归巢",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_灰喉_skin1.png"
+    "portrait": false
   },
   "char_369_bena": {
     "skinId": "char_369_bena@epoque#38",
@@ -2357,9 +1967,7 @@
     "skinName": "草原小帮手",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_贝娜_skin1.png"
+    "portrait": false
   },
   "char_373_lionhd": {
     "skinId": "char_373_lionhd@snow#3",
@@ -2369,9 +1977,7 @@
     "skinName": "希望巡游",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_莱恩哈特_skin2.png"
+    "portrait": false
   },
   "char_376_therex": {
     "skinId": "char_376_therex@marthe#7",
@@ -2381,9 +1987,7 @@
     "skinName": "双料四分卫",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_THRM-EX_skin1.png"
+    "portrait": false
   },
   "char_377_gdglow": {
     "skinId": "char_377_gdglow@sanrio#1",
@@ -2393,9 +1997,7 @@
     "skinName": "花房茶话会",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_澄闪_skin3.png"
+    "portrait": false
   },
   "char_378_asbest": {
     "skinId": "char_378_asbest@whirlwind#3",
@@ -2405,9 +2007,7 @@
     "skinName": "幽谷奏鸣",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_石棉_skin1.png"
+    "portrait": false
   },
   "char_379_sesa": {
     "skinId": "char_379_sesa@game#5",
@@ -2417,9 +2017,7 @@
     "skinName": "万物有灵",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_慑砂_skin1.png"
+    "portrait": false
   },
   "char_381_bubble": {
     "skinId": "char_381_bubble@marthe#11",
@@ -2429,9 +2027,7 @@
     "skinName": "迎风之轮",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_泡泡_skin1.png"
+    "portrait": false
   },
   "char_383_snsant": {
     "skinId": "char_383_snsant@witch#2",
@@ -2441,9 +2037,7 @@
     "skinName": "天命勇者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_雪雉_skin1.png"
+    "portrait": false
   },
   "char_385_finlpp": {
     "skinId": "char_385_finlpp@nian#11",
@@ -2453,9 +2047,7 @@
     "skinName": "贺新禧",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_清流_skin1.png"
+    "portrait": false
   },
   "char_388_mint": {
     "skinId": "char_388_mint@epoque#30",
@@ -2465,9 +2057,7 @@
     "skinName": "私人书房",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_薄绿_skin2.png"
+    "portrait": false
   },
   "char_391_rosmon": {
     "skinId": "char_391_rosmon@sale#16",
@@ -2477,9 +2067,7 @@
     "skinName": "轻盈一梦",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_迷迭香_skin2.png"
+    "portrait": false
   },
   "char_4000_jnight": {
     "skinId": "char_4000_jnight@boc#7",
@@ -2489,9 +2077,7 @@
     "skinName": "竞技之梦改装",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_正义骑士号_skin1.png"
+    "portrait": false
   },
   "char_4004_pudd": {
     "skinId": "char_4004_pudd@snow#5",
@@ -2501,9 +2087,7 @@
     "skinName": "火树灵",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_布丁_skin1.png"
+    "portrait": false
   },
   "char_4006_melnte": {
     "skinId": "char_4006_melnte@epoque#33",
@@ -2513,9 +2097,7 @@
     "skinName": "赴宴",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_玫拉_skin1.png"
+    "portrait": false
   },
   "char_4009_irene": {
     "skinId": "char_4009_irene@game#3",
@@ -2525,9 +2107,7 @@
     "skinName": "至高判决",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_艾丽妮_skin2.png"
+    "portrait": false
   },
   "char_400_weedy": {
     "skinId": "char_400_weedy@sightseer#1",
@@ -2537,9 +2117,7 @@
     "skinName": "倾听",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_温蒂_skin2.png"
+    "portrait": false
   },
   "char_4010_etlchi": {
     "skinId": "char_4010_etlchi@winter#5",
@@ -2549,9 +2127,7 @@
     "skinName": "耀目之蓝",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_隐德来希_skin1.png"
+    "portrait": false
   },
   "char_4011_lessng": {
     "skinId": "char_4011_lessng@whirlwind#7",
@@ -2561,9 +2137,7 @@
     "skinName": "幻火",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_止颂_skin1.png"
+    "portrait": false
   },
   "char_4013_kjera": {
     "skinId": "char_4013_kjera@epoque#18",
@@ -2573,9 +2147,7 @@
     "skinName": "灵巧侍者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_耶拉_skin1.png"
+    "portrait": false
   },
   "char_4014_lunacu": {
     "skinId": "char_4014_lunacu@yun#1",
@@ -2585,9 +2157,7 @@
     "skinName": "棠云巧梦",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_子月_skin1.png"
+    "portrait": false
   },
   "char_4016_kazema": {
     "skinId": "char_4016_kazema@witch#3",
@@ -2597,9 +2167,7 @@
     "skinName": "幻影轻悄",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_风丸_skin1.png"
+    "portrait": false
   },
   "char_4017_puzzle": {
     "skinId": "char_4017_puzzle@shining#3",
@@ -2609,9 +2177,7 @@
     "skinName": "冷色摇滚",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_谜图_skin2.png"
+    "portrait": false
   },
   "char_4019_ncdeer": {
     "skinId": "char_4019_ncdeer@ncdeer#1",
@@ -2621,9 +2187,7 @@
     "skinName": "古往今来的月",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_九色鹿_skin1.png"
+    "portrait": false
   },
   "char_401_elysm": {
     "skinId": "char_401_elysm@summer#9",
@@ -2633,9 +2197,7 @@
     "skinName": "灿阳朝露 SDm11",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_极境_skin2.png"
+    "portrait": false
   },
   "char_4023_rfalcn": {
     "skinId": "char_4023_rfalcn@epoque#52",
@@ -2645,9 +2207,7 @@
     "skinName": "三元风情",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_红隼_skin1.png"
+    "portrait": false
   },
   "char_4025_aprot2": {
     "skinId": "char_4025_aprot2@whirlwind#5",
@@ -2657,9 +2217,7 @@
     "skinName": "结果",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_暮落_skin1.png"
+    "portrait": false
   },
   "char_4026_vulpis": {
     "skinId": "char_4026_vulpis@epoque#55",
@@ -2669,9 +2227,7 @@
     "skinName": "失焦",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_忍冬_skin1.png"
+    "portrait": false
   },
   "char_4027_heyak": {
     "skinId": "char_4027_heyak@epoque#50",
@@ -2681,9 +2237,7 @@
     "skinName": "恒久祭礼",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_霍尔海雅_skin2.png"
+    "portrait": false
   },
   "char_402_tuye": {
     "skinId": "char_402_tuye@epoque#14",
@@ -2693,9 +2247,7 @@
     "skinName": "培翠",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_图耶_skin1.png"
+    "portrait": false
   },
   "char_4032_provs": {
     "skinId": "char_4032_provs@summer#17",
@@ -2705,9 +2257,7 @@
     "skinName": "悠然假日 HD78",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_但书_skin2.png"
+    "portrait": false
   },
   "char_4036_forcer": {
     "skinId": "char_4036_forcer@epoque#20",
@@ -2717,9 +2267,7 @@
     "skinName": "拾翼",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_见行者_skin1.png"
+    "portrait": false
   },
   "char_4039_horn": {
     "skinId": "char_4039_horn@epoque#24",
@@ -2729,9 +2277,7 @@
     "skinName": "化花",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_号角_skin1.png"
+    "portrait": false
   },
   "char_4040_rockr": {
     "skinId": "char_4040_rockr@lxh#1",
@@ -2741,9 +2287,7 @@
     "skinName": "欢唱之前",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_洛洛_skin1.png"
+    "portrait": false
   },
   "char_4041_chnut": {
     "skinId": "char_4041_chnut@summer#12",
@@ -2753,9 +2297,7 @@
     "skinName": "悠然假日 HDm57",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_褐果_skin1.png"
+    "portrait": false
   },
   "char_4042_lumen": {
     "skinId": "char_4042_lumen@sanrio#2",
@@ -2765,9 +2307,7 @@
     "skinName": "雨霓行游客",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_流明_skin2.png"
+    "portrait": false
   },
   "char_4043_erato": {
     "skinId": "char_4043_erato@snow#5",
@@ -2777,9 +2317,7 @@
     "skinName": "未讲述的故事",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_埃拉托_skin1.png"
+    "portrait": false
   },
   "char_4045_heidi": {
     "skinId": "char_4045_heidi@epoque#24",
@@ -2789,9 +2327,7 @@
     "skinName": "书信零落",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_海蒂_skin1.png"
+    "portrait": false
   },
   "char_4046_ebnhlz": {
     "skinId": "char_4046_ebnhlz@boc#6",
@@ -2801,9 +2337,7 @@
     "skinName": "变奏",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_黑键_skin1.png"
+    "portrait": false
   },
   "char_4047_pianst": {
     "skinId": "char_4047_pianst@wild#8",
@@ -2813,9 +2347,7 @@
     "skinName": "荒野寻音",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_车尔尼_skin1.png"
+    "portrait": false
   },
   "char_4048_doroth": {
     "skinId": "char_4048_doroth@witch#4",
@@ -2825,9 +2357,7 @@
     "skinName": "命运主宰",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_多萝西_skin1.png"
+    "portrait": false
   },
   "char_4051_akkord": {
     "skinId": "char_4051_akkord@summer#23",
@@ -2837,9 +2367,7 @@
     "skinName": "悠然假日 HD91",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_协律_skin1.png"
+    "portrait": false
   },
   "char_4052_surfer": {
     "skinId": "char_4052_surfer@nian#12",
@@ -2849,9 +2377,7 @@
     "skinName": "共凭栏",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_寻澜_skin1.png"
+    "portrait": false
   },
   "char_4054_malist": {
     "skinId": "char_4054_malist@summer#14",
@@ -2861,9 +2387,7 @@
     "skinName": "悠然假日 HDm74",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_至简_skin1.png"
+    "portrait": false
   },
   "char_4055_bgsnow": {
     "skinId": "char_4055_bgsnow@yun#7",
@@ -2873,9 +2397,7 @@
     "skinName": "行梦侧畔",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_鸿雪_skin2.png"
+    "portrait": false
   },
   "char_4058_pepe": {
     "skinId": "char_4058_pepe@sightseer#2",
@@ -2885,9 +2407,7 @@
     "skinName": "星移",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_佩佩_skin1.png"
+    "portrait": false
   },
   "char_405_absin": {
     "skinId": "char_405_absin@epoque#28",
@@ -2897,9 +2417,7 @@
     "skinName": "正午余光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_苦艾_skin1.png"
+    "portrait": false
   },
   "char_4062_totter": {
     "skinId": "char_4062_totter@summer#17",
@@ -2909,9 +2427,7 @@
     "skinName": "灿阳朝露 SDm09",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_铅踝_skin1.png"
+    "portrait": false
   },
   "char_4063_quartz": {
     "skinId": "char_4063_quartz@epoque#39",
@@ -2921,9 +2437,7 @@
     "skinName": "封面佣兵",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_石英_skin1.png"
+    "portrait": false
   },
   "char_4064_mlynar": {
     "skinId": "char_4064_mlynar@iteration#3",
@@ -2933,9 +2447,7 @@
     "skinName": "苍茫怒号",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_玛恩纳_skin2.png"
+    "portrait": false
   },
   "char_4065_judge": {
     "skinId": "char_4065_judge@epoque#33",
@@ -2945,9 +2457,7 @@
     "skinName": "记叙",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_斥罪_skin2.png"
+    "portrait": false
   },
   "char_4066_highmo": {
     "skinId": "char_4066_highmo@epoque#45",
@@ -2957,9 +2467,7 @@
     "skinName": "搁浅",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_海沫_skin2.png"
+    "portrait": false
   },
   "char_4071_peper": {
     "skinId": "char_4071_peper@whirlwind#5",
@@ -2969,9 +2477,7 @@
     "skinName": "来路",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_明椒_skin1.png"
+    "portrait": false
   },
   "char_4072_ironmn": {
     "skinId": "char_4072_ironmn@ambienceSynesthesia#5",
@@ -2981,9 +2487,7 @@
     "skinName": "空心王冠",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_白铁_skin2.png"
+    "portrait": false
   },
   "char_4077_palico": {
     "skinId": "char_4077_palico@mh#1",
@@ -2993,9 +2497,7 @@
     "skinName": "跃上街头",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_泰拉大陆调查团_skin1.png"
+    "portrait": false
   },
   "char_4078_bdhkgt": {
     "skinId": "char_4078_bdhkgt@yun#2",
@@ -3005,9 +2507,7 @@
     "skinName": "伴青莲",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_截云_skin1.png"
+    "portrait": false
   },
   "char_4079_haini": {
     "skinId": "char_4079_haini@epoque#45",
@@ -3017,9 +2517,7 @@
     "skinName": "翻涌",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_海霓_skin1.png"
+    "portrait": false
   },
   "char_4080_lin": {
     "skinId": "char_4080_lin@littlePony#1",
@@ -3029,9 +2527,7 @@
     "skinName": "求知的魔法",
     "skinIndex": 3,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_林_skin3.png"
+    "portrait": false
   },
   "char_4081_warmy": {
     "skinId": "char_4081_warmy@winter#4",
@@ -3041,9 +2537,7 @@
     "skinName": "街角暖绒",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_温米_skin1.png"
+    "portrait": false
   },
   "char_4082_qiubai": {
     "skinId": "char_4082_qiubai@epoque#31",
@@ -3053,9 +2547,7 @@
     "skinName": "礼遇",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_仇白_skin2.png"
+    "portrait": false
   },
   "char_4083_chimes": {
     "skinId": "char_4083_chimes@yun#5",
@@ -3065,9 +2557,7 @@
     "skinName": "松间月",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_铎铃_skin1.png"
+    "portrait": false
   },
   "char_4087_ines": {
     "skinId": "char_4087_ines@ambienceSynesthesia#5",
@@ -3077,9 +2567,7 @@
     "skinName": "蝶舞华章",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_伊内丝_skin2.png"
+    "portrait": false
   },
   "char_4088_hodrer": {
     "skinId": "char_4088_hodrer@sightseer#1",
@@ -3089,9 +2577,7 @@
     "skinName": "沉思之庭",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_赫德雷_skin1.png"
+    "portrait": false
   },
   "char_4091_ulika": {
     "skinId": "char_4091_ulika@sanrio#1",
@@ -3101,9 +2587,7 @@
     "skinName": "云上直播间",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_U-Official_skin1.png"
+    "portrait": false
   },
   "char_4098_vvana": {
     "skinId": "char_4098_vvana@epoque#40",
@@ -3113,9 +2597,7 @@
     "skinName": "寄自奥格尼斯科",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_薇薇安娜_skin1.png"
+    "portrait": false
   },
   "char_4100_caper": {
     "skinId": "char_4100_caper@summer#18",
@@ -3125,9 +2607,7 @@
     "skinName": "夏卉 FA083",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_跃跃_skin1.png"
+    "portrait": false
   },
   "char_4102_threye": {
     "skinId": "char_4102_threye@epoque#42",
@@ -3137,9 +2617,7 @@
     "skinName": "林间暖阳",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_凛视_skin1.png"
+    "portrait": false
   },
   "char_4104_coldst": {
     "skinId": "char_4104_coldst@striker#3",
@@ -3149,9 +2627,7 @@
     "skinName": "破晓",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_冰酿_skin1.png"
+    "portrait": false
   },
   "char_4105_almond": {
     "skinId": "char_4105_almond@epoque#38",
@@ -3161,9 +2637,7 @@
     "skinName": "“杏仁”拼盘",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_杏仁_skin1.png"
+    "portrait": false
   },
   "char_4106_bryota": {
     "skinId": "char_4106_bryota@epoque#34",
@@ -3173,9 +2647,7 @@
     "skinName": "动感",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_苍苔_skin1.png"
+    "portrait": false
   },
   "char_4107_vrdant": {
     "skinId": "char_4107_vrdant@unveiling#3",
@@ -3185,9 +2657,7 @@
     "skinName": "玫瑰骑手",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_维荻_skin1.png"
+    "portrait": false
   },
   "char_4109_baslin": {
     "skinId": "char_4109_baslin@witch#5",
@@ -3197,9 +2667,7 @@
     "skinName": "夜空星芒",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_深律_skin1.png"
+    "portrait": false
   },
   "char_4114_harold": {
     "skinId": "char_4114_harold@snow#7",
@@ -3209,9 +2677,7 @@
     "skinName": "邀雪",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_哈洛德_skin1.png"
+    "portrait": false
   },
   "char_4116_blkkgt": {
     "skinId": "char_4116_blkkgt@witch#5",
@@ -3221,9 +2687,7 @@
     "skinName": "暗月的影子",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_锏_skin1.png"
+    "portrait": false
   },
   "char_4117_ray": {
     "skinId": "char_4117_ray@summer#22",
@@ -3233,9 +2697,7 @@
     "skinName": "夏卉 FA098",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_莱伊_skin2.png"
+    "portrait": false
   },
   "char_4119_wanqin": {
     "skinId": "char_4119_wanqin@epoque#41",
@@ -3245,9 +2707,7 @@
     "skinName": "万顷阳光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_万顷_skin1.png"
+    "portrait": false
   },
   "char_411_tomimi": {
     "skinId": "char_411_tomimi@summer#5",
@@ -3257,9 +2717,7 @@
     "skinName": "静谧午夜 DN04",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_特米米_skin1.png"
+    "portrait": false
   },
   "char_4121_zuole": {
     "skinId": "char_4121_zuole@sale#16",
@@ -3269,9 +2727,7 @@
     "skinName": "无息破局",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_左乐_skin2.png"
+    "portrait": false
   },
   "char_4122_grabds": {
     "skinId": "char_4122_grabds@yun#3",
@@ -3281,9 +2737,7 @@
     "skinName": "步芳兰",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_小满_skin1.png"
+    "portrait": false
   },
   "char_4123_ela": {
     "skinId": "char_4123_ela@rainbow6#2",
@@ -3293,9 +2747,7 @@
     "skinName": "密室",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_艾拉_skin1.png"
+    "portrait": false
   },
   "char_4124_iana": {
     "skinId": "char_4124_iana@rainbow6#2",
@@ -3305,9 +2757,7 @@
     "skinName": "镜廊",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_双月_skin1.png"
+    "portrait": false
   },
   "char_4125_rdoc": {
     "skinId": "char_4125_rdoc@rainbow6#2",
@@ -3317,9 +2767,7 @@
     "skinName": "展览",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_医生_skin1.png"
+    "portrait": false
   },
   "char_4130_luton": {
     "skinId": "char_4130_luton@yun#6",
@@ -3329,9 +2777,7 @@
     "skinName": "寄遥思",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_露托_skin1.png"
+    "portrait": false
   },
   "char_4131_odda": {
     "skinId": "char_4131_odda@whirlwind#8",
@@ -3341,9 +2787,7 @@
     "skinName": "糖果暴击",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_奥达_skin1.png"
+    "portrait": false
   },
   "char_4132_ascln": {
     "skinId": "char_4132_ascln@iteration#4",
@@ -3353,9 +2797,7 @@
     "skinName": "趋光之暗",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_阿斯卡纶_skin1.png"
+    "portrait": false
   },
   "char_4133_logos": {
     "skinId": "char_4133_logos@ambienceSynesthesia#6",
@@ -3365,9 +2807,7 @@
     "skinName": "辉煌的静谧",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_逻各斯_skin1.png"
+    "portrait": false
   },
   "char_4134_cetsyr": {
     "skinId": "char_4134_cetsyr@epoque#50",
@@ -3377,9 +2817,7 @@
     "skinName": "追悼",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_魔王_skin1.png"
+    "portrait": false
   },
   "char_4136_phonor": {
     "skinId": "char_4136_phonor@boc#9",
@@ -3389,9 +2827,7 @@
     "skinName": "最初的颂歌",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_PhonoR-0_skin1.png"
+    "portrait": false
   },
   "char_4137_udflow": {
     "skinId": "char_4137_udflow@epoque#46",
@@ -3401,9 +2837,7 @@
     "skinName": "层流",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_深巡_skin1.png"
+    "portrait": false
   },
   "char_4138_narant": {
     "skinId": "char_4138_narant@littlePony#1",
@@ -3413,9 +2847,7 @@
     "skinName": "率直诚实之人",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_娜仁图亚_skin2.png"
+    "portrait": false
   },
   "char_4139_papyrs": {
     "skinId": "char_4139_papyrs@game#8",
@@ -3425,9 +2857,7 @@
     "skinName": "下一个任务",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_莎草_skin1.png"
+    "portrait": false
   },
   "char_4140_lasher": {
     "skinId": "char_4140_lasher@sightseer#3",
@@ -3437,9 +2867,7 @@
     "skinName": "憩羽",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_衡沙_skin1.png"
+    "portrait": false
   },
   "char_4141_marcil": {
     "skinId": "char_4141_marcil@dungeon#1",
@@ -3449,9 +2877,7 @@
     "skinName": "泰拉冒险",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_玛露西尔_skin1.png"
+    "portrait": false
   },
   "char_4145_ulpia": {
     "skinId": "char_4145_ulpia@epoque#48",
@@ -3461,9 +2887,7 @@
     "skinName": "注目深渊",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_乌尔比安_skin1.png"
+    "portrait": false
   },
   "char_4146_nymph": {
     "skinId": "char_4146_nymph@ambienceSynesthesia#6",
@@ -3473,9 +2897,7 @@
     "skinName": "繁花梦幻谈",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_妮芙_skin2.png"
+    "portrait": false
   },
   "char_4147_mitm": {
     "skinId": "char_4147_mitm@breaker#1",
@@ -3485,9 +2907,7 @@
     "skinName": "无影灯下",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_渡桥_skin1.png"
+    "portrait": false
   },
   "char_4148_philae": {
     "skinId": "char_4148_philae@nian#12",
@@ -3497,9 +2917,7 @@
     "skinName": "花绸曲",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_菲莱_skin1.png"
+    "portrait": false
   },
   "char_4151_tinman": {
     "skinId": "char_4151_tinman@sale#11",
@@ -3509,9 +2927,7 @@
     "skinName": "相位面容",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_锡人_skin1.png"
+    "portrait": false
   },
   "char_4155_talr": {
     "skinId": "char_4155_talr@yun#9",
@@ -3521,9 +2937,7 @@
     "skinName": "桂影窗",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_裁度_skin1.png"
+    "portrait": false
   },
   "char_415_flint": {
     "skinId": "char_415_flint@boc#3",
@@ -3533,9 +2947,7 @@
     "skinName": "绚烂夏花",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_燧石_skin1.png"
+    "portrait": false
   },
   "char_4163_rosesa": {
     "skinId": "char_4163_rosesa@game#7",
@@ -3545,9 +2957,7 @@
     "skinName": "冒险启程",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_瑰盐_skin1.png"
+    "portrait": false
   },
   "char_4165_ctrail": {
     "skinId": "char_4165_ctrail@yun#11",
@@ -3557,9 +2967,7 @@
     "skinName": "渡澄空",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_云迹_skin1.png"
+    "portrait": false
   },
   "char_416_zumama": {
     "skinId": "char_416_zumama@boc#3",
@@ -3569,9 +2977,7 @@
     "skinName": "熔锻铸匠",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_森蚺_skin1.png"
+    "portrait": false
   },
   "char_4171_wulfen": {
     "skinId": "char_4171_wulfen@marthe#14",
@@ -3581,9 +2987,7 @@
     "skinName": "跃动节拍",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_钼铅_skin1.png"
+    "portrait": false
   },
   "char_4172_xingzh": {
     "skinId": "char_4172_xingzh@epoque#51",
@@ -3593,9 +2997,7 @@
     "skinName": "留影",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_行箸_skin1.png"
+    "portrait": false
   },
   "char_4173_nowell": {
     "skinId": "char_4173_nowell@iteration#6",
@@ -3605,9 +3007,7 @@
     "skinName": "幽蓝渡灵师",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_诺威尔_skin1.png"
+    "portrait": false
   },
   "char_4177_brigid": {
     "skinId": "char_4177_brigid@epoque#53",
@@ -3617,9 +3017,7 @@
     "skinName": "轻语入梦",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_水灯心_skin1.png"
+    "portrait": false
   },
   "char_4179_monstr": {
     "skinId": "char_4179_monstr@boc#11",
@@ -3629,9 +3027,7 @@
     "skinName": "锋锐",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_Mon3tr_skin1.png"
+    "portrait": false
   },
   "char_4182_oblvns": {
     "skinId": "char_4182_oblvns@avemujica#1",
@@ -3641,9 +3037,7 @@
     "skinName": "旋律的主人",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_丰川祥子_skin1.png"
+    "portrait": false
   },
   "char_4183_mortis": {
     "skinId": "char_4183_mortis@avemujica#1",
@@ -3653,9 +3047,7 @@
     "skinName": "提线的本我",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_若叶睦_skin1.png"
+    "portrait": false
   },
   "char_4184_dolris": {
     "skinId": "char_4184_dolris@avemujica#1",
@@ -3665,9 +3057,7 @@
     "skinName": "笼中歌者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_三角初华_skin1.png"
+    "portrait": false
   },
   "char_4185_amoris": {
     "skinId": "char_4185_amoris@avemujica#1",
@@ -3677,9 +3067,7 @@
     "skinName": "情热魔术师",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_祐天寺若麦_skin1.png"
+    "portrait": false
   },
   "char_4186_tmoris": {
     "skinId": "char_4186_tmoris@avemujica#1",
@@ -3689,9 +3077,7 @@
     "skinName": "月下执行者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_八幡海铃_skin1.png"
+    "portrait": false
   },
   "char_4187_graceb": {
     "skinId": "char_4187_graceb@boc#11",
@@ -3701,9 +3087,7 @@
     "skinName": "追想涤尘",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_聆音_skin1.png"
+    "portrait": false
   },
   "char_4191_tippi": {
     "skinId": "char_4191_tippi@epoque#57",
@@ -3713,9 +3097,7 @@
     "skinName": "清新布景",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蒂比_skin1.png"
+    "portrait": false
   },
   "char_4193_lemuen": {
     "skinId": "char_4193_lemuen@ambienceSynesthesia#7",
@@ -3725,9 +3107,7 @@
     "skinName": "暮星安魂曲",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蕾缪安_skin1.png"
+    "portrait": false
   },
   "char_4194_rmixer": {
     "skinId": "char_4194_rmixer@boc#12",
@@ -3737,9 +3117,7 @@
     "skinName": "天穹肇始",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_信仰搅拌机_skin1.png"
+    "portrait": false
   },
   "char_4195_radian": {
     "skinId": "char_4195_radian@game#8",
@@ -3749,9 +3127,7 @@
     "skinName": "乱数法则",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_电弧_skin1.png"
+    "portrait": false
   },
   "char_4198_christ": {
     "skinId": "char_4198_christ@epoque#56",
@@ -3761,9 +3137,7 @@
     "skinName": "底绒舞会",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_Miss.Christine_skin1.png"
+    "portrait": false
   },
   "char_4199_makiri": {
     "skinId": "char_4199_makiri@sale#19",
@@ -3773,9 +3147,7 @@
     "skinName": "暮时宝光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_松桐_skin1.png"
+    "portrait": false
   },
   "char_4202_haruka": {
     "skinId": "char_4202_haruka@iteration#6",
@@ -3785,9 +3157,7 @@
     "skinName": "常世之幻",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_遥_skin1.png"
+    "portrait": false
   },
   "char_4207_branch": {
     "skinId": "char_4207_branch@yun#10",
@@ -3797,9 +3167,7 @@
     "skinName": "撷香霭",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_折桠_skin1.png"
+    "portrait": false
   },
   "char_420_flamtl": {
     "skinId": "char_420_flamtl@game#2",
@@ -3809,9 +3177,7 @@
     "skinName": "小健将",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_焰尾_skin1.png"
+    "portrait": false
   },
   "char_4215_buddy": {
     "skinId": "char_4215_buddy@mh#2",
@@ -3821,9 +3187,7 @@
     "skinName": "露营时间喵！",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_罗德岛隐秘队_skin1.png"
+    "portrait": false
   },
   "char_421_crow": {
     "skinId": "char_421_crow@summer#9",
@@ -3833,9 +3197,7 @@
     "skinName": "夏卉 FA210",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_羽毛笔_skin1.png"
+    "portrait": false
   },
   "char_422_aurora": {
     "skinId": "char_422_aurora@boc#4",
@@ -3845,9 +3207,7 @@
     "skinName": "极昼捕手",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_极光_skin1.png"
+    "portrait": false
   },
   "char_423_blemsh": {
     "skinId": "char_423_blemsh@littlePony#1",
@@ -3857,9 +3217,7 @@
     "skinName": "善良坚强之心",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_瑕光_skin2.png"
+    "portrait": false
   },
   "char_426_billro": {
     "skinId": "char_426_billro@summer#8",
@@ -3869,9 +3227,7 @@
     "skinName": "灿阳朝露 SD08",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_卡涅利安_skin2.png"
+    "portrait": false
   },
   "char_427_vigil": {
     "skinId": "char_427_vigil@epoque#27",
@@ -3881,9 +3237,7 @@
     "skinName": "叙拉古的彼面",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_伺夜_skin1.png"
+    "portrait": false
   },
   "char_430_fartth": {
     "skinId": "char_430_fartth@whirlwind#5",
@@ -3893,9 +3247,7 @@
     "skinName": "捉风",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_远牙_skin1.png"
+    "portrait": false
   },
   "char_431_ashlok": {
     "skinId": "char_431_ashlok@epoque#28",
@@ -3905,9 +3257,7 @@
     "skinName": "卡利斯卡群枪",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_灰毫_skin1.png"
+    "portrait": false
   },
   "char_436_whispr": {
     "skinId": "char_436_whispr@witch#4",
@@ -3917,9 +3267,7 @@
     "skinName": "幽邃隐修",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_絮雨_skin2.png"
+    "portrait": false
   },
   "char_437_mizuki": {
     "skinId": "char_437_mizuki@game#6",
@@ -3929,9 +3277,7 @@
     "skinName": "永恒玩家",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_水月_skin2.png"
+    "portrait": false
   },
   "char_440_pinecn": {
     "skinId": "char_440_pinecn@epoque#31",
@@ -3941,9 +3287,7 @@
     "skinName": "远行的季节",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_松果_skin2.png"
+    "portrait": false
   },
   "char_445_wscoot": {
     "skinId": "char_445_wscoot@epoque#49",
@@ -3953,9 +3297,7 @@
     "skinName": "异乡的云",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_骋风_skin1.png"
+    "portrait": false
   },
   "char_446_aroma": {
     "skinId": "char_446_aroma@epoque#54",
@@ -3965,9 +3307,7 @@
     "skinName": "舒心野趣",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_阿罗玛_skin1.png"
+    "portrait": false
   },
   "char_449_glider": {
     "skinId": "char_449_glider@nian#10",
@@ -3977,9 +3317,7 @@
     "skinName": "洇灵雨",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蜜莓_skin2.png"
+    "portrait": false
   },
   "char_450_necras": {
     "skinId": "char_450_necras@ambienceSynesthesia#7",
@@ -3989,9 +3327,7 @@
     "skinName": "晶化信念",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_死芒_skin2.png"
+    "portrait": false
   },
   "char_451_robin": {
     "skinId": "char_451_robin@epoque#13",
@@ -4001,9 +3337,7 @@
     "skinName": "原野的馈赠",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_罗宾_skin1.png"
+    "portrait": false
   },
   "char_452_bstalk": {
     "skinId": "char_452_bstalk@unveiling#4",
@@ -4013,9 +3347,7 @@
     "skinName": "红丝带之约",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_豆苗_skin2.png"
+    "portrait": false
   },
   "char_455_nothin": {
     "skinId": "char_455_nothin@nian#7",
@@ -4025,9 +3357,7 @@
     "skinName": "冷山月",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_乌有_skin1.png"
+    "portrait": false
   },
   "char_456_ash": {
     "skinId": "char_456_ash@rainbow6#1",
@@ -4037,9 +3367,7 @@
     "skinName": "游侠",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_灰烬_skin1.png"
+    "portrait": false
   },
   "char_459_tachak": {
     "skinId": "char_459_tachak@rainbow6#1",
@@ -4049,9 +3377,7 @@
     "skinName": "领主",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_战车_skin1.png"
+    "portrait": false
   },
   "char_464_cement": {
     "skinId": "char_464_cement@epoque#31",
@@ -4061,9 +3387,7 @@
     "skinName": "全新业务",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_洋灰_skin1.png"
+    "portrait": false
   },
   "char_466_qanik": {
     "skinId": "char_466_qanik@snow#6",
@@ -4073,9 +3397,7 @@
     "skinName": "回礼",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_雪绒_skin1.png"
+    "portrait": false
   },
   "char_469_indigo": {
     "skinId": "char_469_indigo@nian#7",
@@ -4085,9 +3407,7 @@
     "skinName": "待晴日",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_深靛_skin1.png"
+    "portrait": false
   },
   "char_472_pasngr": {
     "skinId": "char_472_pasngr@epoque#17",
@@ -4097,9 +3417,7 @@
     "skinName": "今昔须臾之梦",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_异客_skin1.png"
+    "portrait": false
   },
   "char_473_mberry": {
     "skinId": "char_473_mberry@nian#9",
@@ -4109,9 +3427,7 @@
     "skinName": "照冰轮",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_桑葚_skin2.png"
+    "portrait": false
   },
   "char_474_glady": {
     "skinId": "char_474_glady@epoque#33",
@@ -4121,9 +3437,7 @@
     "skinName": "我即潮汐",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_歌蕾蒂娅_skin2.png"
+    "portrait": false
   },
   "char_475_akafyu": {
     "skinId": "char_475_akafyu@epoque#15",
@@ -4133,9 +3447,7 @@
     "skinName": "心性",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_赤冬_skin1.png"
+    "portrait": false
   },
   "char_476_blkngt": {
     "skinId": "char_476_blkngt@nian#8",
@@ -4145,9 +3457,7 @@
     "skinName": "枝头馥",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夜半_skin2.png"
+    "portrait": false
   },
   "char_478_kirara": {
     "skinId": "char_478_kirara@epoque#57",
@@ -4157,9 +3467,7 @@
     "skinName": "轻闲快照",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_绮良_skin2.png"
+    "portrait": false
   },
   "char_479_sleach": {
     "skinId": "char_479_sleach@summer#11",
@@ -4169,9 +3477,7 @@
     "skinName": "夏卉 FA317",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_琴柳_skin2.png"
+    "portrait": false
   },
   "char_484_robrta": {
     "skinId": "char_484_robrta@ambienceSynesthesia#3",
@@ -4181,9 +3487,7 @@
     "skinName": "待绘的作品",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_罗比菈塔_skin2.png"
+    "portrait": false
   },
   "char_485_pallas": {
     "skinId": "char_485_pallas@epoque#19",
@@ -4193,9 +3497,7 @@
     "skinName": "山川的酿造",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_帕拉斯_skin2.png"
+    "portrait": false
   },
   "char_486_takila": {
     "skinId": "char_486_takila@shining#2",
@@ -4205,9 +3507,7 @@
     "skinName": "巅峰现场",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_龙舌兰_skin2.png"
+    "portrait": false
   },
   "char_487_bobb": {
     "skinId": "char_487_bobb@kitchen#4",
@@ -4217,9 +3517,7 @@
     "skinName": "温情烘焙",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_波卜_skin1.png"
+    "portrait": false
   },
   "char_488_buildr": {
     "skinId": "char_488_buildr@epoque#34",
@@ -4229,9 +3527,7 @@
     "skinName": "晚风休憩",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_青枳_skin1.png"
+    "portrait": false
   },
   "char_489_serum": {
     "skinId": "char_489_serum@epoque#31",
@@ -4241,9 +3537,7 @@
     "skinName": "逸趣",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_蚀清_skin1.png"
+    "portrait": false
   },
   "char_491_humus": {
     "skinId": "char_491_humus@marthe#10",
@@ -4253,9 +3547,7 @@
     "skinName": "烈阳街景",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_休谟斯_skin1.png"
+    "portrait": false
   },
   "char_492_quercu": {
     "skinId": "char_492_quercu@witch#4",
@@ -4265,9 +3557,7 @@
     "skinName": "树影吟游",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_夏栎_skin2.png"
+    "portrait": false
   },
   "char_494_vendla": {
     "skinId": "char_494_vendla@game#10",
@@ -4277,9 +3567,7 @@
     "skinName": "蔷薇之谜",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_刺玫_skin1.png"
+    "portrait": false
   },
   "char_496_wildmn": {
     "skinId": "char_496_wildmn@epoque#16",
@@ -4289,9 +3577,7 @@
     "skinName": "正义缔造者",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_野鬃_skin1.png"
+    "portrait": false
   },
   "char_497_ctable": {
     "skinId": "char_497_ctable@epoque#44",
@@ -4301,9 +3587,7 @@
     "skinName": "湖畔歌者",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_晓歌_skin2.png"
+    "portrait": false
   },
   "char_498_inside": {
     "skinId": "char_498_inside@summer#22",
@@ -4313,9 +3597,7 @@
     "skinName": "悠然假日 HDm25",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_隐现_skin2.png"
+    "portrait": false
   },
   "char_499_kaitou": {
     "skinId": "char_499_kaitou@epoque#37",
@@ -4325,8 +3607,6 @@
     "skinName": "斜照",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_折光_skin1.png"
+    "portrait": false
   }
 }
