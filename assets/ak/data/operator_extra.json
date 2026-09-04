@@ -29,6 +29,9 @@
   "char_4215_buddy": {
     "gender": "unknown"
   },
+  "char_4220_kormr": {
+    "gender": "unknown"
+  },
   "char_4227_gallus": {
     "gender": "unknown"
   },
@@ -797,6 +800,12 @@
   "char_4214_cairn": {
     "gender": "female"
   },
+  "char_4218_aigis": {
+    "gender": "unknown"
+  },
+  "char_4219_yukari": {
+    "gender": "unknown"
+  },
   "char_421_crow": {
     "gender": "female"
   },
@@ -1285,6 +1294,9 @@
   },
   "char_4212_nasti": {
     "gender": "female"
+  },
+  "char_4217_makoto": {
+    "gender": "unknown"
   },
   "char_4226_veen": {
     "gender": "male"

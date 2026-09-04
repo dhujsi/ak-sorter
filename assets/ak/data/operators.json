@@ -80,6 +80,14 @@
     "subProfession": "tactician"
   },
   {
+    "id": "char_4220_kormr",
+    "name": "虎狼丸",
+    "appellation": "Koromaru",
+    "star": 1,
+    "profession": "WARRIOR",
+    "subProfession": "sword"
+  },
+  {
     "id": "char_4227_gallus",
     "name": "GALLUS²",
     "appellation": "GALLUS²",
@@ -2128,6 +2136,22 @@
     "subProfession": "primprotector"
   },
   {
+    "id": "char_4218_aigis",
+    "name": "埃癸斯",
+    "appellation": "Aegis",
+    "star": 5,
+    "profession": "SNIPER",
+    "subProfession": "skybreaker"
+  },
+  {
+    "id": "char_4219_yukari",
+    "name": "岳羽由加莉",
+    "appellation": "Yukari Takeba",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "supportiveranger"
+  },
+  {
     "id": "char_421_crow",
     "name": "羽毛笔",
     "appellation": "La Pluma",
@@ -3430,6 +3454,14 @@
     "star": 6,
     "profession": "SUPPORT",
     "subProfession": "craftsman"
+  },
+  {
+    "id": "char_4217_makoto",
+    "name": "结城理",
+    "appellation": "Makoto Yuki",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "dollkeeper"
   },
   {
     "id": "char_4226_veen",
