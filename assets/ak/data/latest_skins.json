@@ -3833,7 +3833,9 @@
     "skinName": "见证荣光",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_结城理_skin1.png"
   },
   "char_4218_aigis": {
     "skinId": "char_4218_aigis@p3r#1",
@@ -3843,7 +3845,9 @@
     "skinName": "静思真谛",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_埃癸斯_skin1.png"
   },
   "char_4219_yukari": {
     "skinId": "char_4219_yukari@p3r#1",
@@ -3853,7 +3857,9 @@
     "skinName": "戍卫晨昏",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_岳羽由加莉_skin1.png"
   },
   "char_421_crow": {
     "skinId": "char_421_crow@summer#9",
@@ -3875,7 +3881,9 @@
     "skinName": "飞越甜蜜之城",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_虎狼丸_skin1.png"
   },
   "char_422_aurora": {
     "skinId": "char_422_aurora@boc#4",
