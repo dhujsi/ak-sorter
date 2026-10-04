@@ -209,7 +209,9 @@
     "skinName": "幽兰秘辛",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_缄默德克萨斯_skin2.png"
   },
   "char_102_texas": {
     "skinId": "char_102_texas@epoque#7",
@@ -255,7 +257,9 @@
     "skinName": "律动方格",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_琳琅诗怀雅_skin1.png"
   },
   "char_1034_jesca2": {
     "skinId": "char_1034_jesca2@cfa#1",
@@ -457,7 +461,9 @@
     "skinName": "摧城",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_推进之王_skin2.png"
   },
   "char_113_cqbw": {
     "skinId": "char_113_cqbw@epoque#7",
@@ -539,7 +545,9 @@
     "skinName": "无畏",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_米格鲁_skin1.png"
   },
   "char_123_fang": {
     "skinId": "char_123_fang@winter#1",
@@ -597,7 +605,9 @@
     "skinName": "抚云间",
     "skinIndex": 2,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_白面鸮_skin2.png"
   },
   "char_129_bluep": {
     "skinId": "char_129_bluep@iteration#2",
@@ -715,7 +725,9 @@
     "skinName": "疗养地怪谈",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_夜烟_skin1.png"
   },
   "char_143_ghost": {
     "skinId": "char_143_ghost@winter#1",
@@ -833,7 +845,9 @@
     "skinName": "字里行间",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_摩根_skin1.png"
   },
   "char_155_tiger": {
     "skinId": "char_155_tiger@striker#2",
@@ -1263,7 +1277,9 @@
     "skinName": "灿阳朝露 SD05",
     "skinIndex": 1,
     "avatar": true,
-    "portrait": false
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_白金_skin1.png"
   },
   "char_206_gnosis": {
     "skinId": "char_206_gnosis@boc#4",
