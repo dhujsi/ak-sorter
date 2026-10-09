@@ -1528,6 +1528,14 @@
     "subProfession": "phalanx"
   },
   {
+    "id": "char_393_toledo",
+    "name": "德·托莱多",
+    "appellation": "de Toledo",
+    "star": 5,
+    "profession": "SUPPORT",
+    "subProfession": "underminer"
+  },
+  {
     "id": "char_394_hadiya",
     "name": "哈蒂娅",
     "appellation": "Hadiya",
@@ -2206,6 +2214,14 @@
     "star": 5,
     "profession": "TANK",
     "subProfession": "duelist"
+  },
+  {
+    "id": "char_4232_hbound",
+    "name": "旅骨",
+    "appellation": "Homebound",
+    "star": 5,
+    "profession": "SPECIAL",
+    "subProfession": "alchemist"
   },
   {
     "id": "char_4234_pedro",
@@ -3494,6 +3510,14 @@
     "star": 6,
     "profession": "TANK",
     "subProfession": "shotprotector"
+  },
+  {
+    "id": "char_4231_clemnt",
+    "name": "克莱门莎",
+    "appellation": "Clementia",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "primguard"
   },
   {
     "id": "char_4235_thumpy",

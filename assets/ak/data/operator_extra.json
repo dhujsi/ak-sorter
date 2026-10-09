@@ -572,6 +572,9 @@
   "char_388_mint": {
     "gender": "female"
   },
+  "char_393_toledo": {
+    "gender": "unknown"
+  },
   "char_394_hadiya": {
     "gender": "female"
   },
@@ -826,6 +829,9 @@
   },
   "char_422_aurora": {
     "gender": "female"
+  },
+  "char_4232_hbound": {
+    "gender": "unknown"
   },
   "char_4234_pedro": {
     "gender": "unknown"
@@ -1308,6 +1314,9 @@
     "gender": "unknown"
   },
   "char_4230_mcnist": {
+    "gender": "unknown"
+  },
+  "char_4231_clemnt": {
     "gender": "unknown"
   },
   "char_4235_thumpy": {
