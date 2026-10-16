@@ -246,16 +246,14 @@
     "portraitFile": "半身像_圣约送葬人_skin2.png"
   },
   "char_1033_swire2": {
-    "skinId": "char_1033_swire2@ambienceSynesthesia#4",
-    "assetId": "char_1033_swire2_ambienceSynesthesia#4",
-    "getTime": 1714032000,
-    "sortId": 413,
-    "skinName": "律动方格",
-    "skinIndex": 1,
+    "skinId": "char_1033_swire2@nlc#1",
+    "assetId": "char_1033_swire2_nlc#1",
+    "getTime": 1792137600,
+    "sortId": 528,
+    "skinName": "盛世之象",
+    "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_琳琅诗怀雅_skin1.png"
+    "portrait": false
   },
   "char_1034_jesca2": {
     "skinId": "char_1034_jesca2@cfa#1",
@@ -330,16 +328,14 @@
     "portraitFile": "半身像_能天使_skin3.png"
   },
   "char_1040_blaze2": {
-    "skinId": "char_1040_blaze2@winter#5",
-    "assetId": "char_1040_blaze2_winter#5",
-    "getTime": 1767913200,
-    "sortId": 292,
-    "skinName": "夜归人",
-    "skinIndex": 1,
+    "skinId": "char_1040_blaze2@nlc#1",
+    "assetId": "char_1040_blaze2_nlc#1",
+    "getTime": 1792137600,
+    "sortId": 527,
+    "skinName": "夜行烛火",
+    "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_烛煌_skin1.png"
+    "portrait": false
   },
   "char_1041_angel2": {
     "skinId": "char_1041_angel2@iteration#6",
@@ -1246,16 +1242,14 @@
     "portraitFile": "半身像_重岳_skin2.png"
   },
   "char_2025_shu": {
-    "skinId": "char_2025_shu@nian#11",
-    "assetId": "char_2025_shu_nian#11",
-    "getTime": 1737518400,
-    "sortId": 163,
-    "skinName": "春日宴",
-    "skinIndex": 1,
+    "skinId": "char_2025_shu@nlc#1",
+    "assetId": "char_2025_shu_nlc#1",
+    "getTime": 1792137600,
+    "sortId": 526,
+    "skinName": "源远流长",
+    "skinIndex": 2,
     "avatar": true,
-    "portrait": true,
-    "portraitSource": "prts-halfbody",
-    "portraitFile": "半身像_黍_skin1.png"
+    "portrait": false
   },
   "char_2026_yu": {
     "skinId": "char_2026_yu@nian#12",
