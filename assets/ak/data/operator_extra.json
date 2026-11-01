@@ -278,6 +278,9 @@
   "char_4165_ctrail": {
     "gender": "female"
   },
+  "char_4170_hdbell": {
+    "gender": "unknown"
+  },
   "char_4208_wintim": {
     "gender": "female"
   },
@@ -746,6 +749,9 @@
   "char_4166_varkis": {
     "gender": "male"
   },
+  "char_4169_caledo": {
+    "gender": "unknown"
+  },
   "char_4171_wulfen": {
     "gender": "female"
   },
@@ -840,6 +846,9 @@
     "gender": "unknown"
   },
   "char_4237_jcinta": {
+    "gender": "unknown"
+  },
+  "char_4245_alga": {
     "gender": "unknown"
   },
   "char_431_ashlok": {
@@ -1324,6 +1333,15 @@
   },
   "char_423_blemsh": {
     "gender": "female"
+  },
+  "char_4244_tocka": {
+    "gender": "unknown"
+  },
+  "char_4246_dminon": {
+    "gender": "unknown"
+  },
+  "char_4247_oxi": {
+    "gender": "unknown"
   },
   "char_426_billro": {
     "gender": "female"

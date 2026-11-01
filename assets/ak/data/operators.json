@@ -744,6 +744,14 @@
     "subProfession": "skywalker"
   },
   {
+    "id": "char_4170_hdbell",
+    "name": "行铃",
+    "appellation": "Herdbells",
+    "star": 4,
+    "profession": "SPECIAL",
+    "subProfession": "dispatcher"
+  },
+  {
     "id": "char_4208_wintim",
     "name": "冬时",
     "appellation": "Снегурочка",
@@ -1992,6 +2000,14 @@
     "subProfession": "centurion"
   },
   {
+    "id": "char_4169_caledo",
+    "name": "镜匠",
+    "appellation": "Caleido",
+    "star": 5,
+    "profession": "TANK",
+    "subProfession": "primprotector"
+  },
+  {
     "id": "char_4171_wulfen",
     "name": "钼铅",
     "appellation": "Wulfenite",
@@ -2246,6 +2262,14 @@
     "star": 5,
     "profession": "PIONEER",
     "subProfession": "bearer"
+  },
+  {
+    "id": "char_4245_alga",
+    "name": "奥尔佳",
+    "appellation": "Ольга",
+    "star": 5,
+    "profession": "WARRIOR",
+    "subProfession": "instructor"
   },
   {
     "id": "char_431_ashlok",
@@ -3534,6 +3558,30 @@
     "star": 6,
     "profession": "TANK",
     "subProfession": "guardian"
+  },
+  {
+    "id": "char_4244_tocka",
+    "name": "冻河",
+    "appellation": "Тоска",
+    "star": 6,
+    "profession": "SUPPORT",
+    "subProfession": "supportiveranger"
+  },
+  {
+    "id": "char_4246_dminon",
+    "name": "国度",
+    "appellation": "Территория",
+    "star": 6,
+    "profession": "SPECIAL",
+    "subProfession": "stalker"
+  },
+  {
+    "id": "char_4247_oxi",
+    "name": "塔露拉",
+    "appellation": "Talulah",
+    "star": 6,
+    "profession": "WARRIOR",
+    "subProfession": "primguard"
   },
   {
     "id": "char_426_billro",
