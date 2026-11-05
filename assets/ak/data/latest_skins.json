@@ -3681,6 +3681,18 @@
     "portraitSource": "prts-halfbody",
     "portraitFile": "半身像_水灯心_skin1.png"
   },
+  "char_4178_alanna": {
+    "skinId": "char_4178_alanna@race#3",
+    "assetId": "char_4178_alanna_race#3",
+    "getTime": 1793908800,
+    "sortId": 396,
+    "skinName": "赤土拉力",
+    "skinIndex": 1,
+    "avatar": true,
+    "portrait": true,
+    "portraitSource": "prts-halfbody",
+    "portraitFile": "半身像_阿兰娜_skin1.png"
+  },
   "char_4179_monstr": {
     "skinId": "char_4179_monstr@boc#11",
     "assetId": "char_4179_monstr_boc#11",
