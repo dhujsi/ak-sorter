@@ -3734,5 +3734,13 @@
     "star": 6,
     "profession": "WARRIOR",
     "subProfession": "lord"
+  },
+  {
+    "id": "char_618_acrbot",
+    "name": "“暴躁铁皮”",
+    "appellation": "Rage Ironhide",
+    "star": 6,
+    "profession": "TANK",
+    "subProfession": "unyield"
   }
 ]
